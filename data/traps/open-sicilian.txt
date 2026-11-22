@@ -1,0 +1,10 @@
+Trap: Dragon 6...Ng4? 7.Bb5+ and Nc7 mate|1. e4 c5 2. Nf3 d6 3. d4 cxd4 4. Nxd4 Nf6 5. Nc3 g6 6. Be3 Ng4 7. Bb5+ Bd7 8. Qxg4 Bxb5 9. Ndxb5 Qa5 10. Qc8+ Qd8 11. Nc7#
+Trap: Yugoslav 11...Nxe3?? zwischenzug|1. e4 c5 2. Nf3 d6 3. d4 cxd4 4. Nxd4 Nf6 5. Nc3 g6 6. Be3 Bg7 7. f3 O-O 8. Qd2 Nc6 9. O-O-O d5 10. exd5 Nxd5 11. Nxc6 Nxe3 12. Nxd8 Nxd1 13. Nxd1
+Trap: Najdorf 7...Nxe4? fork that fails|1. e4 c5 2. Nf3 d6 3. d4 cxd4 4. Nxd4 Nf6 5. Nc3 a6 6. Be3 e5 7. Nb3 Nxe4 8. Nxe4 d5 9. Bg5
+Trap: Najdorf 10...Nxd5? and 11...Qa5+??|1. e4 c5 2. Nf3 d6 3. d4 cxd4 4. Nxd4 Nf6 5. Nc3 a6 6. Be3 e5 7. Nb3 Be6 8. f3 h5 9. Nd5 Bxd5 10. exd5 Nxd5 11. Qxd5 Qa5+ 12. Nxa5
+Trap: Sveshnikov 7...h6? and the Nc7+ fork|1. e4 c5 2. Nf3 Nc6 3. d4 cxd4 4. Nxd4 Nf6 5. Nc3 e5 6. Ndb5 d6 7. Bg5 h6 8. Bxf6 gxf6 9. Nd5 Be6 10. Nbc7+ Kd7 11. Nxa8 Qxa8 12. Nxf6+
+Trap: Sveshnikov 7...Qb6? eyeing b2|1. e4 c5 2. Nf3 Nc6 3. d4 cxd4 4. Nxd4 Nf6 5. Nc3 e5 6. Ndb5 d6 7. Bg5 Qb6 8. Bxf6 gxf6 9. Nd5 Qa5+ 10. c3 Be6 11. Ndc7+ Kd7 12. Nxa8
+Trap: Four Knights 7...Nh5? 8.Nxd6+|1. e4 c5 2. Nf3 e6 3. d4 cxd4 4. Nxd4 Nf6 5. Nc3 Nc6 6. Ndb5 d6 7. Bf4 Nh5 8. Nxd6+ Bxd6 9. Bxd6
+Trap: Taimanov 8...Bd6? and the d-file x-ray|1. e4 c5 2. Nf3 e6 3. d4 cxd4 4. Nxd4 Nc6 5. Nc3 Qc7 6. Be3 a6 7. Qd2 Nf6 8. O-O-O Bd6 9. Nxc6 bxc6 10. Qxd6 Qxd6 11. Rxd6
+Trap: Keres 6...Nxg4? pawn grab|1. e4 c5 2. Nf3 e6 3. d4 cxd4 4. Nxd4 Nf6 5. Nc3 d6 6. g4 Nxg4 7. Qxg4 e5 8. Bb5+ Bd7 9. Bxd7+ Qxd7 10. Qxd7+ Kxd7 11. Ndb5
+Trap: Rauzer 8...Nxe4? and Bxe7|1. e4 c5 2. Nf3 d6 3. d4 cxd4 4. Nxd4 Nf6 5. Nc3 Nc6 6. Bg5 e6 7. Qd2 Be7 8. O-O-O Nxe4 9. Bxe7 Nxd2 10. Bxd8 Kxd8 11. Rxd2

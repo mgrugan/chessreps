@@ -13,6 +13,20 @@ A static site you can host on GitHub Pages. You learn an opening repertoire move
 | Counter the French | White | 30 | Essentials 12 · Full Mastery 30 |
 | O'Kelly Sicilian | Black | 30 | Essentials 16 · Full Mastery 30 |
 | Sicilian Kan | Black | 52 | Essentials 25 · Full Mastery 52 |
+| Counter the Caro-Kann (generated) | White | 27 + 8 traps | Essentials 12 · Full Mastery 27 |
+| Counter the Sicilian: Open (generated) | White | 28 + 10 traps | Essentials 12 · Full Mastery 28 |
+
+The Italian (9), Alapin (10), Scandinavian (8) and French (10) courses also have **trap lines**: a natural opponent mistake and the winning punishment, each checked with Stockfish. Traps are part of every training depth.
+
+## Generating new courses
+
+`tools/generate-course.mjs` builds a repertoire from the Lichess masters explorer and checks it with Stockfish (`apt install stockfish`):
+
+```bash
+node tools/generate-course.mjs --id caro-counter --color white --start "e4 c6" --reach 0.012 --maxply 22
+```
+
+For your moves it picks the most-played master move within 0.6 pawns of the engine's best. For the opponent it follows every reply with at least a 6% share while the chance of reaching that position stays above `--reach`. Add `--club` with a `LICHESS_TOKEN` to also include replies common in 1600–2000 Lichess games.
 
 You can also **import your own course** from the home page. It accepts one line per row, a multi-game PGN, or a study with nested variations. Imported courses are saved in your browser.
 
