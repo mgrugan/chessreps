@@ -118,7 +118,7 @@ function updateEval(fen) {
   bar.classList.toggle('hidden', !settings.evalBar);
   if (!settings.evalBar) return;
   const seq = ++evalSeq;
-  evaluate(fen, 12).then(r => {
+  evaluate(fen, 16).then(r => {
     if (!r || seq !== evalSeq) return;
     const cp = Math.max(-1000, Math.min(1000, r.cp));
     const pct = 50 + 50 * (2 / (1 + Math.exp(-0.004 * cp)) - 1);
@@ -127,7 +127,8 @@ function updateEval(fen) {
     fill.style.width = pct + '%';
     const ours = OUR === 'w' ? cp : -cp;
     bar.classList.toggle('losing', ours < 0 && !isPhone());
-    bar.querySelector('.num').textContent = r.mate ? `M${Math.abs(r.mate)}` : (Math.abs(r.cp) / 100).toFixed(1);
+    bar.querySelector('.num').textContent = r.mate ? `${r.mate > 0 ? '' : '-'}M${Math.abs(r.mate)}` : `${r.cp > 0 ? '+' : r.cp < 0 ? '−' : ''}${(Math.abs(r.cp) / 100).toFixed(1)}`;
+    bar.title = r.mate ? `Mate in ${Math.abs(r.mate)} for ${r.mate > 0 ? 'White' : 'Black'}` : `${(r.cp / 100).toFixed(2)} (White's view)`;
   });
 }
 

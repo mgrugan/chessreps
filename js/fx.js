@@ -1,40 +1,59 @@
 // Engine (evaluation bar), move sounds and confetti.
 
-// ---------- Stockfish (WASM, runs in a worker, fully local) ----------
-let worker = null, pending = null, ready = false;
+// ---------- Stockfish 17.1 lite (NNUE, WASM, single-threaded, runs in a worker) ----------
+// One search at a time. When a new position comes in while a search is running we send
+// "stop" and IGNORE that search's output (its bestmove included) so a stale score from the
+// previous position can never be shown for the new one.
+let worker = null, ready = false;
+let current = null;      // { fen, resolve, last }
+let queued = null;       // latest request waiting for the running search to stop
+let stopping = 0;        // number of stopped searches whose bestmove we still have to swallow
 function ensureWorker() {
   if (worker) return worker;
   try {
-    worker = new Worker(new URL('../vendor/stockfish.wasm.js', import.meta.url));
+    worker = new Worker(new URL('../vendor/stockfish-17.1-lite-single.js', import.meta.url));
     worker.onmessage = e => {
       const line = typeof e.data === 'string' ? e.data : '';
-      if (line === 'uciok' || line === 'readyok') ready = true;
-      if (!pending) return;
-      const m = line.match(/^info .*depth (\d+) .*score (cp|mate) (-?\d+)/);
-      if (m) pending.last = { type: m[2], value: +m[3], depth: +m[1] };
-      if (line.startsWith('bestmove')) { const p = pending; pending = null; p.resolve(p.last); }
+      if (line === 'readyok') { ready = true; pump(); return; }
+      if (line.startsWith('bestmove')) {
+        if (stopping) { stopping--; pump(); return; }
+        const c = current; current = null;
+        if (c) c.resolve(c.last);
+        pump();
+        return;
+      }
+      if (stopping || !current) return;
+      const m = line.match(/^info .*\bdepth (\d+) .*\bscore (cp|mate) (-?\d+)(?! (?:upper|lower)bound)/);
+      if (m && !/ multipv [2-9]/.test(line)) current.last = { type: m[2], value: +m[3], depth: +m[1] };
     };
     worker.postMessage('uci');
+    worker.postMessage('setoption name Hash value 32');
     worker.postMessage('isready');
   } catch (e) { console.warn('engine unavailable', e); worker = null; }
   return worker;
 }
+function pump() {
+  if (!ready || current || stopping || !queued) return;
+  current = queued; queued = null;
+  worker.postMessage('position fen ' + current.fen);
+  worker.postMessage('go depth ' + current.depth);
+}
 
-// Returns { cp } from White's point of view (mate mapped to ±10000) or null.
-export function evaluate(fen, depth = 12) {
+// Returns { cp, mate } from White's point of view (mate mapped to ±10000) or null.
+export function evaluate(fen, depth = 16) {
   const w = ensureWorker();
   if (!w) return Promise.resolve(null);
-  if (pending) { w.postMessage('stop'); pending.resolve(null); pending = null; }
+  if (queued) { queued.resolve(null); queued = null; }
+  if (current) { w.postMessage('stop'); stopping++; current.resolve(null); current = null; }
   return new Promise(resolve => {
     const whiteToMove = fen.split(' ')[1] === 'w';
-    pending = { resolve: r => {
+    queued = { fen, depth, last: null, resolve: r => {
       if (!r) return resolve(null);
       let cp = r.type === 'mate' ? (r.value > 0 ? 10000 : -10000) : r.value;
       if (!whiteToMove) cp = -cp;
       resolve({ cp, mate: r.type === 'mate' ? (whiteToMove ? r.value : -r.value) : null });
-    }, last: null };
-    w.postMessage('position fen ' + fen);
-    w.postMessage('go depth ' + depth);
+    } };
+    pump();
   });
 }
 export function engineReady() { return ready; }

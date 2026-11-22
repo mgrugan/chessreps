@@ -67,7 +67,7 @@ Then open http://localhost:8000.
 
 - Board: [chessground](https://github.com/lichess-org/chessground) (GPL-3.0)
 - Move rules: [chess.js](https://github.com/jhlywa/chess.js) (BSD-2)
-- Engine: [stockfish.js](https://github.com/nmrugg/stockfish.js) (GPL-3.0)
+- Engine: [Stockfish 17.1 lite via stockfish.js](https://github.com/nmrugg/stockfish.js) (GPL-3.0)
 - Pieces: cburnett (GPL-2+) and Staunty by sadsnake1 (CC BY-NC-SA 4.0), both taken from Lichess.
 
 The coach notes were written for this project.
