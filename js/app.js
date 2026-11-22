@@ -47,7 +47,7 @@ const buzz = kind => { if (settings.haptics) haptic(kind); };
 const MODES = [
   { id: 'learn', label: 'Learn', ic: '📖', sub: 'discover new lines', need: 0 },
   { id: 'practice', label: 'Practice', ic: '🎯', sub: 'perfect your lines', need: 1 },
-  { id: 'drill', label: 'Drill', ic: '🔥', sub: 'keep a streak', need: 3 },
+  { id: 'drill', label: 'Drill', ic: '🔥', sub: 'rounds until mastered', need: 3 },
   { id: 'time', label: 'Time', ic: '⏳', sub: '3-minute sprint', need: 3 },
   { id: 'puzzles', label: 'Puzzles', ic: '🧩', sub: 'find the move', need: 2 },
   { id: 'arena', label: 'Arena', ic: '⚔️', sub: 'no help at all', need: 2 },
@@ -130,8 +130,11 @@ function updateEval(fen) {
 
 function updateProgress() {
   const len = lines[S.lineIdx]?.moves.length || 1;
+  const linePct = (S.ply - S.startPly) / Math.max(1, len - S.startPly);
+  const r = prog.drillRound;
   const pct = S.mode === 'time' && S.timer ? Math.max(0, (S.timer.end - Date.now()) / 180000) * 100
-    : Math.max(4, ((S.ply - S.startPly) / Math.max(1, len - S.startPly)) * 100);
+    : S.mode === 'drill' && r ? Math.max(4, ((Object.keys(r.done).length + (S.done ? 0 : linePct)) / r.size) * 100)
+    : Math.max(4, linePct * 100);
   $('#pbar').style.width = pct + '%';
   $('#pbar-desk').style.width = pct + '%';
 }
@@ -188,7 +191,11 @@ function modeState(m) {
   let big = '', small = '';
   if (m.id === 'learn') { big = `${[...tier].filter(isDiscovered).length}/${tier.size}`; small = 'discovered'; }
   else if (m.id === 'practice') { big = `${dueList().length}`; small = `due of ${disc}`; }
-  else if (m.id === 'drill') { big = `×${prog.drillStreak}`; small = `best ×${prog.drillBest}`; }
+  else if (m.id === 'drill') {
+    const r = prog.drillRound;
+    if (r && r.queue.length) { big = `${Object.keys(r.done).length}/${r.size}`; small = 'mastered'; }
+    else { big = `×${prog.drillStreak}`; small = `best ×${prog.drillBest}`; }
+  }
   else if (m.id === 'time') { big = `${prog.timeBest}`; small = 'best'; }
   else if (m.id === 'puzzles') { big = `${Math.round(prog.puzzleRating)}`; small = 'rating'; }
   else if (m.id === 'arena') { big = `${Math.round(prog.arenaRating)}`; small = 'rating'; }
@@ -513,12 +520,7 @@ function finishLine() {
     setPrompt(S.mistakes === 0 ? '✓ Perfect line' : 'Line finished', S.mistakes === 0 ? 'good' : 'info');
     setActions([{ label: 'Next due line →', cls: 'primary', onClick: () => startPractice() }, { label: '↺ Again', onClick: () => startLine(idx) }]);
   } else if (S.mode === 'drill') {
-    if (S.mistakes === 0) { prog.drillStreak++; prog.drillBest = Math.max(prog.drillBest, prog.drillStreak); }
-    save();
-    buzz('done');
-    setPrompt(S.mistakes === 0 ? `🔥 Streak ×${prog.drillStreak}` : 'Streak reset — keep going', S.mistakes === 0 ? 'good' : 'bad');
-    const tok = S.token;
-    setTimeout(() => { if (tok === S.token && S.mode === 'drill') startDrill(); }, 900);
+    finishDrillLine(idx, lastNote);
   } else if (S.mode === 'time') {
     const tok = S.token;
     setTimeout(() => { if (tok === S.token && S.timer?.running) startLine(randomFrom(timePool()), { firstDelay: 150 }); }, 250);
@@ -575,17 +577,86 @@ function startPractice() {
   startLine(idx);
 }
 
-let lastDrill = -1;
+// ---- Drill: Quizlet-Learn-style rounds -------------------------------------------
+// A round holds ~8 of your weakest discovered lines. A clean line is mastered; a missed
+// line comes back two lines later and must then be played clean twice in a row.
+const ROUND_SIZE = 8;
+function lineWeakness(i) {
+  const r = prog.srs[i] || {};
+  const moves = lines[i].moves;
+  let mis = 0;
+  for (let k = 1; k <= moves.length; k++) mis += prog.mistakes[moves.slice(0, k).join(' ')] || 0;
+  const stale = r.last ? Math.min(3, (Date.now() - r.last) / DAY / 3) : 3;
+  const due = (r.due ?? 0) <= Date.now() ? 2 : 0;
+  return (r.lapses || 0) * 3 + Math.min(mis, 8) + stale + due + (r.drillMiss || 0) * 2 + Math.random() * 1.5;
+}
+function newDrillRound() {
+  const disc = discoveredList();
+  const picked = disc.map(i => [i, lineWeakness(i)]).sort((a, b) => b[1] - a[1]).slice(0, ROUND_SIZE).map(x => x[0]);
+  for (let k = picked.length - 1; k > 0; k--) { const j = (Math.random() * (k + 1)) | 0; [picked[k], picked[j]] = [picked[j], picked[k]]; }
+  prog.drillRound = { queue: picked, need: Object.fromEntries(picked.map(i => [i, 1])), done: {}, missed: {}, size: picked.length };
+  save();
+}
+function drillStatus() {
+  const r = prog.drillRound;
+  const done = Object.keys(r.done).length;
+  const retry = r.queue.filter(i => r.need[i] > 1).length;
+  return `${done}/${r.size} mastered${retry ? ` · ${retry} to retry` : ''}`;
+}
 function startDrill() {
   const disc = discoveredList();
   if (!disc.length) return switchMode('learn');
   S.mode = 'drill';
-  let idx = randomFrom(disc);
-  if (disc.length > 1) while (idx === lastDrill) idx = randomFrom(disc);
-  lastDrill = idx;
-  setCoach('Drill', `<p>Random lines, back to back. Every perfect line adds to your streak — one slip resets it. Best: ×${prog.drillBest}.</p>`);
+  if (!prog.drillRound || !prog.drillRound.queue.length || prog.drillRound.queue.some(i => i >= lines.length)) newDrillRound();
+  const r = prog.drillRound;
+  const idx = r.queue[0];
+  const again = r.need[idx] > 1;
+  setCoach(again ? 'Try again' : 'Drill', `<p>${again ? 'You missed this one earlier — play it clean to lock it in.' : 'Play the whole line from memory.'} <b>${drillStatus()}</b></p>`);
   S.lastNote = 'intro';
   startLine(idx, { firstDelay: 200 });
+}
+function finishDrillLine(idx, lastNote) {
+  const r = prog.drillRound;
+  if (!r) return;
+  if (r.queue[0] === idx) r.queue.shift(); else r.queue = r.queue.filter(i => i !== idx);
+  const srs = prog.srs[idx] || (prog.srs[idx] = { due: Date.now(), interval: 0, reps: 0, lapses: 0 });
+  srs.last = Date.now();
+  const clean = S.mistakes === 0;
+  if (clean) {
+    prog.drillStreak++; prog.drillBest = Math.max(prog.drillBest, prog.drillStreak);
+    r.need[idx] = (r.need[idx] || 1) - 1;
+    if (r.need[idx] <= 0) r.done[idx] = true;
+    else r.queue.splice(Math.min(1, r.queue.length), 0, idx); // one more clean rep, after another line
+  } else {
+    prog.drillStreak = 0;
+    r.need[idx] = 2;
+    r.missed[idx] = (r.missed[idx] || 0) + 1;
+    srs.drillMiss = (srs.drillMiss || 0) + 1;
+    srs.interval = 0; srs.due = Math.min(srs.due ?? Infinity, Date.now() + 10 * 60000);
+    r.queue.splice(Math.min(2, r.queue.length), 0, idx); // comes back after two other lines
+  }
+  save(); renderModes(); updateProgress();
+  buzz(clean ? 'done' : 'wrong');
+  if (!r.queue.length) {
+    const missed = Object.keys(r.missed).map(Number);
+    if (settings.confetti) confetti();
+    setCoach('Round complete', `<p>All ${r.size} lines mastered! 🎉</p>` + (missed.length
+      ? `<p>Tricky ones this round:</p><p>${missed.map(i => `• ${esc(lines[i].name || 'Line ' + (i + 1))}${r.missed[i] > 1 ? ` (×${r.missed[i]})` : ''}`).join('<br>')}</p>`
+      : '<p>Not a single miss — perfect round.</p>'));
+    setPrompt(`✓ Round done · streak ×${prog.drillStreak}`, 'good');
+    prog.drillRound = null; save();
+    setActions([{ label: 'Next round →', cls: 'primary', onClick: () => { newDrillRound(); startDrill(); } }]);
+    return;
+  }
+  if (clean) {
+    setPrompt(r.done[idx] ? `✓ Mastered · ${drillStatus()}` : `✓ Clean · once more later · ${drillStatus()}`, 'good');
+    const tok = S.token;
+    setTimeout(() => { if (tok === S.token && S.mode === 'drill') startDrill(); }, 1100);
+  } else {
+    setCoach('Missed', lastNote + `<p>This line will come back in a moment — you'll need to play it clean twice. <b>${drillStatus()}</b></p>`);
+    setPrompt('Line finished with a mistake', 'bad');
+    setActions([{ label: 'Continue →', cls: 'primary', onClick: startDrill }]);
+  }
 }
 
 function timePool() { const d = discoveredList(); return d.length ? d : [...tierLines()]; }
@@ -841,7 +912,7 @@ function openHelp() {
   openSheet('Help', `<div class="help">
     <h4>📖 Learn</h4><p>The coach explains each move and marks it with an arrow; you play it on the board. Finishing a line "discovers" it.</p>
     <h4>🎯 Practice</h4><p>Spaced repetition: play discovered lines from memory. Perfect lines come back after 1, 2.5, 6… days; a mistake brings the line back in 10 minutes.</p>
-    <h4>🔥 Drill</h4><p>Random discovered lines, back to back, counting your perfect-line streak.</p>
+    <h4>🔥 Drill</h4><p>Quizlet-style rounds of ~8 of your weakest lines. Get a line right and it's mastered; miss it and it comes back a couple of lines later and must be played clean twice. Finish the round when every line is mastered. Your progress in a round is saved.</p>
     <h4>⏳ Time</h4><p>A 3-minute sprint — one point per correct move, wrong moves cost 5 seconds.</p>
     <h4>🧩 Puzzles</h4><p>Drop into the middle of a line and find the repertoire move. Your puzzle rating moves like Elo.</p>
     <h4>⚔️ Arena</h4><p>Any line in your training depth, no help at all. Get through the opening perfectly to win rating.</p>
