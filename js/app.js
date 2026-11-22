@@ -194,7 +194,7 @@ function modeState(m) {
   const locked = disc < m.need;
   let big = '', small = '';
   if (m.id === 'learn') { big = `${[...tier].filter(isDiscovered).length}/${tier.size}`; small = 'discovered'; }
-  else if (m.id === 'practice') { big = `${dueList().length}`; small = `due of ${disc}`; }
+  else if (m.id === 'practice') { const rq = (prog.practiceRetry || []).length; big = `${dueList().length}`; small = rq ? `due · ${rq} to retry` : `due of ${disc}`; }
   else if (m.id === 'drill') {
     const r = prog.drillRound;
     if (r && r.queue.length) { big = `${Object.keys(r.done).length}/${r.size}`; small = 'mastered'; }
@@ -518,11 +518,16 @@ function finishLine() {
     const r = prog.srs[idx] || { due: now, interval: 0, reps: 0, lapses: 0 };
     if (S.mistakes === 0) { r.interval = r.interval ? Math.min(180, r.interval * 2.5) : 1; r.reps++; r.due = now + r.interval * DAY; }
     else { r.interval = 0; r.lapses++; r.due = now + 10 * 60000; }
+    r.last = now;
     prog.srs[idx] = r; prog.discovered[idx] = prog.discovered[idx] || now; prog.finishedAny = true;
+    // session retry queue: count lines, not minutes. A miss comes back after 2 other lines.
+    prog.practiceRetry = (prog.practiceRetry || []).filter(x => x.idx !== idx).map(x => ({ ...x, wait: x.wait - 1 }));
+    if (S.mistakes) prog.practiceRetry.push({ idx, wait: 2 });
+    prog.practiceRecent = [idx, ...(prog.practiceRecent || []).filter(i => i !== idx)].slice(0, 4);
     save();
     if (S.mistakes === 0 && settings.confetti) confetti();
     buzz('done');
-    const when = S.mistakes === 0 ? `Perfect! Next review in ${r.interval < 2 ? '1 day' : Math.round(r.interval) + ' days'}.` : `${S.mistakes} mistake${S.mistakes > 1 ? 's' : ''} — you'll see this line again in 10 minutes.`;
+    const when = S.mistakes === 0 ? `Perfect! Next review in ${r.interval < 2 ? '1 day' : Math.round(r.interval) + ' days'}.` : `${S.mistakes} mistake${S.mistakes > 1 ? 's' : ''} — this line comes back after two other lines, until you play it clean.`;
     setCoach('Line complete', lastNote + `<p>${when}</p>`);
     setPrompt(S.mistakes === 0 ? '✓ Perfect line' : 'Line finished', S.mistakes === 0 ? 'good' : 'info');
     setActions([{ label: 'Next due line →', cls: 'primary', onClick: () => startPractice() }, { label: '↺ Again', onClick: () => startLine(idx) }]);
@@ -575,10 +580,21 @@ function startPractice() {
   const disc = discoveredList();
   if (!disc.length) return switchMode('learn');
   S.mode = 'practice'; renderModes();
-  const due = dueList();
+  const retry = (prog.practiceRetry || []).filter(x => x.idx < lines.length);
+  const waiting = new Set(retry.filter(x => x.wait > 0).map(x => x.idx));
+  const ready = retry.filter(x => x.wait <= 0);
+  const recent = new Set((prog.practiceRecent || []).slice(0, Math.max(1, Math.min(4, discoveredList().length - 1))));
   let idx;
-  if (due.length) { due.sort((a, b) => (prog.srs[a]?.due ?? 0) - (prog.srs[b]?.due ?? 0)); idx = due[0]; }
-  else { disc.sort((a, b) => (prog.srs[a]?.due ?? 0) - (prog.srs[b]?.due ?? 0)); idx = disc[0]; toast('All caught up! Here is an extra review.'); }
+  // 1) a missed line whose turn has come  2) lines due by the schedule  3) extra review of weak lines
+  const due = dueList().filter(i => !waiting.has(i) && !recent.has(i));
+  if (ready.length) idx = ready[0].idx;
+  else if (due.length) { due.sort((a, b) => (prog.srs[a]?.due ?? 0) - (prog.srs[b]?.due ?? 0)); idx = due[0]; }
+  else {
+    const pool = disc.filter(i => !waiting.has(i) && !recent.has(i));
+    const pick = pool.length ? pool : disc;
+    idx = pick.map(i => [i, lineWeakness(i)]).sort((a, b) => b[1] - a[1])[0][0];
+    if (!retry.length) toast('All caught up! Extra review of your weakest lines.');
+  }
   setCoach('Practice', `<p>Play the whole line from memory. Perfect lines come back later; mistakes bring them back sooner.</p>`);
   S.lastNote = 'intro';
   startLine(idx);

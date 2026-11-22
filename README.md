@@ -33,7 +33,7 @@ You can also **import your own course** from the home page. It accepts one line 
 ## Training modes
 
 - **Learn**: the coach explains each move, an arrow shows it, and you play it on the board. Finishing a line "discovers" it.
-- **Practice**: spaced repetition. A line you play perfectly comes back after 1, 2.5, 6… days. A mistake brings it back in 10 minutes.
+- **Practice**: spaced repetition. A line you play perfectly comes back after 1, 2.5, 6… days. A mistake brings it back after two other lines, and keeps doing so until you play it clean. With nothing due, Practice reviews your weakest lines without repeating recent ones.
 - **Drill**: Quizlet-Learn-style rounds of ~8 of your weakest lines. A miss sends the line back two lines later, and it must then be played clean twice before the round ends. Rounds are saved.
 - **Time**: a 3-minute sprint. Each correct move scores a point, and each wrong move costs 5 seconds.
 - **Puzzles**: you start in the middle of a line and find the repertoire move. You get an Elo-style rating.
