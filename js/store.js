@@ -15,6 +15,7 @@ export const DEFAULT_SETTINGS = {
   coach: 'auto',        // auto | every | tap
   arrows: 'notes',      // off | notes | always
   evalBar: false,
+  premove: true,
   board: 'default',     // default | lichess | green | blue | darkblue
   pieces: 'staunty',    // cburnett | staunty
   textSize: 'default',  // default | large | xl

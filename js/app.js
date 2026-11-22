@@ -69,7 +69,7 @@ const cg = Chessground($('#board'), {
   animation: { enabled: true, duration: 220 },
   highlight: { lastMove: true, check: true },
   movable: { free: false, color: undefined, showDests: true, events: { after: onUserMove } },
-  premovable: { enabled: false },
+  premovable: { enabled: true, showDests: true, castle: true },
   draggable: { enabled: true, showGhost: true },
   drawable: { enabled: true, visible: true, defaultSnapToValidMove: true },
 });
@@ -90,12 +90,15 @@ function syncBoard(opts = {}) {
   const hist = ch.history({ verbose: true });
   const last = hist[hist.length - 1];
   const ourTurn = ch.turn() === OUR && !S.done && S.view === null && opts.movable !== false;
+  // while the opponent is "thinking", let the student queue a premove
+  const canPremove = settings.premove && ch.turn() !== OUR && !S.done && S.view === null;
   cg.set({
     fen: ch.fen(),
     turnColor: ch.turn() === 'w' ? 'white' : 'black',
     lastMove: last ? [last.from, last.to] : undefined,
     check: ch.inCheck() ? (ch.turn() === 'w' ? 'white' : 'black') : false,
-    movable: { color: ourTurn ? course.color : undefined, dests: ourTurn ? dests(ch) : new Map() },
+    movable: { color: ourTurn || canPremove ? course.color : undefined, dests: ourTurn ? dests(ch) : new Map() },
+    premovable: { enabled: !!settings.premove },
   });
   cg.setAutoShapes(opts.shapes || []);
   updateEval(ch.fen());
@@ -339,9 +342,12 @@ function advance(delay = 450) {
     setTimeout(() => {
       if (token !== S.token) return;
       if (S.view !== null) { S.view = null; }
+      const pm = cg.state.premovable.current; // [orig, dest] queued during the opponent's turn
+      cg.cancelPremove();
       playMove(moves[S.ply]);
       afterOpponentMove();
       advance(450);
+      if (pm && settings.premove && !S.done && S.chess.turn() === OUR) onUserMove(pm[0], pm[1]);
     }, delay);
     return;
   }
@@ -865,6 +871,7 @@ function openSettings() {
     <div class="group-h"><b>Feel</b><span>Every course</span></div>
     <div class="group">
       <div class="gi"><div class="lbl">Haptics ${switchHtml('haptics', settings.haptics)}</div><div class="desc" style="margin-top:-4px">A light buzz for moves, mistakes and finished lines. No sounds, ever.</div></div>
+      <div class="gi"><div class="lbl">Premoves ${switchHtml('premove', settings.premove)}</div><div class="desc" style="margin-top:-4px">Queue your next move while the opponent is moving. A wrong premove counts as a mistake.</div></div>
       <div class="gi"><div class="lbl">Confetti ${switchHtml('confetti', settings.confetti)}</div><div class="desc" style="margin-top:-4px">Plays when you finish a line.</div></div>
     </div>
 
