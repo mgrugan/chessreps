@@ -1,0 +1,31 @@
+export default {
+  lineNames: {},
+  notes: {
+    "e4 d5 exd5 Qxd5 Nc3 Qe5+ Be2 Bg4 d4 Qa5": "5...Qa5?? looks like the standard retreat, since a5 is the queen's usual home in the Scandinavian. But the queen was the only thing guarding the bishop on g4, which is attacked by our bishop on e2 and queen on d1, so 5...Bxe2 had to come first.",
+    "e4 d5 exd5 Qxd5 Nc3 Qe5+ Be2 Bg4 d4 Qa5 Bxg4": "6.Bxg4 simply picks up a whole piece. Nothing can recapture on g4, and Black has no checks or tricks to win it back.",
+    "e4 d5 exd5 Qxd5 Nc3 Qd6 d4 g6 Nb5 Qd8": "5...Qd8 is a reasonable retreat that dodges the knight, but our knight stays on b5 eyeing c7. From here Black has to watch the c7 square on every single move.",
+    "e4 d5 exd5 Qxd5 Nc3 Qd6 d4 g6 Nb5 Qd8 Bf4": "6.Bf4 adds a second attacker to c7, so Nxc7+ is now a real threat. Black has to defend with a move like 6...Na6, and the natural fianchetto 6...Bg7?? walks straight into the fork.",
+    "e4 d5 exd5 Qxd5 Nc3 Qd6 d4 g6 Nb5 Qd8 Bf4 Bg7 Nxc7+": "7.Nxc7+ forks the king and the a8 rook. Taking with 7...Qxc7 loses the queen to 8.Bxc7, so Black has to move the king.",
+    "e4 d5 exd5 Qxd5 Nc3 Qd6 d4 g6 Nb5 Qd8 Bf4 Bg7 Nxc7+ Kf8 Nxa8": "8.Nxa8 wins a full rook. The knight may get stuck in the corner later, but even if Black rounds it up, White comes out the exchange and a pawn ahead.",
+    "e4 d5 exd5 Qxd5 Nc3 Qd6 d4 Nf6 Nf3 Bg4 h3 Bxf3 Qxf3 Qxd4": "7...Qxd4?? grabs a central pawn that looks free now that our knight has gone. But taking on f3 opened the long diagonal for our queen, which now looks straight down at b7 and the rook on a8.",
+    "e4 d5 exd5 Qxd5 Nc3 Qd6 d4 Nf6 Nf3 Bg4 h3 Bxf3 Qxf3 Qxd4 Qxb7": "8.Qxb7 hits the rook on a8, and Black cannot save it without giving up even more. Black's queen on d4 is also about to be kicked with tempo.",
+    "e4 d5 exd5 Qxd5 Nc3 Qd6 d4 Nf6 Nf3 Bg4 h3 Bxf3 Qxf3 Qxd4 Qxb7 c6 Be3": "9.Be3 develops with tempo on the queen, so Black has no time to rescue the rook. After the queen moves, the a8 rook falls.",
+    "e4 d5 exd5 Qxd5 Nc3 Qd6 d4 Nf6 Nf3 Bg4 h3 Bxf3 Qxf3 Qxd4 Qxb7 c6 Be3 Qd8 Qxa8": "10.Qxa8 leaves White a full rook up for a pawn. Black's queenside is in ruins and Black still has no development to show for it.",
+    "e4 d5 exd5 Qxd5 Nc3 Qd6 d4 Nf6 Nf3 Nc6 Nb5 Qb4+": "6...Qb4+ looks active: it gives check and points at the b2 pawn. But the queen runs out of safe squares on the queenside, and it leaves c7 covered by nothing except the king.",
+    "e4 d5 exd5 Qxd5 Nc3 Qd6 d4 Nf6 Nf3 Nc6 Nb5 Qb4+ Bd2": "7.Bd2 blocks the check and hits the queen again. It also quietly offers the b2 pawn as bait.",
+    "e4 d5 exd5 Qxd5 Nc3 Qd6 d4 Nf6 Nf3 Nc6 Nb5 Qb4+ Bd2 Qxb2 Nxc7+": "8.Nxc7+ is the point. The queen went pawn-hunting, so nothing defends c7, and the knight forks the king and the a8 rook.",
+    "e4 d5 exd5 Qxd5 Nc3 Qd6 d4 Nf6 Nf3 Nc6 Nb5 Qb4+ Bd2 Qxb2 Nxc7+ Kd8 Nxa8": "9.Nxa8 wins a full rook for a pawn. Our a1 rook is still protected by the queen on d1, so Black has no compensation.",
+    "e4 d5 exd5 Qxd5 Nc3 Qd6 d4 Nc6 d5 Ne5 Bf4 Qb4": "6...Qb4? looks clever because it hits both our bishop on f4 and the b2 pawn. The trouble is that the queen no longer defends the knight on e5, which our bishop is already attacking.",
+    "e4 d5 exd5 Qxd5 Nc3 Qd6 d4 Nc6 d5 Ne5 Bf4 Qb4 Bxe5": "7.Bxe5 takes the undefended knight and moves our bishop out of the queen's attack at the same time. White is simply a piece up.",
+    "e4 d5 exd5 Qxd5 Nc3 Qd6 d4 Nc6 d5 Ne5 Bf4 Qb4 Bxe5 Qxb2 Rb1": "8.Rb1 kicks the queen. ...Qxc3+ fails because the bishop on e5 guards c3, so the queen has to retreat and we keep gaining time.",
+    "e4 d5 exd5 Qxd5 Nc3 Qd6 d4 Nc6 d5 Ne5 Bf4 Qb4 Bxe5 Qxb2 Rb1 Qa3 Nb5": "9.Nb5 chases the queen again and eyes c7. White is a piece up with fast development, and Black's queen is a target on the edge.",
+    "e4 d5 exd5 Qxd5 Nc3 Qd6 d4 Nf6 Nf3 c6 Ne5 Nbd7 Nc4 Qb4": "7...Qb4? looks active because it attacks the knight on c4 and the b2 pawn. But b4 is a dead end. One pawn move takes away every escape square.",
+    "e4 d5 exd5 Qxd5 Nc3 Qd6 d4 Nf6 Nf3 c6 Ne5 Nbd7 Nc4 Qb4 a3": "8.a3 traps the queen. Our knights, the c2 and d4 pawns and the bishops cover every square it could run to, so Black has to give it up.",
+    "e4 d5 exd5 Qxd5 Nc3 Qd6 d4 Nf6 Nf3 c6 Ne5 Nbd7 Nc4 Qb4 a3 Qxc3+ bxc3": "9.bxc3 leaves White with a queen for a knight. The doubled c-pawns hardly matter next to that.",
+    "e4 d5 exd5 Qxd5 Nc3 Qd6 d4 Nf6 Nf3 a6 g3 Bg4 Bg2 Nc6 O-O O-O-O h3 Bh5 Bf4 Nxd4": "10...Nxd4?? is a familiar idea, because the rook on d8 seems to make the d4 pawn win cleanly after 11.Nxd4 Qxd4. But Black has forgotten that 10.Bf4 attacked the queen on d6, so we do not have to recapture at all.",
+    "e4 d5 exd5 Qxd5 Nc3 Qd6 d4 Nf6 Nf3 a6 g3 Bg4 Bg2 Nc6 O-O O-O-O h3 Bh5 Bf4 Nxd4 Bxd6": "11.Bxd6 just takes the queen. Black's 11...Nxf3+ and ...Rxd6 win back a knight and a bishop, but that is nowhere near enough.",
+    "e4 d5 exd5 Qxd5 Nc3 Qd6 d4 Nf6 Nf3 a6 g3 Bg4 Bg2 Nc6 O-O O-O-O h3 Bh5 Bf4 Nxd4 Bxd6 Nxf3+ Bxf3": "12.Bxf3 recaptures and also attacks the bishop on h5. After 12...Rxd6, White has a queen for a minor piece and is easily winning.",
+    "e4 d5 exd5 Nf6 d4 Nxd5 Nf3 Bf5 Bd3 Nc6": "5...Nc6?? looks like normal development, but our 5.Bd3 attacked the bishop on f5, and nothing defends it. Black needed 5...Bxd3, 5...e6 or a retreat first.",
+    "e4 d5 exd5 Nf6 d4 Nxd5 Nf3 Bf5 Bd3 Nc6 Bxf5": "6.Bxf5 wins a clean piece, and Black has no way to win it back. When the opponent offers a bishop trade, first check whether your own bishop is defended."
+  }
+};

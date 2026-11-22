@@ -18,6 +18,9 @@ const COURSES = [
     tiers: [['Essentials', 16, 'Most players start here'], ['Full Mastery', 30, 'Every line in the course']] },
   { id: 'kan', file: 'kan.txt', title: 'Sicilian Kan', color: 'black',
     tiers: [['Essentials', 25, 'Most players start here'], ['Full Mastery', 52, 'Every line in the course']] },
+  // generated with tools/generate-course.mjs from the Lichess masters explorer + Stockfish
+  { id: 'caro-counter', file: 'caro-counter.txt', title: 'Counter the Caro-Kann', color: 'white',
+    tiers: [['Essentials', 12, 'Most players start here'], ['Full Mastery', 27, 'Every line in the course']] },
 ];
 
 export function parsePgnMoves(pgn) {

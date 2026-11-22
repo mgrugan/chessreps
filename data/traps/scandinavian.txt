@@ -1,0 +1,8 @@
+Trap: 5...Qa5?? forgets the g4 bishop|1. e4 d5 2. exd5 Qxd5 3. Nc3 Qe5+ 4. Be2 Bg4 5. d4 Qa5 6. Bxg4
+Trap: 4...g6 5.Nb5 Qd8: 6...Bg7?? Nxc7+|1. e4 d5 2. exd5 Qxd5 3. Nc3 Qd6 4. d4 g6 5. Nb5 Qd8 6. Bf4 Bg7 7. Nxc7+ Kf8 8. Nxa8
+Trap: 7...Qxd4?? and Qxb7 wins the rook|1. e4 d5 2. exd5 Qxd5 3. Nc3 Qd6 4. d4 Nf6 5. Nf3 Bg4 6. h3 Bxf3 7. Qxf3 Qxd4 8. Qxb7 c6 9. Be3 Qd8 10. Qxa8
+Trap: 6...Qb4+ and ...Qxb2?? greed|1. e4 d5 2. exd5 Qxd5 3. Nc3 Qd6 4. d4 Nf6 5. Nf3 Nc6 6. Nb5 Qb4+ 7. Bd2 Qxb2 8. Nxc7+ Kd8 9. Nxa8
+Trap: 6...Qb4? Bxe5 and the b-file|1. e4 d5 2. exd5 Qxd5 3. Nc3 Qd6 4. d4 Nc6 5. d5 Ne5 6. Bf4 Qb4 7. Bxe5 Qxb2 8. Rb1 Qa3 9. Nb5
+Trap: 7...Qb4? queen trapped by a3|1. e4 d5 2. exd5 Qxd5 3. Nc3 Qd6 4. d4 Nf6 5. Nf3 c6 6. Ne5 Nbd7 7. Nc4 Qb4 8. a3 Qxc3+ 9. bxc3
+Trap: 10...Nxd4?? ignores the attacked queen|1. e4 d5 2. exd5 Qxd5 3. Nc3 Qd6 4. d4 Nf6 5. Nf3 a6 6. g3 Bg4 7. Bg2 Nc6 8. O-O O-O-O 9. h3 Bh5 10. Bf4 Nxd4 11. Bxd6 Nxf3+ 12. Bxf3 Rxd6
+Trap: 5...Nc6?? leaves the f5 bishop hanging|1. e4 d5 2. exd5 Nf6 3. d4 Nxd5 4. Nf3 Bf5 5. Bd3 Nc6 6. Bxf5

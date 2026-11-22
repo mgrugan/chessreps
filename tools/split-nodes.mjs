@@ -10,6 +10,7 @@ const parts = {
   'french': ['french', () => true],
   'okelly': ['okelly', () => true],
   'kan': ['kan', () => true],
+  'caro-counter': ['caro-counter', () => true],
 };
 const assigned = new Set();
 for (const [part, [cid, pred]] of Object.entries(parts)) {

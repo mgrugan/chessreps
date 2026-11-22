@@ -122,8 +122,8 @@ async function ourMove(uci) {
 async function walk(uci, reach) {
   const ply = uci.length;
   if ((ply % 2) === OURS) {
-    if (ply >= MAXPLY) { lines.push(uci); return; }
     const mv = await ourMove(uci);
+    if (ply >= MAXPLY) { lines.push([...uci, mv.uci]); return; }
     log(`${'  '.repeat(ply / 2)}${sanLine([...uci, mv.uci]).slice(-1)[0]}  (${mv.why})`);
     return walk([...uci, mv.uci], reach);
   }

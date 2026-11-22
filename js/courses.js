@@ -38,6 +38,11 @@ export const MASTERS = [
     blurb: '1.e4 c5 with ...e6 and ...a6 — a flexible, low-maintenance Sicilian for Black, plus answers to the Alapin, Smith-Morra, Grand Prix and other sidelines.',
     fallbackIntro: 'We meet 1.e4 with the Sicilian and aim for the Kan setup with ...e6 and ...a6, keeping our pieces flexible and our pawn structure sound.',
   },
+  {
+    id: 'caro-counter', title: 'Counter the Caro-Kann', color: 'white', noteParts: ['caro-counter'],
+    blurb: '1.e4 c6 2.d4 d5 3.e5 — the Advance Variation with Nf3 and Be2: grab space and squeeze. Built from master games and checked by Stockfish.',
+    fallbackIntro: 'Against the Caro-Kann we play the Advance Variation, gaining space with 3.e5 and developing calmly with Nf3, Be2 and castling.',
+  },
 ];
 
 export function listCourses() {

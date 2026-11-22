@@ -1,0 +1,30 @@
+export default {
+  lineNames: {},
+  notes: {
+    "e4 e5 Nf3 Nc6 Bc4 d6 d4 Bg4 h3 Bxf3 Qxf3 exd4": "Taking the d4 pawn looks like the obvious follow-up after 5...Bxf3, but Black has forgotten that the bishop trade put our queen on f3, aiming at f7 together with the Bc4. With the f7 pawn defended only by the king, 6...exd4?? (and 6...Nxd4?? too) allows instant mate.",
+    "e4 e5 Nf3 Nc6 Bc4 d6 d4 Bg4 h3 Bxf3 Qxf3 exd4 Qxf7#": "7.Qxf7# is mate: the queen is protected by the Bc4, the king cannot take it, and e7, d7 and f8 are all covered or blocked by Black's own pieces.",
+    "e4 e5 Nf3 Nc6 Bc4 Nf6 Ng5 d5 exd5 Nxd5 Nxf7 Kxf7 Qf3+ Kg8": "Tucking the king away on g8 feels safer than marching it to e6, but it leaves the Nd5 with no king to defend it and walks onto the a2-g8 diagonal of our Bc4. 7...Kg8?? loses by force.",
+    "e4 e5 Nf3 Nc6 Bc4 Nf6 Ng5 d5 exd5 Nxd5 Nxf7 Kxf7 Qf3+ Kg8 Bxd5+": "8.Bxd5+ takes the knight with check along the diagonal to g8. If Black blocks with 8...Be6, then 9.Bxe6# is already mate, so Black has to give up the queen.",
+    "e4 e5 Nf3 Nc6 Bc4 Nf6 Ng5 d5 exd5 Nxd5 Nxf7 Kxf7 Qf3+ Kg8 Bxd5+ Qxd5 Qxd5+": "9.Qxd5+ takes the queen and keeps checking; the only way to block is 9...Be6, which does not help.",
+    "e4 e5 Nf3 Nc6 Bc4 Nf6 Ng5 d5 exd5 Nxd5 Nxf7 Kxf7 Qf3+ Kg8 Bxd5+ Qxd5 Qxd5+ Be6 Qxe6#": "10.Qxe6# is mate: the queen covers f7, the king on g8 is boxed in by its own Bf8, Rh8 and kingside pawns, and nothing can recapture on e6.",
+    "e4 e5 Nf3 Nc6 Bc4 Nf6 Ng5 Bc5 Bxf7+ Ke7 Bc4 h6": "Kicking the annoying Ng5 with 6...h6 is a very natural reflex, but with the king on e7 the knight simply jumps forward. 6...h6? lets the knight fork queen and rook.",
+    "e4 e5 Nf3 Nc6 Bc4 Nf6 Ng5 Bc5 Bxf7+ Ke7 Bc4 h6 Nf7": "7.Nf7 forks the Qd8 and the Rh8. The queen has to move, and the rook on h8 is lost.",
+    "e4 e5 Nf3 Nc6 Bc4 Nf6 Ng5 Bc5 Bxf7+ Ke7 Bc4 h6 Nf7 Qe8 Nxh8": "8.Nxh8 collects the rook, so we have won a rook and a pawn. Even if the Nh8 is rounded up later, we stay clearly ahead, and Black's king is still stuck in the centre.",
+    "e4 e5 Nf3 Nc6 Bc4 Nf6 Ng5 d5 exd5 Na5 Bb5+ c6 dxc6 bxc6 Qf3 cxb5 Qxa8 Bb7": "Hitting our queen in the corner with 9...Bb7 looks like it might trap it, but it removes the bishop from c8 and forgets that our Ng5 is still eyeing f7. 9...Bb7? lets us cash in with a queen trade and a fork.",
+    "e4 e5 Nf3 Nc6 Bc4 Nf6 Ng5 d5 exd5 Na5 Bb5+ c6 dxc6 bxc6 Qf3 cxb5 Qxa8 Bb7 Qxd8+": "10.Qxd8+ gives the queen back for Black's queen before it can be trapped, and the recapture 10...Kxd8 puts the king on a forking square.",
+    "e4 e5 Nf3 Nc6 Bc4 Nf6 Ng5 d5 exd5 Na5 Bb5+ c6 dxc6 bxc6 Qf3 cxb5 Qxa8 Bb7 Qxd8+ Kxd8 Nxf7+": "11.Nxf7+ forks the Kd8 and the Rh8, so the Rh8 falls next. We end up with a big material lead in a queenless position, which is easily winning.",
+    "e4 e5 Nf3 Nc6 Bc4 Bc5 c3 Nf6 d4 exd4 cxd4 Bb6 e5 Nd5": "Jumping to d5 is the standard answer to e5 in many open games, but here our Bc4 is already looking at d5 and the d7 pawn blocks the queen from defending it. 7...Nd5?? just drops a piece.",
+    "e4 e5 Nf3 Nc6 Bc4 Bc5 c3 Nf6 d4 exd4 cxd4 Bb6 e5 Nd5 Bxd5": "8.Bxd5 wins a clean knight, because nothing defends d5. We are a piece up with a big centre.",
+    "e4 e5 Nf3 Nc6 Bc4 Bc5 c3 Nf6 d4 exd4 cxd4 Bb4+ Nbd2 Nxe4 d5 Nxd2 Bxd2 Bxd2+ Qxd2 Ne5": "Black has to move the Nc6 away from our d5 pawn, and e5 looks like a fine central square. But with the d-pawn still on d7, 10...Ne5?? leaves the knight completely undefended right in front of our Nf3.",
+    "e4 e5 Nf3 Nc6 Bc4 Bc5 c3 Nf6 d4 exd4 cxd4 Bb4+ Nbd2 Nxe4 d5 Nxd2 Bxd2 Bxd2+ Qxd2 Ne5 Nxe5": "11.Nxe5 wins the knight for free. We are a piece up, and Black is also behind in development.",
+    "e4 e5 Nf3 Nc6 Bc4 Be7 d4 exd4 Nxd4 Nf6 Nxc6 bxc6 e5 Ng4": "After 7.e5 the knight has to move, and 7...Ng4 looks active because it attacks e5 and f2. But the d7 pawn blocks the Bc8, so nothing defends g4, and our queen sees it straight down the d1-h5 diagonal.",
+    "e4 e5 Nf3 Nc6 Bc4 Be7 d4 exd4 Nxd4 Nf6 Nxc6 bxc6 e5 Ng4 Qxg4": "8.Qxg4 takes the knight for free and also points at g7. We are a whole piece up.",
+    "e4 e5 Nf3 Nc6 Bc4 Nd4 Nxd4 exd4 O-O Nf6 Re1 Nxe4": "Grabbing the e4 pawn looks safe because Black's d-pawn has gone to d4, but the e-file is now open. With the Bf8 and king still at home, 6...Nxe4? leaves the knight hanging to our rook, and it comes with check.",
+    "e4 e5 Nf3 Nc6 Bc4 Nd4 Nxd4 exd4 O-O Nf6 Re1 Nxe4 Rxe4+": "7.Rxe4+ wins the knight with check, so Black gets only one pawn for a whole piece.",
+    "e4 e5 Nf3 Nc6 Bc4 f5 d4 fxe4 Nxe5 Nxd4": "Taking the d4 pawn looks greedy but logical, since the Nd4 also covers some squares. But with the f-file open, our Bc4 and Ne5 are aimed straight at f7, and 5...Nxd4? walks into a check that drags the king forward.",
+    "e4 e5 Nf3 Nc6 Bc4 f5 d4 fxe4 Nxe5 Nxd4 Bf7+": "6.Bf7+ is protected by the Ne5, and the d7 pawn takes away d7, so 6...Ke7 is forced. Now the king is standing on the line between g5 and d8.",
+    "e4 e5 Nf3 Nc6 Bc4 f5 d4 fxe4 Nxe5 Nxd4 Bf7+ Ke7 Bxg8": "7.Bxg8 removes the Ng8, the only piece that could later block a check on the f6 square. After the recapture, the bishop check on g5 cannot be blocked.",
+    "e4 e5 Nf3 Nc6 Bc4 f5 d4 fxe4 Nxe5 Nxd4 Bf7+ Ke7 Bxg8 Rxg8 Bg5+": "8.Bg5+ checks along the diagonal toward the Qd8. Nothing can block on f6, so the king has to step aside and the queen falls.",
+    "e4 e5 Nf3 Nc6 Bc4 f5 d4 fxe4 Nxe5 Nxd4 Bf7+ Ke7 Bxg8 Rxg8 Bg5+ Ke8 Bxd8": "9.Bxd8 wins the queen; even after 9...Kxd8 we have given only a bishop for it, a completely winning material edge."
+  }
+};
