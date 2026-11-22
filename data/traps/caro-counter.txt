@@ -1,0 +1,8 @@
+Trap: 7...Nd7? drops d5 after Nxf5|1. e4 c6 2. d4 d5 3. e5 Bf5 4. Nf3 e6 5. Be2 c5 6. Be3 cxd4 7. Nxd4 Nd7 8. Nxf5 exf5 9. Qxd5
+Trap: 7...g6? and g4 cages the f5 bishop|1. e4 c6 2. d4 d5 3. e5 Bf5 4. Nf3 e6 5. Be2 c5 6. Be3 cxd4 7. Nxd4 g6 8. g4 Be4 9. f3
+Trap: 8...Be7? and g4, f3 trap the bishop|1. e4 c6 2. d4 d5 3. e5 Bf5 4. Nf3 e6 5. Be2 Ne7 6. O-O Ng6 7. Be3 Nd7 8. Ne1 Be7 9. g4 Be4 10. f3
+Trap: ...Qxb2 then 10...a6?? Nxd5|1. e4 c6 2. d4 d5 3. e5 Bf5 4. Nf3 e6 5. Be2 c5 6. Be3 Qb6 7. Nc3 Nc6 8. O-O Qxb2 9. Qe1 cxd4 10. Bxd4 a6 11. Nxd5 Qxa1 12. Nc7+ Kd7 13. Qxa1
+Trap: ...Qxb2 then 10...Nge7? Nb5|1. e4 c6 2. d4 d5 3. e5 Bf5 4. Nf3 e6 5. Be2 c5 6. Be3 Qb6 7. Nc3 Nc6 8. O-O Qxb2 9. Qe1 cxd4 10. Bxd4 Nge7 11. Nb5 Qxc2 12. Rc1 Qa4 13. Nd6+
+Trap: ...Qxb2 then 11...Be7? Rb1 and Rxb7|1. e4 c6 2. d4 d5 3. e5 Bf5 4. Nf3 e6 5. Be2 c5 6. Be3 Qb6 7. Nc3 Nc6 8. O-O Qxb2 9. Qe1 cxd4 10. Bxd4 Nxd4 11. Nxd4 Be7 12. Rb1 Qa3 13. Rxb7
+Trap: 10...Nxe5? and Nb5 hits the queen|1. e4 c6 2. d4 d5 3. e5 Bf5 4. Nf3 e6 5. Be2 Ne7 6. O-O c5 7. c4 Nbc6 8. dxc5 d4 9. Qb3 Qc7 10. Na3 Nxe5 11. Nb5
+Trap: 3...c5 4.dxc5: 10...Bxc5?? Bxc5|1. e4 c6 2. d4 d5 3. e5 c5 4. dxc5 Nc6 5. Bb5 e6 6. Be3 Ne7 7. c3 Bd7 8. Bxc6 Bxc6 9. Nf3 Nf5 10. Bd4 Bxc5 11. Bxc5
