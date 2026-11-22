@@ -140,7 +140,9 @@ function noteHtml(lineIdx, plyIdx) {
   const san = lines[lineIdx].moves[plyIdx];
   const text = n.auto ? n.text.replace(/^\S+\s/, '') : n.text;
   const body = esc(text.charAt(0).toUpperCase() + text.slice(1)).replace(/(\d+\.(?:\.\.)?\s?[KQRBNO][^\s,.;:)]*|\d+\.(?:\.\.)?\s?[a-h][x1-8][^\s,.;:)]*)/g, '<span class="move-ref">$1</span>');
-  return `<p><span class="move-ref">${esc(moveLabel(plyIdx, san))}</span> — ${body}</p>`;
+  const label = moveLabel(plyIdx, san);
+  if (text.replace(/\.\s+/, '.').startsWith(label)) return `<p>${body}</p>`;
+  return `<p><span class="move-ref">${esc(label)}</span> — ${body}</p>`;
 }
 function setPrompt(text, cls = '') { const p = $('#prompt'); p.className = 'prompt ' + cls; p.innerHTML = text; }
 function setActions(btns) {
