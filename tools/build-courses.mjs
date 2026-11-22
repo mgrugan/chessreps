@@ -21,6 +21,8 @@ const COURSES = [
   // generated with tools/generate-course.mjs from the Lichess masters explorer + Stockfish
   { id: 'caro-counter', file: 'caro-counter.txt', title: 'Counter the Caro-Kann', color: 'white',
     tiers: [['Essentials', 12, 'Most players start here'], ['Full Mastery', 27, 'Every line in the course']] },
+  { id: 'open-sicilian', file: 'open-sicilian.txt', title: 'Counter the Sicilian: Open', color: 'white',
+    tiers: [['Essentials', 12, 'Most players start here'], ['Full Mastery', 28, 'Every line in the course']] },
 ];
 
 export function parsePgnMoves(pgn) {

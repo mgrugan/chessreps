@@ -43,6 +43,11 @@ export const MASTERS = [
     blurb: '1.e4 c6 2.d4 d5 3.e5 — the Advance Variation with Nf3 and Be2: grab space and squeeze. Built from master games and checked by Stockfish.',
     fallbackIntro: 'Against the Caro-Kann we play the Advance Variation, gaining space with 3.e5 and developing calmly with Nf3, Be2 and castling.',
   },
+  {
+    id: 'open-sicilian', title: 'Counter the Sicilian: Open', color: 'white', noteParts: ['open-sicilian'],
+    blurb: '1.e4 c5 2.Nf3 and 3.d4 — English Attack vs the Najdorf, Rauzer vs the Classical, Yugoslav vs the Dragon and more. Built from master games and checked by Stockfish.',
+    fallbackIntro: 'We meet the Sicilian head-on with 2.Nf3 and 3.d4, opening the centre and fighting for the initiative with active piece play and, often, opposite-side castling.',
+  },
 ];
 
 export function listCourses() {

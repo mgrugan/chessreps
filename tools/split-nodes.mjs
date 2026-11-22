@@ -11,6 +11,7 @@ const parts = {
   'okelly': ['okelly', () => true],
   'kan': ['kan', () => true],
   'caro-counter': ['caro-counter', () => true],
+  'open-sicilian': ['open-sicilian', () => true],
 };
 const assigned = new Set();
 for (const [part, [cid, pred]] of Object.entries(parts)) {
