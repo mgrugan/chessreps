@@ -32,6 +32,14 @@ const CACHE_FILE = 'tools/.explorer-cache.json';
 const cache = fs.existsSync(CACHE_FILE) ? JSON.parse(fs.readFileSync(CACHE_FILE, 'utf8')) : {};
 let lastReq = 0;
 const sleep = ms => new Promise(r => setTimeout(r, ms));
+// the explorer writes castling as king-takes-rook (e1h1); convert to standard UCI (e1g1)
+function normalizeCastling(j) {
+  for (const m of j.moves || []) {
+    if (m.san === 'O-O') m.uci = m.uci.slice(0, 2) + 'g' + m.uci[1];
+    else if (m.san === 'O-O-O') m.uci = m.uci.slice(0, 2) + 'c' + m.uci[1];
+  }
+  return j;
+}
 const EMPTY = { white: 0, draws: 0, black: 0, moves: [] };
 async function explorer(db, uciMoves) {
   if (db === 'lichess' && !CLUB) return EMPTY;
@@ -39,7 +47,7 @@ async function explorer(db, uciMoves) {
   const url = db === 'masters'
     ? `https://explorer.lichess.ovh/masters?play=${play}&moves=15&topGames=0`
     : `https://explorer.lichess.ovh/lichess?variant=standard&speeds=blitz,rapid,classical&ratings=${RATINGS}&play=${play}&moves=15&topGames=0&recentGames=0`;
-  if (cache[url]) return cache[url];
+  if (cache[url]) return normalizeCastling(cache[url]);
   for (let attempt = 0; attempt < 6; attempt++) {
     const wait = lastReq + 1100 - Date.now();
     if (wait > 0) await sleep(wait);
@@ -51,6 +59,7 @@ async function explorer(db, uciMoves) {
     if (res.status === 401) { console.error('401: this database needs a Lichess token'); return EMPTY; }
     if (!res.ok) { console.error('HTTP', res.status, url); await sleep(3000); continue; }
     const j = await res.json();
+    normalizeCastling(j);
     cache[url] = j;
     fs.writeFileSync(CACHE_FILE, JSON.stringify(cache));
     return j;
