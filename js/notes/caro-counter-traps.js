@@ -1,0 +1,30 @@
+export default {
+  lineNames: {},
+  notes: {
+    "e4 c6 d4 d5 e5 Bf5 Nf3 e6 Be2 c5 Be3 cxd4 Nxd4 Nd7": "7...Nd7?, the most natural developing move, overlooks that the f5 bishop is the only piece keeping d5 safe from a white capture. Once it is exchanged and Black recaptures with the e-pawn, d5 has no pawn defender left.",
+    "e4 c6 d4 d5 e5 Bf5 Nf3 e6 Be2 c5 Be3 cxd4 Nxd4 Nd7 Nxf5": "8.Nxf5 takes the bishop. Black must recapture with 8...exf5, because otherwise he is simply a piece down, and that removes the e6 pawn from the defence of d5.",
+    "e4 c6 d4 d5 e5 Bf5 Nf3 e6 Be2 c5 Be3 cxd4 Nxd4 Nd7 Nxf5 exf5 Qxd5": "9.Qxd5 wins a clean central pawn. Black has no compensation: his structure is broken, the f5 pawn is weak, and our queen is dominant in the centre.",
+    "e4 c6 d4 d5 e5 Bf5 Nf3 e6 Be2 c5 Be3 cxd4 Nxd4 g6": "7...g6? looks like a sensible way to prepare ...Bg7 and keep the bishop on f5, but it takes away the bishop's retreat square. Now g4 attacks it, and after ...Be4, f3 leaves it with nowhere to go.",
+    "e4 c6 d4 d5 e5 Bf5 Nf3 e6 Be2 c5 Be3 cxd4 Nxd4 g6 g4": "8.g4 hits the bishop. It cannot go back to g6, and ...Bxg4 loses a piece to Bxg4, so 8...Be4 is the only try.",
+    "e4 c6 d4 d5 e5 Bf5 Nf3 e6 Be2 c5 Be3 cxd4 Nxd4 g6 g4 Be4 f3": "9.f3 traps the bishop in the middle of our position. Black can get only a pawn or two for it, for example with ...Bxc2 Qxc2 or ...Bh6, and White is a piece up for very little.",
+    "e4 c6 d4 d5 e5 Bf5 Nf3 e6 Be2 Ne7 O-O Ng6 Be3 Nd7 Ne1 Be7": "8...Be7? is ordinary development, but with our knight off f3 the g-pawn is free and the f5 bishop has no safe retreat: g6 is blocked by the knight and e4 is a dead end once f3 comes.",
+    "e4 c6 d4 d5 e5 Bf5 Nf3 e6 Be2 Ne7 O-O Ng6 Be3 Nd7 Ne1 Be7 g4": "9.g4 attacks the bishop. Taking on g4 loses a piece to Bxg4, so Black has to go to e4.",
+    "e4 c6 d4 d5 e5 Bf5 Nf3 e6 Be2 Ne7 O-O Ng6 Be3 Nd7 Ne1 Be7 g4 Be4 f3": "10.f3 completes the trap. The bishop on e4 has no squares, and Black can only get a couple of pawns for it, for example 10...c5 11.fxe4 cxd4. That is why in the course Black plays 8...h5 first.",
+    "e4 c6 d4 d5 e5 Bf5 Nf3 e6 Be2 c5 Be3 Qb6 Nc3 Nc6 O-O Qxb2 Qe1 cxd4 Bxd4 a6": "10...a6? is a natural way to stop Nb5, but it gives us a different jump: Nxd5 unmasks the d4 bishop against the b2 queen and heads for c7 at the same time.",
+    "e4 c6 d4 d5 e5 Bf5 Nf3 e6 Be2 c5 Be3 Qb6 Nc3 Nc6 O-O Qxb2 Qe1 cxd4 Bxd4 a6 Nxd5": "11.Nxd5! clears c3, so the d4 bishop now attacks the b2 queen, and Nc7+ forking king and rook is threatened too. 11...exd5 12.Bxb2 drops the queen, so Black usually grabs 11...Qxa1.",
+    "e4 c6 d4 d5 e5 Bf5 Nf3 e6 Be2 c5 Be3 Qb6 Nc3 Nc6 O-O Qxb2 Qe1 cxd4 Bxd4 a6 Nxd5 Qxa1 Nc7+": "12.Nc7+ forks the king and the a8 rook, and also prepares to win the queen on a1. Black must move the king.",
+    "e4 c6 d4 d5 e5 Bf5 Nf3 e6 Be2 c5 Be3 Qb6 Nc3 Nc6 O-O Qxb2 Qe1 cxd4 Bxd4 a6 Nxd5 Qxa1 Nc7+ Kd7 Qxa1": "13.Qxa1 wins the black queen. Even after Black takes the knight on c7, White has queen and bishop for rook and pawns, a decisive advantage.",
+    "e4 c6 d4 d5 e5 Bf5 Nf3 e6 Be2 c5 Be3 Qb6 Nc3 Nc6 O-O Qxb2 Qe1 cxd4 Bxd4 Nge7": "10...Nge7? develops naturally and prepares to castle, but it leaves the queen on b2 and c7 under-protected. Our c3 knight jumps to b5, threatening Nc7+ and Rb1, and Black's position collapses.",
+    "e4 c6 d4 d5 e5 Bf5 Nf3 e6 Be2 c5 Be3 Qb6 Nc3 Nc6 O-O Qxb2 Qe1 cxd4 Bxd4 Nge7 Nb5": "11.Nb5 threatens Nc7+ forking king and rook. Taking 11...Qxc2 looks active, but it lets us bring a rook to the c-file with tempo.",
+    "e4 c6 d4 d5 e5 Bf5 Nf3 e6 Be2 c5 Be3 Qb6 Nc3 Nc6 O-O Qxb2 Qe1 cxd4 Bxd4 Nge7 Nb5 Qxc2 Rc1": "12.Rc1 attacks the queen again and the rook joins the attack on c7. Black has to retreat to a4, keeping an eye on d7 and e8.",
+    "e4 c6 d4 d5 e5 Bf5 Nf3 e6 Be2 c5 Be3 Qb6 Nc3 Nc6 O-O Qxb2 Qe1 cxd4 Bxd4 Nge7 Nb5 Qxc2 Rc1 Qa4 Nd6+": "13.Nd6+ drives the king to d7 and opens the way for Bb5 or Qd2 ideas. Black's king is stuck in the centre, surrounded by our pieces, and White is winning.",
+    "e4 c6 d4 d5 e5 Bf5 Nf3 e6 Be2 c5 Be3 Qb6 Nc3 Nc6 O-O Qxb2 Qe1 cxd4 Bxd4 Nxd4": "10...Nxd4 trades a pair of pieces, which is the correct way to ease the pressure. Black now has to be very careful where the other pieces go.",
+    "e4 c6 d4 d5 e5 Bf5 Nf3 e6 Be2 c5 Be3 Qb6 Nc3 Nc6 O-O Qxb2 Qe1 cxd4 Bxd4 Nxd4 Nxd4 Be7": "11...Be7? looks safe, but it does not protect the queen or b7. Rb1 now hits the queen, and after it leaves, b7 falls with the rook landing on the seventh rank.",
+    "e4 c6 d4 d5 e5 Bf5 Nf3 e6 Be2 c5 Be3 Qb6 Nc3 Nc6 O-O Qxb2 Qe1 cxd4 Bxd4 Nxd4 Nxd4 Be7 Rb1": "12.Rb1 kicks the queen. Its only decent retreat is a3, and that leaves the b7 pawn hanging.",
+    "e4 c6 d4 d5 e5 Bf5 Nf3 e6 Be2 c5 Be3 Qb6 Nc3 Nc6 O-O Qxb2 Qe1 cxd4 Bxd4 Nxd4 Nxd4 Be7 Rb1 Qa3 Rxb7": "13.Rxb7 puts a rook on the seventh rank, attacking e7 and threatening Bb5+ and Ncb5. Black's king is caught in the centre and the f5 bishop is also loose, so White's attack is decisive.",
+    "e4 c6 d4 d5 e5 Bf5 Nf3 e6 Be2 Ne7 O-O c5 c4 Nbc6 dxc5 d4 Qb3 Qc7 Na3 Nxe5": "10...Nxe5? grabs a central pawn and looks like it just wins material. But it walks into Nb5: the queen on c7 and the d6 square become targets while Black's king is still in the centre.",
+    "e4 c6 d4 d5 e5 Bf5 Nf3 e6 Be2 Ne7 O-O c5 c4 Nbc6 dxc5 d4 Qb3 Qc7 Na3 Nxe5 Nb5": "11.Nb5 attacks the queen and eyes d6 and c7. After the queen moves, Nfxd4 or Nd6+ ideas follow, and Black's king in the centre is too exposed. White is clearly better.",
+    "e4 c6 d4 d5 e5 c5 dxc5 Nc6 Bb5 e6 Be3 Ne7 c3 Bd7 Bxc6 Bxc6 Nf3 Nf5 Bd4 Bxc5": "10...Bxc5?? looks like Black finally wins the gambit pawn back, perhaps hoping the f5 knight wins something on d4. In fact our d4 bishop simply takes on c5, and nothing protects that square.",
+    "e4 c6 d4 d5 e5 c5 dxc5 Nc6 Bb5 e6 Be3 Ne7 c3 Bd7 Bxc6 Bxc6 Nf3 Nf5 Bd4 Bxc5 Bxc5": "11.Bxc5 wins a whole piece for a pawn. Black has no recapture on c5 and no follow-up tactic, so White is winning."
+  }
+};
