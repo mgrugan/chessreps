@@ -86,7 +86,7 @@ export async function loadCourse(id) {
   let base, notes;
   if (master) {
     base = (await import(`./courses/${id}.js`)).default;
-    notes = await loadNotes(master.noteParts);
+    notes = await loadNotes(base.lines.some(l => l.trap) ? [...master.noteParts, `${id}-traps`] : master.noteParts);
     base = { ...base, blurb: master.blurb, intro: notes.intro || master.fallbackIntro, section: 'masters' };
   } else {
     const c = getCustomCourses().find(x => x.id === id);
@@ -105,6 +105,10 @@ export async function loadCourse(id) {
     name: l.name || notes.lineNames[String(i + 1)] || '',
   }));
   base.notes = notes.notes;
-  base.order = base.fixedOrder ? base.lines.map((_, i) => i) : spreadOrder(base.lines.map((_, i) => i), base.lines);
+  // trap lines are part of every training depth: put them first and grow each tier
+  const traps = base.lines.map((l, i) => l.trap ? i : -1).filter(i => i >= 0);
+  const mainIdx = base.lines.map((_, i) => i).filter(i => !base.lines[i].trap);
+  base.order = [...traps, ...(base.fixedOrder ? mainIdx : spreadOrder(mainIdx, base.lines))];
+  if (traps.length) base.tiers = base.tiers.map(t => ({ ...t, count: t.count + traps.length, sub: `${t.sub} · incl. ${traps.length} traps` }));
   return base;
 }
