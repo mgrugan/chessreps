@@ -1,0 +1,10 @@
+Trap: Steinitz: 14...Re8?? and Qh8 mate|1. e4 e6 2. d4 d5 3. Nc3 Nf6 4. e5 Nfd7 5. f4 c5 6. Nf3 Nc6 7. Be3 Qb6 8. Na4 Qa5+ 9. c3 cxd4 10. b4 Qc7 11. Nxd4 Nxd4 12. Bxd4 Be7 13. Bd3 O-O 14. Qh5 Re8 15. Qxh7+ Kf8 16. Qh8#
+Trap: Steinitz: 10...b6? drops the c6 knight|1. e4 e6 2. d4 d5 3. Nc3 Nf6 4. e5 Nfd7 5. f4 c5 6. Nf3 cxd4 7. Nxd4 Nc6 8. Be3 Bc5 9. Qd2 O-O 10. O-O-O b6 11. Nxc6 Qc7 12. Nd4
+Trap: Steinitz: 13...Bb7? Greek gift Bxh7+|1. e4 e6 2. d4 d5 3. Nc3 Nf6 4. e5 Nfd7 5. f4 c5 6. Nf3 Nc6 7. Be3 Be7 8. Qd2 O-O 9. dxc5 Nxc5 10. O-O-O a6 11. Kb1 b5 12. Bxc5 Bxc5 13. Bd3 Bb7 14. Bxh7+ Kxh7 15. Ng5+ Kg8 16. Qd3 Qxg5 17. fxg5
+Trap: 4...Ne4: 8...Nc6?? and Qxf7 mate|1. e4 e6 2. d4 d5 3. Nc3 Nf6 4. e5 Ne4 5. Nxe4 dxe4 6. Bc4 c5 7. d5 exd5 8. Qxd5 Nc6 9. Qxf7#
+Trap: Winawer: 11...Nbc6?? Qxh7+ wins queen|1. e4 e6 2. d4 d5 3. Nc3 Bb4 4. e5 c5 5. a3 Bxc3+ 6. bxc3 Ne7 7. Qg4 O-O 8. Bd3 f5 9. exf6 Rxf6 10. Bg5 Rf7 11. Qh5 Nbc6 12. Qxh7+ Kf8 13. Qh8+ Ng8 14. Bxd8
+Trap: Poisoned Pawn: 9...Nf5?? drops the rook|1. e4 e6 2. d4 d5 3. Nc3 Bb4 4. e5 c5 5. a3 Bxc3+ 6. bxc3 Ne7 7. Qg4 Qc7 8. Qxg7 Rg8 9. Qxh7 Nf5 10. Qxg8+
+Trap: Rubinstein: 9...Nd7?? and Qh7 mate|1. e4 e6 2. d4 d5 3. Nc3 dxe4 4. Nxe4 Nf6 5. Nxf6+ Qxf6 6. Nf3 h6 7. Bd3 Bd6 8. Qe2 O-O 9. Qe4 Nd7 10. Qh7#
+Trap: Rubinstein: 10...Nd7? Qe4 double attack|1. e4 e6 2. d4 d5 3. Nc3 dxe4 4. Nxe4 Nd7 5. Nf3 Ngf6 6. Nxf6+ Nxf6 7. c3 Be7 8. Bd3 O-O 9. Bf4 b6 10. Qe2 Nd7 11. Qe4 f5 12. Qxa8
+Trap: 3...c5: 7...Be6? Bxc6+ forks|1. e4 e6 2. d4 d5 3. Nc3 c5 4. exd5 exd5 5. Bb5+ Nc6 6. dxc5 Bxc5 7. Qxd5 Be6 8. Bxc6+ bxc6 9. Qxc6+ Bd7 10. Qxc5
+Trap: 3...c6: 7...O-O? opens the h-file|1. e4 e6 2. d4 d5 3. Nc3 c6 4. Nf3 Nf6 5. e5 Nfd7 6. Ng5 Be7 7. h4 O-O 8. Qh5 Bxg5 9. hxg5
