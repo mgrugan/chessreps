@@ -9,6 +9,10 @@ A static site you can host on GitHub Pages. You learn an opening repertoire move
 | The Italian Game | White | 122 | Essentials 30 · Advanced 60 · Full Mastery 122 |
 | The Caro-Kann | Black | 30 | Essentials 19 · Full Mastery 30 |
 | Alapin Sicilian | White | 57 | Essentials 20 · Full Mastery 57 |
+| Counter the Scandinavian | White | 38 | Essentials 12 · Full Mastery 38 |
+| Counter the French | White | 30 | Essentials 12 · Full Mastery 30 |
+| O'Kelly Sicilian | Black | 30 | Essentials 16 · Full Mastery 30 |
+| Sicilian Kan | Black | 52 | Essentials 25 · Full Mastery 52 |
 
 You can also **import your own course** from the home page. It accepts one line per row, a multi-game PGN, or a study with nested variations. Imported courses are saved in your browser.
 

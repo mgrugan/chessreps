@@ -28,6 +28,16 @@ export const MASTERS = [
     blurb: '1.e4 e6 2.d4 d5 3.Nc3 — the Steinitz with 5.f4, the Winawer with Qg4, and answers to every Rubinstein and sideline.',
     fallbackIntro: 'Against the French we play 3.Nc3 and grab space, aiming our pieces at Black\'s kingside.',
   },
+  {
+    id: 'okelly', title: "O'Kelly Sicilian", color: 'black', noteParts: ['okelly'],
+    blurb: "1.e4 c5 2.Nf3 a6 — a tricky surprise weapon for Black that sidesteps the main Sicilian theory after 3.d4, 3.c3, 3.Bc4 and more.",
+    fallbackIntro: "We answer 2.Nf3 with the O'Kelly 2...a6, a flexible move that prepares ...b5 or ...e5 and takes White out of familiar Sicilian territory.",
+  },
+  {
+    id: 'kan', title: 'Sicilian Kan', color: 'black', noteParts: ['kan'],
+    blurb: '1.e4 c5 with ...e6 and ...a6 — a flexible, low-maintenance Sicilian for Black, plus answers to the Alapin, Smith-Morra, Grand Prix and other sidelines.',
+    fallbackIntro: 'We meet 1.e4 with the Sicilian and aim for the Kan setup with ...e6 and ...a6, keeping our pieces flexible and our pawn structure sound.',
+  },
 ];
 
 export function listCourses() {
@@ -95,6 +105,6 @@ export async function loadCourse(id) {
     name: l.name || notes.lineNames[String(i + 1)] || '',
   }));
   base.notes = notes.notes;
-  base.order = spreadOrder(base.lines.map((_, i) => i), base.lines);
+  base.order = base.fixedOrder ? base.lines.map((_, i) => i) : spreadOrder(base.lines.map((_, i) => i), base.lines);
   return base;
 }
