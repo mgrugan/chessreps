@@ -872,6 +872,7 @@ function openSettings() {
     <div class="action-row">
       <button class="abtn" id="share-pos">🔗 Share this position</button>
       <button class="abtn" id="start-over">↺ Start over</button>
+      <button class="abtn" id="mark-learned">✓ Mark course as learned</button>
       <button class="abtn danger" id="reset-course">Reset course progress</button>
     </div>`, (box, close) => {
     const refreshPill = () => { const p = $('#hap-pill'); if (p) p.outerHTML = hapticPill(); bindPill(); };
@@ -901,6 +902,22 @@ function openSettings() {
       else navigator.clipboard?.writeText(url.href).then(() => toast('Link copied'), () => prompt('Copy this link', url.href));
     };
     box.querySelector('#start-over').onclick = () => { close(); stopTimer(); if (['time', 'arena'].includes(S.mode)) switchMode(S.mode); else startLine(S.lineIdx, { startPly: S.mode === 'puzzles' ? S.startPly : undefined }); };
+    box.querySelector('#mark-learned').onclick = () => {
+      const main = lines.map((l, i) => i).filter(i => !lines[i].trap && !isDiscovered(i));
+      if (!main.length) { toast('Every line is already learned'); return; }
+      if (!confirm(`Mark ${main.length} lines of ${course.title} as learned? This unlocks Practice, Drill and the other modes. Trap lines stay in Learn.`)) return;
+      const now = Date.now();
+      for (const i of main) {
+        prog.discovered[i] = now;
+        // spread the first reviews over the next few days so Practice isn't flooded
+        prog.srs[i] = { due: now + Math.random() * 4 * DAY, interval: 2, reps: 1, lapses: 0 };
+      }
+      prog.finishedAny = true; prog.depthChosen = true;
+      prog.depth = course.tiers.length - 1;
+      save(); renderModes(); close(); buzz('done');
+      toast(`${main.length} lines marked as learned`);
+      switchMode('drill');
+    };
     box.querySelector('#reset-course').onclick = () => {
       if (!confirm(`Reset all progress for ${course.title}? This cannot be undone.`)) return;
       resetProgress(courseId); prog = getProgress(courseId); close(); S.mode = 'learn'; renderModes(); openDepthSheet(true);
