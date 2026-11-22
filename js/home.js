@@ -3,6 +3,7 @@ import { listCourses, MASTERS } from './courses.js';
 import { getProgress, getSettings, getCustomCourses, saveCustomCourses, resetProgress } from './store.js';
 import { BOARDS, pieceUrl } from './theme.js';
 import { expandPgn, toPgn } from './pgn.js';
+import { startTimer, onTimerTick, statsHtml, refreshStats } from './timer.js';
 
 const $ = s => document.querySelector(s);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -99,6 +100,14 @@ $('#imp-go').onclick = () => {
 };
 
 void MASTERS;
+// study timer: runs while this page is open and in use
+startTimer();
+$('#time-box').innerHTML = statsHtml();
+onTimerTick(active => {
+  refreshStats($('#time-box'));
+  $('#time-state').classList.toggle('paused', !active);
+  $('#time-state').lastChild.textContent = active ? 'Tracking' : 'Paused';
+});
 $('#q').oninput = () => {
   const q = $('#q').value.trim().toLowerCase();
   document.querySelectorAll('.ccard').forEach(c => { c.style.display = !q || c.dataset.search.includes(q) ? '' : 'none'; });

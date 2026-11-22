@@ -6,6 +6,7 @@ import { applyTheme, BOARDS, PIECE_SETS, pieceUrl } from './theme.js';
 import { promptFor, autoExplain } from './explain.js';
 import { evaluate, haptic, confetti, toast } from './fx.js';
 import { toPgn } from './pgn.js';
+import { startTimer as startStudyTimer, onTimerTick, timeStats, fmtClock, statsHtml, refreshStats } from './timer.js';
 
 const $ = sel => document.querySelector(sel);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -964,6 +965,21 @@ function openHelp() {
 }
 
 $('#btn-settings').onclick = () => { buzz('tap'); openSettings(); };
+
+// ---------------------------------------------------------------- study timer
+startStudyTimer();
+function paintTimer(active) {
+  $('#time-today').textContent = fmtClock(timeStats().today);
+  $('#time-pill').classList.toggle('paused', !active);
+  const box = document.querySelector('#time-sheet');
+  if (box) refreshStats(box);
+}
+onTimerTick(paintTimer);
+paintTimer(true);
+$('#time-pill').onclick = () => {
+  buzz('tap');
+  openSheet('Study time', `<div id="time-sheet">${statsHtml()}<p class="small-note">Counts only while this site is open, visible and in use. It pauses when you switch away or after 5 idle minutes.</p></div>`);
+};
 $('#mode-pick').onclick = e => { buzz('tap'); openModePopover(e.currentTarget); };
 $('#btn-mode').onclick = e => { buzz('tap'); openModePopover(e.currentTarget); };
 $('#line-pick').onclick = e => { buzz('tap'); openLinePopover(e.currentTarget); };
