@@ -4,12 +4,13 @@ import { loadCourse } from './courses.js';
 import { getSettings, saveSettings, getProgress, saveProgress, resetProgress } from './store.js';
 import { applyTheme, BOARDS, PIECE_SETS, pieceUrl } from './theme.js';
 import { promptFor, autoExplain } from './explain.js';
-import { evaluate, playSound, confetti, toast } from './fx.js';
+import { evaluate, haptic, confetti, toast } from './fx.js';
 import { toPgn } from './pgn.js';
 
 const $ = sel => document.querySelector(sel);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const DAY = 86400000;
+const isPhone = () => matchMedia('(max-width: 899px)').matches;
 
 // ---------------------------------------------------------------- setup
 const params = new URLSearchParams(location.search);
@@ -22,7 +23,6 @@ let settings = getSettings();
 let prog = getProgress(courseId);
 applyTheme(settings);
 document.title = `${course.title} | OpenReps`;
-$('#page-title').textContent = course.title;
 $('#course-title').textContent = course.title;
 
 const OUR = course.color === 'white' ? 'w' : 'b';
@@ -31,7 +31,6 @@ const commonPrefix = (() => {
   let n = 0;
   const first = lines[0].moves;
   while (n < first.length && lines.every(l => l.moves[n] === first[n])) n++;
-  // never skip past the point where it's our turn for the first divergent decision
   return Math.min(n, Math.min(...lines.map(l => l.moves.length)) - 1);
 })();
 
@@ -43,21 +42,24 @@ const isDiscovered = i => !!prog.discovered[i];
 function discoveredList() { return Object.keys(prog.discovered).map(Number).filter(i => i < lines.length); }
 function dueList(now = Date.now()) { return discoveredList().filter(i => (prog.srs[i]?.due ?? 0) <= now); }
 const save = () => saveProgress(courseId, prog);
+const buzz = kind => { if (settings.haptics) haptic(kind); };
 
 const MODES = [
-  { id: 'learn', label: 'Learn', ic: '📖' },
-  { id: 'practice', label: 'Practice', ic: '🔁' },
-  { id: 'drill', label: 'Drill', ic: '⚡' },
-  { id: 'time', label: 'Time', ic: '⏱' },
-  { id: 'puzzles', label: 'Puzzles', ic: '🧩' },
-  { id: 'arena', label: 'Arena', ic: '⚔' },
+  { id: 'learn', label: 'Learn', ic: '📖', sub: 'discover new lines', need: 0 },
+  { id: 'practice', label: 'Practice', ic: '🎯', sub: 'perfect your lines', need: 1 },
+  { id: 'drill', label: 'Drill', ic: '🔥', sub: 'keep a streak', need: 3 },
+  { id: 'time', label: 'Time', ic: '⏳', sub: '3-minute sprint', need: 3 },
+  { id: 'puzzles', label: 'Puzzles', ic: '🧩', sub: 'find the move', need: 2 },
+  { id: 'arena', label: 'Arena', ic: '⚔️', sub: 'no help at all', need: 2 },
 ];
+const TIER_EMOJI = ['🌱', '🌳', '👑'];
+const tierEmoji = i => course.tiers.length === 2 && i === 1 ? '👑' : TIER_EMOJI[i] || '👑';
 
 // ---------------------------------------------------------------- state
 const S = {
   mode: 'learn', lineIdx: 0, ply: 0, startPly: 0, chess: new Chess(),
   mistakes: 0, tries: 0, done: false, view: null, token: 0, lastNote: null,
-  puzzle: null, arena: null, timer: null,
+  puzzle: null, arena: null, timer: null, hinted: false,
 };
 
 // ---------------------------------------------------------------- board
@@ -97,11 +99,15 @@ function syncBoard(opts = {}) {
   });
   cg.setAutoShapes(opts.shapes || []);
   updateEval(ch.fen());
+  updateProgress();
+  updateNav();
 }
-function arrowFor(san, fen, brush = 'green') {
+function arrowFor(san, fen, brush = 'yellow') {
   const ch = new Chess(fen);
   try { const m = ch.move(san); return [{ orig: m.from, dest: m.to, brush }]; } catch { return []; }
 }
+// a warm orange arrow like a coach's marker
+cg.set({ drawable: { brushes: { ...cg.state.drawable.brushes, yellow: { key: 'y', color: '#f59e0b', opacity: 0.9, lineWidth: 12 }, blue: { key: 'b', color: '#3d8bff', opacity: 0.9, lineWidth: 12 } } } });
 
 let evalSeq = 0;
 function updateEval(fen) {
@@ -113,94 +119,172 @@ function updateEval(fen) {
     if (!r || seq !== evalSeq) return;
     const cp = Math.max(-1000, Math.min(1000, r.cp));
     const pct = 50 + 50 * (2 / (1 + Math.exp(-0.004 * cp)) - 1);
-    bar.querySelector('.white').style.height = pct + '%';
+    const fill = bar.querySelector('.fill');
+    fill.style.height = pct + '%';
+    fill.style.width = pct + '%';
+    const ours = OUR === 'w' ? cp : -cp;
+    bar.classList.toggle('losing', ours < 0 && !isPhone());
     bar.querySelector('.num').textContent = r.mate ? `M${Math.abs(r.mate)}` : (Math.abs(r.cp) / 100).toFixed(1);
-    bar.title = r.mate ? `Mate in ${Math.abs(r.mate)}` : `${r.cp > 0 ? '+' : ''}${(r.cp / 100).toFixed(2)}`;
   });
 }
 
-// ---------------------------------------------------------------- notes
+function updateProgress() {
+  const len = lines[S.lineIdx]?.moves.length || 1;
+  const pct = S.mode === 'time' && S.timer ? Math.max(0, (S.timer.end - Date.now()) / 180000) * 100
+    : Math.max(4, ((S.ply - S.startPly) / Math.max(1, len - S.startPly)) * 100);
+  $('#pbar').style.width = pct + '%';
+  $('#pbar-desk').style.width = pct + '%';
+}
+function updateNav() {
+  const cur = S.view ?? S.ply;
+  $('#btn-prev').disabled = cur <= 0;
+  $('#btn-next').disabled = cur >= S.ply;
+}
+
+// ---------------------------------------------------------------- notes / bubble
 const pathKey = (moves, n) => moves.slice(0, n).join(' ');
-function noteFor(lineIdx, plyIdx) { // note explaining move at index plyIdx
+function fenAt(moves, n) { const c = new Chess(); for (let i = 0; i < n; i++) c.move(moves[i]); return c.fen(); }
+function moveLabel(ply, san) { return `${Math.floor(ply / 2) + 1}${ply % 2 === 0 ? '.' : '...'}${san}`; }
+function noteFor(lineIdx, plyIdx) {
   const moves = lines[lineIdx].moves;
   const key = pathKey(moves, plyIdx + 1);
   if (course.notes[key]) return { text: course.notes[key], auto: false, key };
-  const fen = fenAt(moves, plyIdx);
-  return { text: autoExplain(fen, moves[plyIdx]), auto: true, key };
-}
-function fenAt(moves, n) { const c = new Chess(); for (let i = 0; i < n; i++) c.move(moves[i]); return c.fen(); }
-function moveLabel(ply, san) { return `${Math.floor(ply / 2) + 1}${ply % 2 === 0 ? '.' : '...'}${san}`; }
-
-function setCoach(who, html) {
-  $('#coach-who').textContent = who;
-  $('#coach-text').innerHTML = html;
+  return { text: autoExplain(fenAt(moves, plyIdx), moves[plyIdx]), auto: true, key };
 }
 function noteHtml(lineIdx, plyIdx) {
   const n = noteFor(lineIdx, plyIdx);
   const san = lines[lineIdx].moves[plyIdx];
   const text = n.auto ? n.text.replace(/^\S+\s/, '') : n.text;
-  const body = esc(text.charAt(0).toUpperCase() + text.slice(1)).replace(/(\d+\.(?:\.\.)?\s?[KQRBNO][^\s,.;:)]*|\d+\.(?:\.\.)?\s?[a-h][x1-8][^\s,.;:)]*)/g, '<span class="move-ref">$1</span>');
+  const body = esc(text.charAt(0).toUpperCase() + text.slice(1)).replace(/(?<![A-Za-z0-9.])(\d+\.(?:\.\.)?[KQRBNO][^\s,.;:)]*|\d+\.(?:\.\.)?[a-h][x1-8][^\s,.;:)]*)/g, '<span class="move-ref">$1</span>');
   const label = moveLabel(plyIdx, san);
   if (text.replace(/\.\s+/, '.').startsWith(label)) return `<p>${body}</p>`;
   return `<p><span class="move-ref">${esc(label)}</span> — ${body}</p>`;
 }
+function setCoach(tag, html) {
+  $('#coach-text').innerHTML = (tag ? `<span class="tag">${esc(tag)}</span>` : '') + html;
+  const n = $('#coach-text');
+  n.scrollTop = 0;
+  requestAnimationFrame(() => n.classList.toggle('fade', n.scrollHeight > n.clientHeight + 4));
+}
+$('#coach-text').addEventListener('scroll', e => { const n = e.target; n.classList.toggle('fade', n.scrollTop + n.clientHeight < n.scrollHeight - 4); });
 function setPrompt(text, cls = '') { const p = $('#prompt'); p.className = 'prompt ' + cls; p.innerHTML = text; }
 function setActions(btns) {
   const box = $('#actions'); box.innerHTML = '';
   for (const b of btns) {
     if (!b) continue;
     const el = document.createElement('button');
-    el.className = 'btn ' + (b.cls || '');
+    el.className = 'bbtn ' + (b.cls || '');
     el.innerHTML = b.label;
-    el.onclick = b.onClick;
+    el.onclick = () => { buzz('tap'); b.onClick(); };
     box.appendChild(el);
   }
 }
 
-// ---------------------------------------------------------------- mode bar
-function renderModes() {
-  const tier = tierLines();
-  const discInTier = [...tier].filter(isDiscovered).length;
+// ---------------------------------------------------------------- header + modes
+function modeState(m) {
   const disc = discoveredList().length;
-  const vals = {
-    learn: `${discInTier}/${tier.size}`,
-    practice: `${dueList().length}/${disc}`,
-    drill: `×${prog.drillStreak}`,
-    time: `${prog.timeBest}`,
-    puzzles: `${Math.round(prog.puzzleRating)}`,
-    arena: `${Math.round(prog.arenaRating)}`,
-  };
-  const titles = {
-    learn: 'lines discovered in your training depth', practice: 'lines due for review / lines discovered',
-    drill: `current streak (best ×${prog.drillBest})`, time: 'best score in 3-minute mode',
-    puzzles: 'puzzle rating', arena: 'arena rating',
-  };
-  $('#modes').innerHTML = MODES.map(m => `
-    <button class="mode ${S.mode === m.id ? 'active' : ''}" data-mode="${m.id}" title="${titles[m.id]}">
-      <span class="ic">${m.ic}</span><span class="lbl">${m.label}</span><span class="val">${vals[m.id]}</span>
-    </button>`).join('');
-  $('#modes').querySelectorAll('.mode').forEach(b => b.onclick = () => switchMode(b.dataset.mode));
-  $('#mode-chip').textContent = { learn: 'Learning', practice: 'Practice', drill: 'Drill', time: 'Time trial', puzzles: 'Puzzle', arena: 'Arena' }[S.mode];
+  const tier = tierLines();
+  const locked = disc < m.need;
+  let big = '', small = '';
+  if (m.id === 'learn') { big = `${[...tier].filter(isDiscovered).length}/${tier.size}`; small = 'discovered'; }
+  else if (m.id === 'practice') { big = `${dueList().length}`; small = `due of ${disc}`; }
+  else if (m.id === 'drill') { big = `×${prog.drillStreak}`; small = `best ×${prog.drillBest}`; }
+  else if (m.id === 'time') { big = `${prog.timeBest}`; small = 'best'; }
+  else if (m.id === 'puzzles') { big = `${Math.round(prog.puzzleRating)}`; small = 'rating'; }
+  else if (m.id === 'arena') { big = `${Math.round(prog.arenaRating)}`; small = 'rating'; }
+  return { locked, big, small, disc };
+}
+function lockHtml(m, disc) {
+  const left = m.need - disc;
+  const dots = Array.from({ length: m.need }, (_, i) => `<i class="${i < disc ? 'on' : ''}"></i>`).join('');
+  const lockSvg = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>';
+  return `<span class="mv"><span class="lock">${lockSvg}<span class="dots">${dots}</span></span><small>${m.need === 1 ? `${left} line away` : `${disc}/${m.need} lines`}</small></span>`;
+}
+function modeCards(inPopover) {
+  return MODES.map((m, i) => {
+    const st = modeState(m);
+    const wide = !inPopover && i < 2;
+    const right = st.locked ? lockHtml(m, st.disc) : `<span class="mv">${st.big}<small>${st.small}</small></span>`;
+    return `<button class="mcard ${wide ? 'wide' : ''} ${S.mode === m.id ? 'active' : ''} ${st.locked ? 'locked' : ''}" data-mode="${m.id}">
+      <span class="mi">${m.ic}</span><span class="mt"><b>${m.label}</b><small>${m.sub}</small></span>${right}</button>`;
+  }).join('') + (inPopover ? `<button class="depth-row" id="pop-depth"><span>${tierEmoji(prog.depth)}</span> Training depth <span class="v">${esc(course.tiers[prog.depth].name)} ›</span></button>` : '');
+}
+function bindModeCards(root, after) {
+  root.querySelectorAll('.mcard').forEach(b => b.onclick = () => {
+    const m = MODES.find(x => x.id === b.dataset.mode);
+    if (modeState(m).locked) { buzz('wrong'); toast(m.need === 1 ? 'Finish your first line in Learn to unlock Practice' : `Discover ${m.need} lines to unlock ${m.label}`); return; }
+    buzz('tap'); after?.(); switchMode(m.id);
+  });
+  root.querySelector('#pop-depth')?.addEventListener('click', () => { after?.(); openDepthSheet(false); });
+}
+function renderModes() {
+  const m = MODES.find(x => x.id === S.mode);
+  $('#mode-ic').textContent = m.ic;
+  $('#mode-name').textContent = m.label;
+  $('#line-num').textContent = `#${S.lineIdx + 1}`;
+  const list = $('#mode-list');
+  list.innerHTML = modeCards(false);
+  bindModeCards(list);
 }
 
-// ---------------------------------------------------------------- move list
-function renderMoves() {
-  const moves = lines[S.lineIdx].moves.slice(0, S.ply);
-  const cur = S.view ?? S.ply;
-  let h = '';
-  moves.forEach((m, i) => {
-    if (i % 2 === 0) h += `<span class="n">${i / 2 + 1}.</span>`;
-    else if (i === 0) h += `<span class="n">1...</span>`;
-    const mine = (i % 2 === 0 ? 'w' : 'b') === OUR;
-    h += `<span class="m ${i + 1 === cur ? 'cur' : ''} ${mine ? 'mine' : ''}" data-i="${i + 1}">${esc(m)}</span> `;
-  });
-  $('#moves').innerHTML = h || '<span class="n">Moves appear here.</span>';
-  $('#moves').querySelectorAll('.m').forEach(el => el.onclick = () => viewPly(+el.dataset.i));
-  $('#moves').scrollTop = 1e6;
+// ---------------------------------------------------------------- popovers
+function openPopover(anchor, html, onMount, align = 'left') {
+  closePopover();
+  const root = $('#popover-root');
+  root.innerHTML = `<div class="pop-back"></div><div class="popover">${html}</div>`;
+  const pop = root.querySelector('.popover');
+  const r = anchor.getBoundingClientRect();
+  const w = Math.min(isPhone() ? innerWidth - 16 : 400, 420);
+  pop.style.width = w + 'px';
+  const left = align === 'right' ? Math.max(8, r.right - w) : Math.min(Math.max(8, r.left - 8), innerWidth - w - 8);
+  pop.style.left = left + 'px';
+  if (r.top > innerHeight / 2) { pop.style.bottom = (innerHeight - r.top + 8) + 'px'; pop.style.maxHeight = (r.top - 24) + 'px'; }
+  else { pop.style.top = (r.bottom + 6) + 'px'; pop.style.maxHeight = (innerHeight - r.bottom - 24) + 'px'; }
+  root.querySelector('.pop-back').onclick = closePopover;
+  onMount?.(pop);
 }
+function closePopover() { $('#popover-root').innerHTML = ''; }
+
+function openModePopover(anchor) {
+  openPopover(anchor, `<div class="mode-list">${modeCards(true)}</div>`, pop => bindModeCards(pop, closePopover), anchor.id === 'btn-mode' ? 'right' : 'left');
+}
+let showPgns = false;
+function lineDots(i) {
+  const a = isDiscovered(i), b = (prog.srs[i]?.reps || 0) > 0;
+  return `<span class="dots"><i class="${a ? 'on' : ''}"></i><i class="${b ? 'on' : ''}"></i></span>`;
+}
+function openLinePopover(anchor) {
+  const tier = tierLines();
+  openPopover(anchor, `<div id="lp-list"></div>
+    <div class="pop-foot"><input type="text" id="lp-q" placeholder="Search lines"></div>
+    <label class="pop-foot" style="border:0;margin:0;padding-top:4px"><input type="checkbox" class="cb" id="lp-pgn" ${showPgns ? 'checked' : ''}> Show PGNs</label>`, pop => {
+    const render = () => {
+      const q = pop.querySelector('#lp-q').value.trim().toLowerCase();
+      pop.querySelector('#lp-list').innerHTML = lines.map((l, i) => {
+        const pgn = toPgn(l.moves);
+        if (q && !`${i + 1} ${l.name} ${pgn}`.toLowerCase().includes(q)) return '';
+        return `<button class="line-row ${i === S.lineIdx ? 'cur' : ''} ${tier.has(i) ? '' : 'outside'}" data-i="${i}">
+          <span class="n">${i + 1}</span>
+          <span class="t"><b>${esc(l.name || pgn)}</b><span class="${showPgns ? 'full' : ''}">${esc(pgn)}</span></span>${lineDots(i)}</button>`;
+      }).join('') || '<p style="color:var(--muted);padding:10px">No lines match.</p>';
+      pop.querySelectorAll('.line-row').forEach(b => b.onclick = () => {
+        closePopover(); stopTimer(); buzz('tap');
+        const i = +b.dataset.i;
+        S.mode = S.mode === 'practice' && isDiscovered(i) ? 'practice' : 'learn';
+        renderModes(); startLine(i);
+      });
+    };
+    pop.querySelector('#lp-q').oninput = render;
+    pop.querySelector('#lp-pgn').onchange = e => { showPgns = e.target.checked; render(); };
+    render();
+    pop.querySelector('.line-row.cur')?.scrollIntoView({ block: 'center' });
+  }, 'right');
+}
+
+// ---------------------------------------------------------------- navigation
 function viewPly(n) {
-  if (n === S.ply) { S.view = null; syncBoard(); renderMoves(); return; }
   if (n < 0 || n > S.ply) return;
+  if (n === S.ply) { S.view = null; syncBoard({ shapes: S.liveShapes || [] }); if (S.ply > 0 && S.mode !== 'time') refreshCoachForCurrent(); return; }
   S.view = n;
   const c = new Chess();
   const mv = lines[S.lineIdx].moves;
@@ -209,15 +293,18 @@ function viewPly(n) {
   cg.set({ fen: c.fen(), lastMove: last ? [last.from, last.to] : undefined, movable: { color: undefined, dests: new Map() }, check: c.inCheck() ? (c.turn() === 'w' ? 'white' : 'black') : false });
   cg.setAutoShapes([]);
   updateEval(c.fen());
-  renderMoves();
-  if (n > 0 && S.mode !== 'time') setCoach('Reviewing', noteHtml(S.lineIdx, n - 1) + `<p><a href="#" id="back-live">Back to the current position →</a></p>`);
-  const bl = $('#back-live'); if (bl) bl.onclick = e => { e.preventDefault(); viewPly(S.ply); refreshCoachForCurrent(); };
+  updateNav();
+  if (n > 0 && S.mode !== 'time' && S.mode !== 'arena') setCoach('Reviewing', noteHtml(S.lineIdx, n - 1));
 }
+function refreshCoachForCurrent() { if (S.ply > 0) setCoach('', noteHtml(S.lineIdx, S.ply - 1)); }
+$('#btn-prev').onclick = () => { buzz('tap'); viewPly((S.view ?? S.ply) - 1); };
+$('#btn-next').onclick = () => { buzz('tap'); viewPly((S.view ?? S.ply) + 1); };
 document.addEventListener('keydown', e => {
   if (e.target.closest('input, textarea') || $('#modal-root').children.length) return;
-  if (e.key === 'ArrowLeft') { viewPly(Math.max(0, (S.view ?? S.ply) - 1)); e.preventDefault(); }
-  if (e.key === 'ArrowRight') { const n = (S.view ?? S.ply) + 1; if (n <= S.ply) viewPly(n); if (n === S.ply) refreshCoachForCurrent(); e.preventDefault(); }
+  if (e.key === 'ArrowLeft') { viewPly((S.view ?? S.ply) - 1); e.preventDefault(); }
+  if (e.key === 'ArrowRight') { viewPly((S.view ?? S.ply) + 1); e.preventDefault(); }
   if (e.key === 'h' || e.key === 'H') showHint();
+  if (e.key === 'Escape') closePopover();
 });
 
 // ---------------------------------------------------------------- line flow
@@ -225,15 +312,13 @@ function startLine(idx, opts = {}) {
   S.token++;
   S.lineIdx = idx;
   S.chess = new Chess();
-  S.mistakes = 0; S.tries = 0; S.done = false; S.view = null; S.hinted = false;
+  S.mistakes = 0; S.tries = 0; S.done = false; S.view = null; S.hinted = false; S.liveShapes = [];
   const skip = prog.skipStart && prog.finishedAny && S.mode !== 'puzzles';
   S.startPly = opts.startPly ?? (skip ? commonPrefix : 0);
   for (let i = 0; i < S.startPly; i++) S.chess.move(lines[idx].moves[i]);
   S.ply = S.startPly;
-  const ln = lines[idx];
-  $('#line-name').textContent = `Line ${idx + 1}${ln.name ? ' · ' + ln.name : ''}`;
+  setActions([]);
   syncBoard();
-  renderMoves();
   renderModes();
   advance(opts.firstDelay ?? 350);
 }
@@ -242,12 +327,12 @@ function advance(delay = 450) {
   const token = S.token;
   const moves = lines[S.lineIdx].moves;
   if (S.ply >= moves.length) return finishLine();
-  const turn = S.chess.turn();
-  if (turn !== OUR) {
+  if (S.chess.turn() !== OUR) {
     syncBoard({ movable: false });
     setTimeout(() => {
       if (token !== S.token) return;
-      playMove(moves[S.ply], false);
+      if (S.view !== null) { S.view = null; }
+      playMove(moves[S.ply]);
       afterOpponentMove();
       advance(450);
     }, delay);
@@ -256,16 +341,13 @@ function advance(delay = 450) {
   awaitUser();
 }
 
-function playMove(san, mine) {
+function playMove(san) {
   const mv = S.chess.move(san);
   S.ply++;
-  if (settings.sound) playSound(S.chess.inCheck() ? 'check' : mv.captured ? 'capture' : 'move');
   syncBoard();
-  renderMoves();
   return mv;
 }
 
-// Should the coach explain this move before the student plays it?
 function explainBefore(plyIdx) {
   if (S.mode !== 'learn') return false;
   if (settings.coach === 'every') return true;
@@ -282,57 +364,48 @@ function awaitUser() {
   const mv = new Chess(fen).move(expected);
   let shapes = [];
   const showNote = explainBefore(plyIdx);
+  const firstEver = plyIdx === 0 && S.startPly === 0 && !prog.finishedAny;
   if (S.mode === 'learn') {
     if (settings.arrows === 'always' || (settings.arrows === 'notes' && showNote)) shapes = arrowFor(expected, fen);
     if (showNote) {
-      const intro = plyIdx === 0 && S.startPly === 0 && !prog.finishedAny ? `<p>${esc(course.intro)}</p>` : '';
-      setCoach('Coach', intro + noteHtml(S.lineIdx, plyIdx));
+      setCoach('', (firstEver ? `<p>${esc(course.intro)}</p>` : '') + noteHtml(S.lineIdx, plyIdx));
       prog.seen[pathKey(moves, plyIdx + 1)] = true; save();
       setPrompt(esc(promptFor(mv)), 'info');
     } else {
-      if (plyIdx === 0 && S.startPly === 0 && !prog.finishedAny) setCoach('Coach', `<p>${esc(course.intro)}</p>`);
-      else if (!S.lastNote) setCoach('Coach', `<p>${lines[S.lineIdx].name ? esc(lines[S.lineIdx].name) + '. ' : ''}You have seen this move before — what do we play here?</p>`);
-      setPrompt(settings.coach === 'tap' ? 'Your move.' : 'Your move — you know this one.', '');
+      if (firstEver) setCoach('', `<p>${esc(course.intro)}</p>`);
+      else if (!S.lastNote) setCoach('', '');
+      setPrompt(settings.coach === 'tap' ? 'Your move.' : 'You know this one — your move.', 'info');
     }
   } else if (S.mode === 'puzzles') {
     setPrompt(`Find the best move for ${OUR === 'w' ? 'White' : 'Black'}.`, 'info');
   } else {
-    setPrompt('Your move.', '');
+    if (!S.lastNote && S.mode !== 'time') setCoach('', '');
+    setPrompt('Your move.', 'info');
   }
   S.lastNote = null;
+  S.liveShapes = shapes;
   syncBoard({ shapes });
-  setActions(actionButtons());
-}
-
-function actionButtons() {
-  const btns = [];
-  if (!S.done) btns.push({ label: '💡 Hint', onClick: showHint });
-  if (!S.done && (settings.coach === 'tap' || S.mode !== 'learn')) btns.push({ label: 'Why?', onClick: showWhy });
-  if (S.mode === 'time' && S.timer?.running) btns.push({ label: 'Stop', cls: 'danger', onClick: () => endTimer() });
-  return btns;
+  setActions(settings.coach === 'tap' || S.mode !== 'learn' ? [{ label: 'Why?', onClick: showWhy }] : []);
 }
 
 function showHint() {
-  if (S.done || S.view !== null) return;
-  const moves = lines[S.lineIdx].moves;
-  if (S.chess.turn() !== OUR) return;
-  const exp = moves[S.ply];
-  cg.setAutoShapes(arrowFor(exp, S.chess.fen(), 'blue'));
+  if (S.done || S.view !== null || S.chess.turn() !== OUR) return;
+  const exp = lines[S.lineIdx].moves[S.ply];
+  S.liveShapes = arrowFor(exp, S.chess.fen(), 'blue');
+  cg.setAutoShapes(S.liveShapes);
+  buzz('tap');
+  if (!S.hinted && S.mode !== 'learn') registerMistake();
   S.hinted = true;
-  if (S.mode !== 'learn') registerMistake(true);
-  if (S.mode === 'learn' || S.mode === 'practice' || S.mode === 'drill') setCoach('Hint', noteHtml(S.lineIdx, S.ply));
+  if (['learn', 'practice', 'drill'].includes(S.mode)) setCoach('Hint', noteHtml(S.lineIdx, S.ply));
   setPrompt(esc(promptFor(new Chess(S.chess.fen()).move(exp))), 'info');
 }
-function showWhy() {
-  // explains the most recent move (or the move to play in learn mode)
-  const idx = S.mode === 'learn' && S.chess.turn() === OUR ? S.ply : S.ply - 1;
-  if (idx < 0) { setCoach('Coach', `<p>${esc(course.intro)}</p>`); return; }
-  if (S.mode !== 'learn' && idx === S.ply) return;
-  setCoach('Coach', noteHtml(S.lineIdx, idx));
-}
+$('#btn-hint').onclick = showHint;
 
-function refreshCoachForCurrent() {
-  if (S.ply > 0) setCoach('Coach', noteHtml(S.lineIdx, S.ply - 1));
+function showWhy() {
+  const idx = S.mode === 'learn' && S.chess.turn() === OUR && !S.done ? S.ply : S.ply - 1;
+  if (idx < 0) { setCoach('', `<p>${esc(course.intro)}</p>`); return; }
+  if (S.mode !== 'learn' && idx === S.ply) return;
+  setCoach('', noteHtml(S.lineIdx, idx));
 }
 
 function afterOpponentMove() {
@@ -340,8 +413,8 @@ function afterOpponentMove() {
   const key = pathKey(lines[S.lineIdx].moves, idx + 1);
   const hasNote = !!course.notes[key];
   const show = settings.coach === 'every' || (settings.coach === 'auto' && S.mode === 'learn' && hasNote && !prog.seen[key]);
-  if (show && S.mode !== 'time' && S.mode !== 'arena' && S.mode !== 'puzzles') {
-    setCoach('Opponent played', noteHtml(S.lineIdx, idx));
+  if (show && !['time', 'arena', 'puzzles'].includes(S.mode)) {
+    setCoach('Opponent', noteHtml(S.lineIdx, idx));
     prog.seen[key] = true; save();
     S.lastNote = key;
   }
@@ -357,16 +430,17 @@ function onUserMove(orig, dest) {
   if (mv.san === expected) {
     S.tries = 0;
     const plyIdx = S.ply;
-    playMove(expected, true);
+    playMove(expected);
+    buzz(mv.captured ? 'capture' : S.chess.inCheck() ? 'check' : 'move');
     const key = pathKey(moves, plyIdx + 1);
     if (S.mode === 'time') { S.timer.score++; updateTimerUi(); }
     if (S.mode === 'learn') {
       prog.seen[key] = true; save();
       setPrompt('✓ Correct!', 'good');
-      if (!explainBefore(plyIdx) && settings.coach !== 'tap') { setCoach('Coach', noteHtml(S.lineIdx, plyIdx)); S.lastNote = key; }
+      if (!explainBefore(plyIdx) && settings.coach !== 'tap') { setCoach('', noteHtml(S.lineIdx, plyIdx)); S.lastNote = key; }
     } else if (S.mode === 'practice' || S.mode === 'drill') {
       setPrompt('✓ Correct', 'good');
-      if (settings.coach === 'every') { setCoach('Coach', noteHtml(S.lineIdx, plyIdx)); S.lastNote = key; }
+      if (settings.coach === 'every') { setCoach('', noteHtml(S.lineIdx, plyIdx)); S.lastNote = key; }
     } else if (S.mode === 'puzzles') {
       S.puzzle.solved++;
       if (S.puzzle.solved >= S.puzzle.need || S.ply >= moves.length) return finishPuzzle(true);
@@ -376,28 +450,28 @@ function onUserMove(orig, dest) {
     }
     advance(S.mode === 'time' ? 200 : 450);
   } else {
-    // wrong move: flash and revert
-    if (settings.sound) playSound('wrong');
+    buzz('wrong');
+    const wrap = $('#board-wrap'); wrap.classList.remove('shake'); void wrap.offsetWidth; wrap.classList.add('shake');
     S.tries++;
-    const key = pathKey(moves, S.ply + 1);
-    registerMistake(false, key);
+    registerMistake(pathKey(moves, S.ply + 1));
     const fen = S.chess.fen();
     cg.set({ fen: test.fen(), lastMove: [orig, dest] });
     setTimeout(() => {
-      syncBoard({ shapes: (S.mode === 'learn' || S.tries >= 2) && S.mode !== 'arena' && S.mode !== 'puzzles' ? arrowFor(expected, fen) : [] });
+      S.liveShapes = (S.mode === 'learn' || S.tries >= 2) && !['arena', 'puzzles'].includes(S.mode) ? arrowFor(expected, fen) : [];
+      syncBoard({ shapes: S.liveShapes });
     }, 380);
     if (S.mode === 'arena') return finishArena(false, mv.san);
     if (S.mode === 'puzzles') return finishPuzzle(false, mv.san);
-    if (S.mode === 'time') { S.timer.end -= 5000; setPrompt(`✗ ${esc(mv.san)} isn't it (−5s)`, 'bad'); updateTimerUi(); if (S.tries >= 2) setPrompt(`✗ The move is ${esc(expected)} (−5s)`, 'bad'); return; }
+    if (S.mode === 'time') { S.timer.end -= 5000; setPrompt(S.tries >= 2 ? `✗ The move is ${esc(expected)} (−5s)` : `✗ Not ${esc(mv.san)} (−5s)`, 'bad'); updateTimerUi(); return; }
     setPrompt(`✗ ${esc(mv.san)} isn't the move here. Try again.`, 'bad');
-    if (settings.coach !== 'tap' || S.mode === 'learn') setCoach('Coach', noteHtml(S.lineIdx, S.ply));
+    if (settings.coach !== 'tap' || S.mode === 'learn') setCoach('', noteHtml(S.lineIdx, S.ply));
   }
 }
 
-function registerMistake(isHint, key) {
+function registerMistake(key) {
   S.mistakes++;
-  if (key) { prog.mistakes[key] = (prog.mistakes[key] || 0) + 1; }
-  if (S.mode === 'drill' && prog.drillStreak) { prog.drillStreak = 0; }
+  if (key) prog.mistakes[key] = (prog.mistakes[key] || 0) + 1;
+  if (S.mode === 'drill') prog.drillStreak = 0;
   save(); renderModes();
 }
 
@@ -414,7 +488,7 @@ function finishLine() {
     prog.finishedAny = true;
     save();
     if (settings.confetti) confetti();
-    if (settings.sound) playSound('done');
+    buzz('done');
     setCoach('Line complete', lastNote + `<p>${first ? 'New line discovered! It is now in your practice queue.' : 'Nice — line reviewed.'}</p>`);
     setPrompt('🎉 Line complete!', 'good');
     const next = nextLearnLine();
@@ -430,16 +504,16 @@ function finishLine() {
     prog.srs[idx] = r; prog.discovered[idx] = prog.discovered[idx] || now; prog.finishedAny = true;
     save();
     if (S.mistakes === 0 && settings.confetti) confetti();
-    if (settings.sound) playSound('done');
+    buzz('done');
     const when = S.mistakes === 0 ? `Perfect! Next review in ${r.interval < 2 ? '1 day' : Math.round(r.interval) + ' days'}.` : `${S.mistakes} mistake${S.mistakes > 1 ? 's' : ''} — you'll see this line again in 10 minutes.`;
     setCoach('Line complete', lastNote + `<p>${when}</p>`);
     setPrompt(S.mistakes === 0 ? '✓ Perfect line' : 'Line finished', S.mistakes === 0 ? 'good' : 'info');
     setActions([{ label: 'Next due line →', cls: 'primary', onClick: () => startPractice() }, { label: '↺ Again', onClick: () => startLine(idx) }]);
   } else if (S.mode === 'drill') {
     if (S.mistakes === 0) { prog.drillStreak++; prog.drillBest = Math.max(prog.drillBest, prog.drillStreak); }
-    save(); renderModes();
-    if (settings.sound) playSound('done');
-    setPrompt(S.mistakes === 0 ? `✓ Streak ×${prog.drillStreak}` : 'Streak reset — keep going', S.mistakes === 0 ? 'good' : 'bad');
+    save();
+    buzz('done');
+    setPrompt(S.mistakes === 0 ? `🔥 Streak ×${prog.drillStreak}` : 'Streak reset — keep going', S.mistakes === 0 ? 'good' : 'bad');
     const tok = S.token;
     setTimeout(() => { if (tok === S.token && S.mode === 'drill') startDrill(); }, 900);
   } else if (S.mode === 'time') {
@@ -467,25 +541,19 @@ function switchMode(mode) {
   stopTimer();
   S.mode = mode;
   S.token++;
+  setActions([]);
   renderModes();
   ({ learn: startLearn, practice: startPractice, drill: startDrill, time: introTime, puzzles: startPuzzle, arena: introArena })[mode]();
 }
-
-function needDiscovered(what) {
-  S.done = true; S.chess = new Chess(); S.ply = 0; syncBoard(); renderMoves();
-  setCoach('Coach', `<p>${what} uses lines you have already discovered. Finish at least one line in <b>Learn</b> first.</p>`);
-  setPrompt('Nothing to train yet.', 'info');
-  setActions([{ label: 'Go to Learn', cls: 'primary', onClick: () => switchMode('learn') }]);
-}
+function resetBoardIdle() { S.done = true; S.chess = new Chess(); S.ply = 0; S.startPly = 0; S.view = null; syncBoard(); }
 
 function startLearn() {
   const n = nextLearnLine();
   if (n === null) {
-    S.done = true;
-    setCoach('Coach', `<p>You have discovered every line in <b>${esc(course.tiers[prog.depth].name)}</b>. 🎉 Keep them fresh in Practice, or raise the training depth in Settings for more lines.</p>`);
+    resetBoardIdle();
+    setCoach('', `<p>You have discovered every line in <b>${esc(course.tiers[prog.depth].name)}</b>. 🎉 Keep them fresh in Practice, or go deeper for more lines.</p>`);
     setPrompt('All lines discovered.', 'good');
-    setActions([{ label: 'Practice', cls: 'primary', onClick: () => switchMode('practice') }, { label: 'Select a line', onClick: openLines }]);
-    S.chess = new Chess(); S.ply = 0; syncBoard(); renderMoves();
+    setActions([{ label: 'Practice', cls: 'primary', onClick: () => switchMode('practice') }, course.tiers.length > prog.depth + 1 && { label: 'Go deeper', onClick: () => openDepthSheet(false) }]);
     return;
   }
   startLine(n);
@@ -493,40 +561,34 @@ function startLearn() {
 
 function startPractice() {
   const disc = discoveredList();
-  if (!disc.length) return needDiscovered('Practice');
+  if (!disc.length) return switchMode('learn');
   S.mode = 'practice'; renderModes();
   const due = dueList();
   let idx;
-  if (due.length) {
-    due.sort((a, b) => (prog.srs[a]?.due ?? 0) - (prog.srs[b]?.due ?? 0));
-    idx = due[0];
-  } else {
-    disc.sort((a, b) => (prog.srs[a]?.due ?? 0) - (prog.srs[b]?.due ?? 0));
-    idx = disc[0];
-    toast('All caught up! Here is an extra review.');
-  }
-  setCoach('Practice', `<p>Play the whole line from memory. Lines you get perfect come back later; mistakes bring them back sooner.</p>`);
+  if (due.length) { due.sort((a, b) => (prog.srs[a]?.due ?? 0) - (prog.srs[b]?.due ?? 0)); idx = due[0]; }
+  else { disc.sort((a, b) => (prog.srs[a]?.due ?? 0) - (prog.srs[b]?.due ?? 0)); idx = disc[0]; toast('All caught up! Here is an extra review.'); }
+  setCoach('Practice', `<p>Play the whole line from memory. Perfect lines come back later; mistakes bring them back sooner.</p>`);
+  S.lastNote = 'intro';
   startLine(idx);
 }
 
 let lastDrill = -1;
 function startDrill() {
   const disc = discoveredList();
-  if (!disc.length) return needDiscovered('Drill');
+  if (!disc.length) return switchMode('learn');
   S.mode = 'drill';
   let idx = randomFrom(disc);
   if (disc.length > 1) while (idx === lastDrill) idx = randomFrom(disc);
   lastDrill = idx;
   setCoach('Drill', `<p>Random lines, back to back. Every perfect line adds to your streak — one slip resets it. Best: ×${prog.drillBest}.</p>`);
+  S.lastNote = 'intro';
   startLine(idx, { firstDelay: 200 });
 }
 
 function timePool() { const d = discoveredList(); return d.length ? d : [...tierLines()]; }
 function introTime() {
-  S.done = true; S.chess = new Chess(); S.ply = 0; syncBoard(); renderMoves();
-  $('#line-name').textContent = '';
-  if (!discoveredList().length) return needDiscovered('Time mode');
-  setCoach('Time trial', `<p>Three minutes on the clock. Score a point for every correct move across random discovered lines. A wrong move costs 5 seconds.</p><p>Best score: <b>${prog.timeBest}</b></p>`);
+  resetBoardIdle();
+  setCoach('Time', `<p>Three minutes on the clock. Score a point for every correct move across random discovered lines. A wrong move costs 5 seconds.</p><p>Best score: <b>${prog.timeBest}</b></p>`);
   setPrompt('Ready?', 'info');
   setActions([{ label: '▶ Start 3:00', cls: 'primary', onClick: startTimer }]);
 }
@@ -534,6 +596,7 @@ function startTimer() {
   stopTimer();
   S.timer = { end: Date.now() + 180000, score: 0, running: true };
   $('#timer-box').classList.remove('hidden');
+  setCoach('', '');
   S.timer.iv = setInterval(() => { updateTimerUi(); if (Date.now() >= S.timer.end) endTimer(); }, 200);
   updateTimerUi();
   startLine(randomFrom(timePool()), { firstDelay: 150 });
@@ -543,6 +606,7 @@ function updateTimerUi() {
   const left = Math.max(0, S.timer.end - Date.now());
   $('#timer').textContent = `${Math.floor(left / 60000)}:${String(Math.floor(left / 1000) % 60).padStart(2, '0')}`;
   $('#timer-score').textContent = `${S.timer.score} moves`;
+  updateProgress();
 }
 function endTimer() {
   if (!S.timer) return;
@@ -551,21 +615,19 @@ function endTimer() {
   S.token++; S.done = true; syncBoard();
   const best = score > prog.timeBest;
   if (best) { prog.timeBest = score; save(); if (settings.confetti) confetti(); }
+  buzz('done');
   renderModes();
-  setCoach('Time trial', `<p>Time! You scored <b>${score}</b> correct moves.${best ? ' New personal best!' : ` Best: ${prog.timeBest}.`}</p>`);
+  setCoach('Time', `<p>Time! You scored <b>${score}</b> correct moves.${best ? ' New personal best!' : ` Best: ${prog.timeBest}.`}</p>`);
   setPrompt(`Score: ${score}`, 'good');
   setActions([{ label: '▶ Play again', cls: 'primary', onClick: startTimer }]);
 }
 
-// Puzzles: jump into the middle of a line and find our move(s).
 function puzzleDifficulty(lineIdx, ply) {
-  const key = pathKey(lines[lineIdx].moves, ply + 1);
-  const mis = prog.mistakes[key] || 0;
+  const mis = prog.mistakes[pathKey(lines[lineIdx].moves, ply + 1)] || 0;
   return Math.min(2200, 850 + ply * 38 + mis * 60);
 }
 function startPuzzle() {
   const pool = discoveredList().length ? discoveredList() : [...tierLines()];
-  // choose a position whose rating is near ours
   let best = null;
   for (let k = 0; k < 40; k++) {
     const li = randomFrom(pool);
@@ -576,42 +638,42 @@ function startPuzzle() {
     const score = Math.abs(d - prog.puzzleRating) + Math.random() * 120;
     if (!best || score < best.score) best = { li, p, d, score };
   }
-  if (!best) return needDiscovered('Puzzles');
+  if (!best) return switchMode('learn');
   S.mode = 'puzzles';
   S.puzzle = { rating: best.d, solved: 0, need: Math.min(2, Math.ceil((lines[best.li].moves.length - best.p) / 2)) };
-  setCoach('Puzzle', `<p>Find the repertoire move${S.puzzle.need > 1 ? 's' : ''} in this position from <b>${esc(course.title)}</b>. Puzzle rating ${best.d}.</p>`);
+  setCoach('Puzzle', `<p>Find the repertoire move${S.puzzle.need > 1 ? 's' : ''} in this position. Puzzle rating ${best.d}.</p>`);
+  S.lastNote = 'intro';
   startLine(best.li, { startPly: best.p - 1, firstDelay: 600 });
 }
 function finishPuzzle(ok, wrongSan) {
   if (S.done && !ok) return;
   S.done = true; S.token++;
-  const expScore = 1 / (1 + 10 ** ((S.puzzle.rating - prog.puzzleRating) / 400));
-  const delta = Math.round(24 * ((ok && !S.hinted ? 1 : 0) - expScore));
+  const exp = 1 / (1 + 10 ** ((S.puzzle.rating - prog.puzzleRating) / 400));
+  const won = ok && !S.hinted;
+  const delta = Math.round(24 * ((won ? 1 : 0) - exp));
   prog.puzzleRating = Math.max(400, prog.puzzleRating + delta);
   save(); renderModes();
   const idx = S.lineIdx;
-  const ansIdx = ok ? S.ply - 1 : S.ply;
-  setCoach(ok ? 'Solved!' : 'Not quite', noteHtml(idx, ansIdx));
-  setPrompt(ok && !S.hinted ? `✓ Solved! ${delta >= 0 ? '+' : ''}${delta}` : `✗ ${wrongSan ? esc(wrongSan) + ' — the move was ' + esc(lines[idx].moves[S.ply]) + '. ' : ''}${delta}`, ok && !S.hinted ? 'good' : 'bad');
-  if (ok && settings.sound) playSound('done');
+  setCoach(won ? 'Solved!' : 'Not quite', noteHtml(idx, ok ? S.ply - 1 : S.ply));
+  setPrompt(won ? `✓ Solved! ${delta >= 0 ? '+' : ''}${delta}` : `✗ ${wrongSan ? esc(wrongSan) + ' — the move was ' + esc(lines[idx].moves[S.ply]) + '. ' : ''}${delta}`, won ? 'good' : 'bad');
+  if (won) buzz('done');
   setActions([{ label: 'Next puzzle →', cls: 'primary', onClick: startPuzzle }]);
   syncBoard();
 }
 
 function introArena() {
-  S.done = true; S.chess = new Chess(); S.ply = 0; syncBoard(); renderMoves();
-  $('#line-name').textContent = '';
+  resetBoardIdle();
   setCoach('Arena', `<p>Face a sparring partner who picks any variation in your training depth — including lines you haven't discovered. No hints, no notes: play the whole opening without a mistake to win.</p><p>Arena rating: <b>${Math.round(prog.arenaRating)}</b></p>`);
   setPrompt('Ready for a game?', 'info');
-  setActions([{ label: '⚔ Find opponent', cls: 'primary', onClick: startArena }]);
+  setActions([{ label: '⚔️ Find opponent', cls: 'primary', onClick: startArena }]);
 }
 function startArena() {
   const opp = Math.round(prog.arenaRating + (Math.random() - 0.5) * 300);
   S.arena = { opp };
   S.mode = 'arena';
-  const li = randomFrom([...tierLines()]);
   setCoach('Arena', `<p>Opponent rated <b>${opp}</b>. Good luck!</p>`);
-  startLine(li, { startPly: 0 });
+  S.lastNote = 'intro';
+  startLine(randomFrom([...tierLines()]), { startPly: 0 });
 }
 function finishArena(won, wrongSan) {
   if (!S.arena || S.arena.over) return;
@@ -621,28 +683,57 @@ function finishArena(won, wrongSan) {
   prog.arenaRating = Math.max(400, prog.arenaRating + delta);
   save(); renderModes();
   if (won && settings.confetti) confetti();
+  if (won) buzz('done');
   const idx = S.lineIdx;
   setCoach(won ? 'Victory' : 'Defeat', won ? `<p>You played the whole line perfectly. ${delta >= 0 ? '+' : ''}${delta} rating.</p>` : `<p>You played <b>${esc(wrongSan)}</b>; the repertoire move was <b>${esc(lines[idx].moves[S.ply])}</b>. ${delta} rating.</p>${noteHtml(idx, S.ply)}`);
   setPrompt(won ? `🏆 Won ${delta >= 0 ? '+' : ''}${delta}` : `Lost ${delta}`, won ? 'good' : 'bad');
-  setActions([{ label: '⚔ Next opponent', cls: 'primary', onClick: startArena }, !won && { label: 'Learn this line', onClick: () => { S.mode = 'learn'; renderModes(); startLine(idx); } }]);
+  setActions([{ label: '⚔️ Next opponent', cls: 'primary', onClick: startArena }, !won && { label: 'Learn this line', onClick: () => { S.mode = 'learn'; renderModes(); startLine(idx); } }]);
   syncBoard();
 }
 
-// ---------------------------------------------------------------- modals
-function openModal(title, html, onMount) {
+// ---------------------------------------------------------------- sheets
+const X_SVG = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>';
+const CHEV = '<svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="m9 18 6-6-6-6"/></svg>';
+function openSheet(title, html, onMount, opts = {}) {
+  closePopover();
   const root = $('#modal-root');
-  root.innerHTML = `<div class="modal-back"><div class="modal" role="dialog" aria-label="${esc(title)}"><header><h3>${esc(title)}</h3><button class="x" aria-label="Close">×</button></header><div class="content">${html}</div></div></div>`;
-  const close = () => { root.innerHTML = ''; };
-  root.querySelector('.x').onclick = close;
-  root.querySelector('.modal-back').onclick = e => { if (e.target.classList.contains('modal-back')) close(); };
-  document.addEventListener('keydown', function k(e) { if (e.key === 'Escape') { close(); document.removeEventListener('keydown', k); } });
+  root.innerHTML = `<div class="sheet-back"><div class="sheet" role="dialog" aria-label="${esc(title || 'Dialog')}"><div class="grab"></div>
+    ${title !== null ? `<header><h3>${esc(title)}</h3>${opts.headExtra || ''}<button class="x" aria-label="Close">${X_SVG}</button></header>` : ''}
+    <div class="content">${html}</div></div></div>`;
+  const close = () => { root.innerHTML = ''; opts.onClose?.(); };
+  root.querySelector('.x')?.addEventListener('click', close);
+  root.querySelector('.sheet-back').onclick = e => { if (e.target.classList.contains('sheet-back') && !opts.modal) close(); };
+  // swipe down to close
+  const sheet = root.querySelector('.sheet');
+  let y0 = null;
+  sheet.addEventListener('touchstart', e => { if (sheet.querySelector('.content').scrollTop <= 0) y0 = e.touches[0].clientY; }, { passive: true });
+  sheet.addEventListener('touchmove', e => { if (y0 === null) return; const dy = e.touches[0].clientY - y0; if (dy > 0) sheet.style.transform = `translateY(${dy}px)`; }, { passive: true });
+  sheet.addEventListener('touchend', e => { if (y0 === null) return; const dy = e.changedTouches[0].clientY - y0; y0 = null; if (dy > 110 && !opts.modal) close(); else sheet.style.transform = ''; });
   onMount?.(root.querySelector('.content'), close);
 }
 
-function seg(key, options, descs) {
-  return `<div class="seg" data-key="${key}">${options.map(([v, l]) => `<button data-v="${v}" class="${settings[key] === v ? 'on' : ''}">${l}</button>`).join('')}</div>
-    <div class="desc" data-desc="${key}">${descs ? esc(descs[settings[key]] || '') : ''}</div>`;
+function openDepthSheet(firstTime) {
+  const t = course.tiers;
+  openSheet(null, `
+    <div class="depth-title">How deep do you want to go?</div>
+    <div class="depth-sub">${esc(course.title)} · ${lines.length} lines</div>
+    ${t.map((x, i) => `<button class="depth-card t${t.length === 2 && i === 1 ? 3 : i + 1} ${prog.depth === i ? 'on' : ''}" data-d="${i}">
+      <span class="em">${tierEmoji(i)}</span><span class="tx"><b>${esc(x.name)}</b><small>${esc(x.sub || '')}</small></span>
+      <span class="num">${x.count}<small>lines</small></span></button>`).join('')}
+    <button class="big-btn" id="depth-go"></button>
+    <div class="small-note">You can change this anytime. Progress on all lines is kept.</div>`, (box, close) => {
+    let pick = prog.depth;
+    const label = () => { box.querySelector('#depth-go').innerHTML = `${tierEmoji(pick)} Start with ${esc(t[pick].name)} ›`; };
+    box.querySelectorAll('.depth-card').forEach(b => b.onclick = () => { pick = +b.dataset.d; buzz('tap'); box.querySelectorAll('.depth-card').forEach(x => x.classList.toggle('on', x === b)); label(); });
+    box.querySelector('#depth-go').onclick = () => {
+      const changed = pick !== prog.depth;
+      prog.depth = pick; prog.depthChosen = true; save(); close(); renderModes(); buzz('tap');
+      if (firstTime || (changed && S.mode === 'learn' && S.done)) startLearn();
+    };
+    label();
+  }, { modal: firstTime });
 }
+
 const COACH_DESC = {
   auto: 'Explains a move the first time and after a mistake. Moves you know, it just asks.',
   every: 'Explains every move, every time — great for a first pass through a course.',
@@ -653,150 +744,128 @@ const ARROW_DESC = {
   notes: 'Shows the move as an arrow whenever the coach explains it.',
   always: 'Always shows the move to play while learning.',
 };
-function toggle(key, label, desc) {
-  return `<div class="set-item"><div class="label">${label}<label class="toggle"><input type="checkbox" data-toggle="${key}" ${(key in settings ? settings[key] : prog[key]) ? 'checked' : ''}><span></span></label></div><div class="desc">${desc}</div></div>`;
+const EYE_OFF = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="2.6"><path d="M2 2l20 20M10.6 6.1A10 10 0 0 1 22 12a14 14 0 0 1-2.4 3.2M6.6 6.6A14 14 0 0 0 2 12s3.6 7 10 7a9.6 9.6 0 0 0 5.4-1.6"/></svg>';
+function coachIll(v) {
+  if (v === 'auto') return '<div class="ill"><div class="ln"><i></i></div><div class="ln">?</div></div>';
+  if (v === 'every') return '<div class="ill"><div class="ln"><i></i></div><div class="ln"><i></i></div></div>';
+  return `<div class="ill"><div class="ln off">${EYE_OFF}<i></i></div><div class="ln off">${EYE_OFF}<i></i></div></div>`;
 }
+function arrowIll(v) {
+  const arrow = '<svg viewBox="0 0 100 44" preserveAspectRatio="none"><path d="M22 38 L76 10" stroke="#f59e0b" stroke-width="6" stroke-linecap="round"/><path d="M68 6 L82 7 L76 19 Z" fill="#f59e0b"/></svg>';
+  const note = '<svg viewBox="0 0 100 44" preserveAspectRatio="none"><rect x="54" y="4" width="40" height="30" rx="6" fill="#fff"/><rect x="60" y="12" width="28" height="4" rx="2" fill="#999"/><rect x="60" y="21" width="20" height="4" rx="2" fill="#999"/></svg>';
+  return `<div class="ill board">${'<i></i>'.repeat(8)}${v === 'off' ? '' : v === 'notes' ? arrow + note : arrow}</div>`;
+}
+function switchHtml(key, checked) { return `<label class="switch"><input type="checkbox" data-toggle="${key}" ${checked ? 'checked' : ''}><span></span></label>`; }
 
 function openSettings() {
   const boards = Object.entries(BOARDS).map(([k, [l, d, name]]) => `<button class="swatch ${settings.board === k ? 'on' : ''}" data-board="${k}"><span class="sq"><i style="background:${l}"></i><i style="background:${d}"></i><i style="background:${d}"></i><i style="background:${l}"></i></span>${name}</button>`).join('');
   const pieces = Object.entries(PIECE_SETS).map(([k, name]) => `<button class="swatch ${settings.pieces === k ? 'on' : ''}" data-pieces="${k}"><span class="sq" style="display:block;background:var(--light-sq)"><img src="${pieceUrl(k, 'w', 'N')}" alt=""></span>${name}</button>`).join('');
-  const sizes = [['default', 'Default', 15], ['large', 'Large', 17.5], ['xl', 'Extra large', 20]];
-  const depth = course.tiers.map((t, i) => `<div class="depth-opt ${prog.depth === i ? 'on' : ''}" data-depth="${i}"><span class="r"></span><div><b>${esc(t.name)} · ${t.count} lines</b><small>${esc(t.sub || '')}</small></div></div>`).join('');
+  const sizes = [['default', 'Default', 15], ['large', 'Large', 18], ['xl', 'Extra large', 21]];
   const shared = toPgn(lines[0].moves.slice(0, commonPrefix));
-  openModal('Settings', `
-    <div class="set-group"><h4>Coach notes <small>Every course</small></h4>
-      <div class="set-item">${seg('coach', [['auto', 'Auto'], ['every', 'Every move'], ['tap', 'On tap']], COACH_DESC)}</div>
-      <div class="set-item"><div class="label">Arrows</div>${seg('arrows', [['off', 'Off'], ['notes', 'With notes'], ['always', 'Always']], ARROW_DESC)}</div>
-      ${toggle('evalBar', 'Evaluation bar', "Shows who's better after each move (Stockfish, runs in your browser).")}
+  const tiles = (key, opts, ill) => `<div class="tiles" data-key="${key}">${opts.map(([v, l]) => `<button class="tile ${settings[key] === v ? 'on' : ''}" data-v="${v}">${ill(v)}${l}</button>`).join('')}</div>`;
+  const hapticPill = () => `<button class="chip-btn" id="hap-pill">${settings.haptics ? '📳 Haptics on' : '📴 Haptics off'}</button>`;
+  openSheet('Settings', `
+    <button class="nav-card" id="go-lines"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M10 6h11M10 12h11M10 18h11M4 6h1v4M4 10h2M6 18H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>Select Line${CHEV}</button>
+    <button class="nav-card" id="go-help"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3M12 17h.01"/></svg>Help${CHEV}</button>
+
+    <div class="group-h"><b>Coach</b><span>Every course</span></div>
+    <div class="group">
+      <div class="gi"><div class="lbl">Coach notes</div>${tiles('coach', [['auto', 'Auto'], ['every', 'Every move'], ['tap', 'On tap']], coachIll)}<div class="desc" data-desc="coach">${COACH_DESC[settings.coach]}</div></div>
+      <div class="gi"><div class="lbl">Arrows</div>${tiles('arrows', [['off', 'Off'], ['notes', 'With notes'], ['always', 'Always']], arrowIll)}<div class="desc" data-desc="arrows">${ARROW_DESC[settings.arrows]}</div></div>
+      <div class="gi"><div class="lbl">Evaluation bar ${switchHtml('evalBar', settings.evalBar)}</div><div class="desc" style="margin-top:-4px">Shows who's better after each move. Stockfish runs right in your browser.</div></div>
     </div>
-    <div class="set-group"><h4>Looks <small>Every course</small></h4>
-      <div class="set-item"><div class="label">Board</div><div class="swatches">${boards}</div></div>
-      <div class="set-item"><div class="label">Pieces</div><div class="swatches">${pieces}</div></div>
-      <div class="set-item"><div class="label">Coach text size</div><div class="swatches">${sizes.map(([k, l, px]) => `<button class="swatch ${settings.textSize === k ? 'on' : ''}" data-size="${k}"><span class="sq" style="display:grid;place-items:center;background:#171613;font-size:${px}px;color:var(--text)">Aa</span>${l}</button>`).join('')}</div></div>
+
+    <div class="group-h"><b>Looks</b><span>Every course</span></div>
+    <div class="group">
+      <div class="gi"><div class="lbl">Board</div><div class="swatches">${boards}</div></div>
+      <div class="gi"><div class="lbl">Pieces</div><div class="swatches">${pieces}</div></div>
+      <div class="gi"><div class="lbl">Coach text size</div><div class="swatches">${sizes.map(([k, l, px]) => `<button class="swatch ${settings.textSize === k ? 'on' : ''}" data-size="${k}"><span class="sq" style="display:grid;place-items:center;background:#fff;color:#111;font-weight:800;font-size:${px}px">Aa</span>${l}</button>`).join('')}</div></div>
     </div>
-    <div class="set-group"><h4>This course <small>${esc(course.title)}</small></h4>
-      <div class="set-item"><div class="label">Training depth</div>${depth}<div class="desc">Progress on all lines is kept when switching.</div></div>
-      ${commonPrefix > 0 ? toggle('skipStart', 'Skip the shared start', `Every line opens ${esc(shared)}. Start each one where it branches off. Kicks in after your first finished line.`) : ''}
+
+    <div class="group-h"><b>This course</b><span>${esc(course.title)}</span></div>
+    <div class="group">
+      <button class="gi" id="go-depth" style="width:100%;text-align:left"><div class="lbl" style="margin:0">Training depth <span style="color:var(--muted);font-weight:600">${tierEmoji(prog.depth)} ${esc(course.tiers[prog.depth].name)} · ${course.tiers[prog.depth].count} lines ›</span></div></button>
+      ${commonPrefix > 0 ? `<div class="gi"><div class="lbl">Skip the shared start ${switchHtml('skipStart', prog.skipStart)}</div><div class="desc" style="margin-top:-4px">Every line opens ${esc(shared)}. Start each one where it branches off. Kicks in after your first finished line.</div></div>` : ''}
     </div>
-    <div class="set-group"><h4>Sound and feel <small>Every course</small></h4>
-      ${toggle('confetti', 'Confetti', 'Plays when you finish a line.')}
-      ${toggle('sound', 'Move sounds', 'Soft clicks for moves, captures and mistakes.')}
+
+    <div class="group-h"><b>Feel</b><span>Every course</span></div>
+    <div class="group">
+      <div class="gi"><div class="lbl">Haptics ${switchHtml('haptics', settings.haptics)}</div><div class="desc" style="margin-top:-4px">A light buzz for moves, mistakes and finished lines. No sounds, ever.</div></div>
+      <div class="gi"><div class="lbl">Confetti ${switchHtml('confetti', settings.confetti)}</div><div class="desc" style="margin-top:-4px">Plays when you finish a line.</div></div>
     </div>
-    <div class="set-group">
-      <div class="row">
-        <button class="btn" id="share-pos">🔗 Share this position</button>
-        <button class="btn" id="start-over">↺ Start over</button>
-        <button class="btn danger" id="reset-course">Reset course progress</button>
-      </div>
+
+    <div class="group-h"><b>Position</b><span></span></div>
+    <div class="action-row">
+      <button class="abtn" id="share-pos">🔗 Share this position</button>
+      <button class="abtn" id="start-over">↺ Start over</button>
+      <button class="abtn danger" id="reset-course">Reset course progress</button>
     </div>`, (box, close) => {
-    box.querySelectorAll('.seg').forEach(sg => sg.querySelectorAll('button').forEach(b => b.onclick = () => {
-      settings[sg.dataset.key] = b.dataset.v; saveSettings(settings);
-      sg.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
-      const d = box.querySelector(`[data-desc="${sg.dataset.key}"]`);
-      if (d) d.textContent = (sg.dataset.key === 'coach' ? COACH_DESC : ARROW_DESC)[b.dataset.v];
+    const refreshPill = () => { const p = $('#hap-pill'); if (p) p.outerHTML = hapticPill(); bindPill(); };
+    const bindPill = () => { const p = $('#hap-pill'); if (p) p.onclick = () => { settings.haptics = !settings.haptics; saveSettings(settings); buzz('tap'); refreshPill(); const t = box.querySelector('[data-toggle=haptics]'); if (t) t.checked = settings.haptics; }; };
+    bindPill();
+    box.querySelectorAll('.tiles').forEach(g => g.querySelectorAll('.tile').forEach(b => b.onclick = () => {
+      const key = g.dataset.key;
+      settings[key] = b.dataset.v; saveSettings(settings); buzz('tap');
+      g.querySelectorAll('.tile').forEach(x => x.classList.toggle('on', x === b));
+      box.querySelector(`[data-desc="${key}"]`).textContent = (key === 'coach' ? COACH_DESC : ARROW_DESC)[b.dataset.v];
     }));
     box.querySelectorAll('[data-toggle]').forEach(inp => inp.onchange = () => {
       const k = inp.dataset.toggle;
-      if (k in settings) { settings[k] = inp.checked; saveSettings(settings); if (k === 'evalBar') updateEval(S.chess.fen()); }
+      if (k in settings) { settings[k] = inp.checked; saveSettings(settings); if (k === 'evalBar') updateEval(S.chess.fen()); if (k === 'haptics') refreshPill(); }
       else { prog[k] = inp.checked; save(); }
+      buzz('tap');
     });
-    box.querySelectorAll('[data-board]').forEach(b => b.onclick = () => { settings.board = b.dataset.board; saveSettings(settings); applyTheme(settings); box.querySelectorAll('[data-board]').forEach(x => x.classList.toggle('on', x === b)); });
-    box.querySelectorAll('[data-pieces]').forEach(b => b.onclick = () => { settings.pieces = b.dataset.pieces; saveSettings(settings); applyTheme(settings); box.querySelectorAll('[data-pieces]').forEach(x => x.classList.toggle('on', x === b)); });
-    box.querySelectorAll('[data-size]').forEach(b => b.onclick = () => { settings.textSize = b.dataset.size; saveSettings(settings); applyTheme(settings); box.querySelectorAll('[data-size]').forEach(x => x.classList.toggle('on', x === b)); });
-    box.querySelectorAll('[data-depth]').forEach(d => d.onclick = () => { prog.depth = +d.dataset.depth; save(); renderModes(); box.querySelectorAll('[data-depth]').forEach(x => x.classList.toggle('on', x === d)); });
+    const pickSw = (attr, key) => box.querySelectorAll(`[data-${attr}]`).forEach(b => b.onclick = () => { settings[key] = b.dataset[attr]; saveSettings(settings); applyTheme(settings); buzz('tap'); box.querySelectorAll(`[data-${attr}]`).forEach(x => x.classList.toggle('on', x === b)); });
+    pickSw('board', 'board'); pickSw('pieces', 'pieces'); pickSw('size', 'textSize');
+    box.querySelector('#go-lines').onclick = () => { close(); openLinePopover($('#line-pick')); };
+    box.querySelector('#go-help').onclick = () => { close(); openHelp(); };
+    box.querySelector('#go-depth').onclick = () => { close(); openDepthSheet(false); };
     box.querySelector('#share-pos').onclick = () => {
       const url = new URL(location.href);
       url.search = new URLSearchParams({ course: courseId, line: S.lineIdx + 1, ply: S.view ?? S.ply }).toString();
-      navigator.clipboard?.writeText(url.href).then(() => toast('Link copied to clipboard'), () => prompt('Copy this link', url.href));
+      if (navigator.share && isPhone()) navigator.share({ title: course.title, url: url.href }).catch(() => {});
+      else navigator.clipboard?.writeText(url.href).then(() => toast('Link copied'), () => prompt('Copy this link', url.href));
     };
     box.querySelector('#start-over').onclick = () => { close(); stopTimer(); if (['time', 'arena'].includes(S.mode)) switchMode(S.mode); else startLine(S.lineIdx, { startPly: S.mode === 'puzzles' ? S.startPly : undefined }); };
     box.querySelector('#reset-course').onclick = () => {
       if (!confirm(`Reset all progress for ${course.title}? This cannot be undone.`)) return;
-      resetProgress(courseId); prog = getProgress(courseId); close(); switchMode('learn');
+      resetProgress(courseId); prog = getProgress(courseId); close(); S.mode = 'learn'; renderModes(); openDepthSheet(true);
     };
-  });
-}
-
-function lineStatus(i) {
-  const tier = tierLines();
-  const chips = [];
-  if (S.lineIdx === i) chips.push('<span class="chip blue">current</span>');
-  if (isDiscovered(i)) {
-    const due = (prog.srs[i]?.due ?? 0) <= Date.now();
-    chips.push(due ? '<span class="chip red">due</span>' : '<span class="chip green">learned</span>');
-  } else chips.push('<span class="chip">new</span>');
-  if (!tier.has(i)) chips.push('<span class="chip">outside depth</span>');
-  return chips.join('');
-}
-let showPgns = true;
-function openLines() {
-  openModal('Select Line', `
-    <div class="filter-row">
-      <input type="text" id="line-filter" placeholder="Search names or moves (e.g. Nxe4, Fried Liver)">
-      <label class="row" style="gap:6px;font-size:13px;color:var(--muted)"><label class="toggle"><input type="checkbox" id="show-pgn" ${showPgns ? 'checked' : ''}><span></span></label>Show PGNs</label>
-      <button class="btn small" id="copy-pgn">Copy all PGN</button>
-    </div>
-    <div class="line-list" id="line-list"></div>`, (box, close) => {
-    const render = () => {
-      const q = box.querySelector('#line-filter').value.trim().toLowerCase();
-      box.querySelector('#line-list').innerHTML = lines.map((l, i) => {
-        const pgn = toPgn(l.moves);
-        if (q && !(`${i + 1} ${l.name} ${pgn}`.toLowerCase().includes(q))) return '';
-        return `<button class="line-item ${S.lineIdx === i ? 'cur' : ''} ${tierLines().has(i) ? '' : 'locked'}" data-i="${i}">
-          <span class="num">${i + 1}</span>
-          <span class="info"><span class="nm">${esc(l.name || 'Line ' + (i + 1))} ${lineStatus(i)}</span>${showPgns ? `<span class="pgn">${esc(pgn)}</span>` : ''}</span>
-        </button>`;
-      }).join('') || '<p style="color:var(--muted)">No lines match.</p>';
-      box.querySelectorAll('.line-item').forEach(b => b.onclick = () => {
-        close(); stopTimer();
-        const i = +b.dataset.i;
-        S.mode = isDiscovered(i) && S.mode === 'practice' ? 'practice' : 'learn';
-        renderModes(); startLine(i);
-      });
-    };
-    box.querySelector('#line-filter').oninput = render;
-    box.querySelector('#show-pgn').onchange = e => { showPgns = e.target.checked; render(); };
-    box.querySelector('#copy-pgn').onclick = () => {
-      const txt = lines.map((l, i) => `[Event "${course.title} - ${l.name || 'Line ' + (i + 1)}"]\n\n${toPgn(l.moves)} *\n`).join('\n');
-      navigator.clipboard?.writeText(txt).then(() => toast('All lines copied as PGN'));
-    };
-    render();
-    box.querySelector('.line-item.cur')?.scrollIntoView({ block: 'center' });
-  });
+  }, { headExtra: hapticPill() });
 }
 
 function openHelp() {
-  openModal('Help', `<div class="help">
-    <h4>How training works</h4>
-    <p><b>Learn</b> walks you through new lines. The coach explains each move and shows an arrow; you play the move on the board. Finishing a line "discovers" it.</p>
-    <p><b>Practice</b> uses spaced repetition: play discovered lines from memory. Perfect lines come back after 1, 2.5, 6… days; a mistake brings the line back in 10 minutes.</p>
-    <p><b>Drill</b> fires random discovered lines at you and counts your perfect-line streak.</p>
-    <p><b>Time</b> is a 3-minute sprint — one point per correct move, wrong moves cost 5 seconds.</p>
-    <p><b>Puzzles</b> drop you into the middle of a line; find the repertoire move. Your puzzle rating moves up and down like Elo.</p>
-    <p><b>Arena</b> plays any line in your training depth with no help at all. Get through the opening perfectly to win rating.</p>
-    <h4>Controls</h4>
-    <ul><li>Drag or click pieces to move.</li><li><kbd>←</kbd> <kbd>→</kbd> step back and forward through the moves played (click a move in the list too).</li><li><kbd>H</kbd> shows a hint.</li><li>Right-click drag to draw your own arrows.</li></ul>
-    <h4>Your data</h4>
-    <p>Progress is saved in this browser only (localStorage). Nothing is sent anywhere. Use the same browser to keep your streaks.</p>
-    <h4>About</h4>
-    <p>OpenReps is free and open source. Board by chessground, rules by chess.js, evaluation by Stockfish (all open source). Coach notes are original to this project.</p>
+  openSheet('Help', `<div class="help">
+    <h4>📖 Learn</h4><p>The coach explains each move and marks it with an arrow; you play it on the board. Finishing a line "discovers" it.</p>
+    <h4>🎯 Practice</h4><p>Spaced repetition: play discovered lines from memory. Perfect lines come back after 1, 2.5, 6… days; a mistake brings the line back in 10 minutes.</p>
+    <h4>🔥 Drill</h4><p>Random discovered lines, back to back, counting your perfect-line streak.</p>
+    <h4>⏳ Time</h4><p>A 3-minute sprint — one point per correct move, wrong moves cost 5 seconds.</p>
+    <h4>🧩 Puzzles</h4><p>Drop into the middle of a line and find the repertoire move. Your puzzle rating moves like Elo.</p>
+    <h4>⚔️ Arena</h4><p>Any line in your training depth, no help at all. Get through the opening perfectly to win rating.</p>
+    <h4>Controls</h4><ul><li>Drag or tap pieces to move.</li><li>‹ › step back and forward through the moves played (or <b>←</b> <b>→</b>).</li><li>💡 Hint (or <b>H</b>) shows the move.</li></ul>
+    <h4>Your data</h4><p>Progress is saved in this browser only. Nothing is sent anywhere.</p>
+    <h4>About</h4><p>OpenReps is free and open source. Board by chessground, rules by chess.js, evaluation by Stockfish. Coach notes are original to this project.</p>
   </div>`);
 }
 
-$('#btn-settings').onclick = openSettings;
-$('#btn-lines').onclick = openLines;
-$('#btn-help').onclick = openHelp;
+$('#btn-settings').onclick = () => { buzz('tap'); openSettings(); };
+$('#mode-pick').onclick = e => { buzz('tap'); openModePopover(e.currentTarget); };
+$('#btn-mode').onclick = e => { buzz('tap'); openModePopover(e.currentTarget); };
+$('#line-pick').onclick = e => { buzz('tap'); openLinePopover(e.currentTarget); };
 
 // ---------------------------------------------------------------- boot
 renderModes();
 const shareLine = +params.get('line');
 if (shareLine >= 1 && shareLine <= lines.length) {
   const ply = Math.max(0, Math.min(+params.get('ply') || 0, lines[shareLine - 1].moves.length - 1));
-  S.mode = 'learn'; renderModes();
   startLine(shareLine - 1, { startPly: ply });
-} else if (params.get('mode') && MODES.some(m => m.id === params.get('mode'))) {
+} else if (params.get('mode') && MODES.some(m => m.id === params.get('mode') && !modeState(m).locked)) {
   switchMode(params.get('mode'));
 } else {
-  setCoach('Coach', `<p>${esc(course.intro)}</p>`);
-  startLearn();
+  setCoach('', `<p>${esc(course.intro)}</p>`);
+  if (!prog.depthChosen && course.tiers.length > 1) {
+    resetBoardIdle();
+    setPrompt(`Play the first move to begin.`, 'info');
+    openDepthSheet(true);
+  } else startLearn();
 }

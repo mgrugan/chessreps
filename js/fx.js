@@ -39,24 +39,18 @@ export function evaluate(fen, depth = 12) {
 }
 export function engineReady() { return ready; }
 
-// ---------- sound ----------
-let ctx = null;
-export function playSound(kind = 'move') {
+// ---------- haptics (no sounds) ----------
+// Android/Chrome: navigator.vibrate. iOS Safari 18+: toggling a <input switch>
+// via its label produces a system haptic tick (only inside a user gesture).
+const PATTERNS = { move: 12, capture: 18, check: [14, 40, 14], wrong: [40, 60, 40], done: [16, 50, 16, 50, 30], tap: 8 };
+export function haptic(kind = 'move') {
   try {
-    ctx = ctx || new (window.AudioContext || window.webkitAudioContext)();
-    const t = ctx.currentTime;
-    const o = ctx.createOscillator(), g = ctx.createGain();
-    const cfg = {
-      move: [420, 0.06, 'triangle'], capture: [260, 0.09, 'square'], wrong: [140, 0.18, 'sawtooth'],
-      done: [660, 0.25, 'sine'], check: [520, 0.1, 'square'],
-    }[kind] || [420, 0.06, 'triangle'];
-    o.type = cfg[2]; o.frequency.setValueAtTime(cfg[0], t);
-    if (kind === 'done') o.frequency.exponentialRampToValueAtTime(990, t + 0.2);
-    g.gain.setValueAtTime(kind === 'wrong' ? 0.07 : 0.12, t);
-    g.gain.exponentialRampToValueAtTime(0.0001, t + cfg[1]);
-    o.connect(g).connect(ctx.destination);
-    o.start(t); o.stop(t + cfg[1] + 0.02);
-  } catch { /* audio blocked */ }
+    if (navigator.vibrate) { navigator.vibrate(PATTERNS[kind] ?? 12); return; }
+    const label = document.getElementById('haptic-label');
+    if (!label) return;
+    const reps = Array.isArray(PATTERNS[kind]) ? Math.ceil(PATTERNS[kind].length / 2) : 1;
+    for (let i = 0; i < reps; i++) setTimeout(() => label.click(), i * 90);
+  } catch { /* unsupported */ }
 }
 
 // ---------- confetti ----------

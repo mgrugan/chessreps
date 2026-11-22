@@ -40,20 +40,24 @@ async function card(c) {
   const due = Object.keys(p.discovered).filter(i => (p.srs[i]?.due ?? 0) <= Date.now()).length;
   const pct = total ? Math.round(disc / total * 100) : 0;
   const el = document.createElement('a');
-  el.className = 'card';
+  el.className = 'ccard';
+  el.dataset.search = `${c.title} ${c.blurb || ''}`.toLowerCase();
   el.href = `train.html?course=${encodeURIComponent(c.id)}`;
+  const segs = 3, filled = total ? disc / total * segs : 0;
+  const bar = Array.from({ length: segs }, (_, i) => `<i><b style="width:${Math.max(0, Math.min(1, filled - i)) * 100}%"></b></i>`).join('');
   el.innerHTML = `
-    <div class="thumb"><span class="side">${c.color === 'white' ? '♔ White' : '♚ Black'}</span><div class="mini">${miniBoard(lines[0]?.slice(0, Math.max(1, n)) || [], c.color)}</div></div>
-    <div class="body">
+    <div class="thumb">${miniBoard(lines[0]?.slice(0, Math.max(1, n)) || [], c.color)}</div>
+    <div class="info">
       <h3>${esc(c.title)}</h3>
+      <span class="side">${c.color === 'white' ? '<b class="w">WHITE</b>' : '<b>BLACK</b>'} ${c.section === 'custom' ? 'Your course' : 'Masters course'}</span>
       <p>${esc(c.blurb || toPgn((lines[0] || []).slice(0, n)))}</p>
-      <div class="meta"><span>${total} lines · ${disc} discovered${due ? ` · ${due} due` : ''}</span><span>${pct}%</span></div>
-      <div class="bar"><i style="width:${pct}%"></i></div>
+      <span class="count">${total} lines${disc ? ` · ${disc} discovered` : ''}${due ? ` · ${due} due` : ''}</span>
+      <div class="segbar">${bar}</div>
+      <span class="go">${disc ? 'Continue' : 'Try the first line'} <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
     </div>`;
   if (c.section === 'custom') {
     const del = document.createElement('button');
-    del.className = 'btn small danger'; del.textContent = 'Delete';
-    del.style.cssText = 'position:absolute;top:8px;right:8px';
+    del.className = 'del'; del.textContent = 'Delete';
     del.onclick = e => {
       e.preventDefault();
       if (!confirm(`Delete "${c.title}"?`)) return;
@@ -61,7 +65,7 @@ async function card(c) {
       resetProgress(c.id);
       render();
     };
-    el.querySelector('.thumb').appendChild(del);
+    el.appendChild(del);
   }
   return el;
 }
@@ -71,7 +75,7 @@ async function render() {
   for (const [sec, box] of [['masters', $('#masters')], ['custom', $('#custom')]]) {
     box.innerHTML = '';
     const list = all.filter(c => c.section === sec);
-    if (!list.length) box.innerHTML = '<p style="color:var(--muted);margin:0">No imported courses yet — paste some PGN below.</p>';
+    if (!list.length) box.innerHTML = '<p style="color:var(--muted);margin:0 2px">No imported courses yet — paste some PGN below.</p>';
     for (const c of list) box.appendChild(await card(c));
   }
 }
@@ -95,4 +99,8 @@ $('#imp-go').onclick = () => {
 };
 
 void MASTERS;
+$('#q').oninput = () => {
+  const q = $('#q').value.trim().toLowerCase();
+  document.querySelectorAll('.ccard').forEach(c => { c.style.display = !q || c.dataset.search.includes(q) ? '' : 'none'; });
+};
 render();

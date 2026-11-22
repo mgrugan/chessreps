@@ -16,10 +16,10 @@ export const DEFAULT_SETTINGS = {
   arrows: 'notes',      // off | notes | always
   evalBar: false,
   board: 'default',     // default | lichess | green | blue | darkblue
-  pieces: 'cburnett',   // cburnett | staunty
+  pieces: 'staunty',    // cburnett | staunty
   textSize: 'default',  // default | large | xl
   confetti: true,
-  sound: true,
+  haptics: true,
 };
 
 export function getSettings() { return { ...DEFAULT_SETTINGS, ...read('settings', {}) }; }
@@ -32,6 +32,7 @@ export function defaultProgress() {
     seen: {},         // move path -> true (move has been explained once)
     mistakes: {},     // move path -> count
     depth: 0,         // tier index
+    depthChosen: false,
     skipStart: false,
     finishedAny: false,
     drillStreak: 0,

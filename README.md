@@ -21,7 +21,7 @@ You can also **import your own course** from the home page. It accepts one line 
 - **Puzzles**: you start in the middle of a line and find the repertoire move. You get an Elo-style rating.
 - **Arena**: you play any line in your depth with no help. A perfect opening wins rating.
 
-The settings match the original layout: coach notes (Auto / Every move / On tap), arrows (Off / With notes / Always), a Stockfish evaluation bar that runs locally, 5 board colours, 2 piece sets, coach text size, training depth, "skip the shared start", confetti and sounds. They also include share position, start over and reset course progress. The **Select Line** dialog lists every line with its name, its status and the full PGN, and it can copy all lines as PGN.
+The settings match the original layout: coach notes (Auto / Every move / On tap), arrows (Off / With notes / Always), a Stockfish evaluation bar that runs locally, 5 board colours, 2 piece sets, coach text size, training depth, "skip the shared start", confetti and haptics (vibration on Android, the system haptic tick on iOS 18+). The app makes no sounds. They also include share position, start over and reset course progress. The **Select Line** dialog lists every line with its name, its status and the full PGN, and it can copy all lines as PGN.
 
 ## Run locally
 

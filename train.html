@@ -2,56 +2,67 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0a0a0c">
+  <meta name="apple-mobile-web-app-capable" content="yes">
   <title>OpenReps Trainer</title>
   <meta name="description" content="Free opening trainer: learn, practice and drill chess opening repertoires with coach notes.">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>♞</text></svg>">
   <link rel="stylesheet" href="vendor/chessground.base.css">
   <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
-  <header class="topbar">
-    <a class="brand" href="./"><span class="logo">♞</span>OpenReps</a>
-    <div class="title" id="page-title"></div>
-    <div class="actions">
-      <a class="btn small" href="./">← <span>Courses</span></a>
-    </div>
+<body class="trainer-page">
+  <header class="site-head">
+    <a class="brand" href="./"><span class="logo">♞</span>openreps</a>
+    <div class="head-progress"><div class="pbar"><i id="pbar-desk"></i></div></div>
+    <a class="pill-btn" href="./">All courses</a>
   </header>
 
-  <main class="trainer">
-    <div class="board-col">
-      <div class="evalbar hidden" id="evalbar"><div class="white"></div><div class="num"></div></div>
+  <main class="tr">
+    <div class="tr-board">
+      <div class="evalbar hidden" id="evalbar"><div class="fill"></div><span class="num"></span></div>
       <div class="board-wrap" id="board-wrap"><div id="board"></div></div>
     </div>
 
-    <section class="panel">
-      <nav class="modes" id="modes"></nav>
-      <div class="panel-body">
-        <div class="course-h">
-          <div>
-            <h2 id="course-title"></h2>
-            <div class="line-name" id="line-name"></div>
-          </div>
-          <span class="chip" id="mode-chip"></span>
-        </div>
-        <div id="timer-box" class="status-line hidden"><span class="timer" id="timer">3:00</span><span class="chip blue" id="timer-score">0 moves</span></div>
-        <div class="coach" id="coach">
-          <div class="who"><span class="dot"></span><span id="coach-who">Coach</span></div>
-          <div class="text" id="coach-text"></div>
-        </div>
-        <div class="prompt" id="prompt"></div>
-        <div class="toolbar" id="actions"></div>
-        <div class="moves" id="moves"></div>
+    <section class="tr-panel">
+      <div class="tr-head">
+        <button class="mode-pick" id="mode-pick" aria-haspopup="true"><span class="ic" id="mode-ic">📖</span><span id="mode-name">Learn</span></button>
+        <span class="course-name" id="course-title"></span>
+        <button class="line-pick" id="line-pick" aria-haspopup="true"><span id="line-num">#1</span> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg></button>
       </div>
-      <footer class="panel-foot">
-        <button id="btn-settings">⚙ Settings</button>
-        <button id="btn-lines">☰ Select Line</button>
-        <button id="btn-help">? Help</button>
-      </footer>
+      <div class="tr-sub">
+        <a class="back" href="./" aria-label="Back to courses"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></a>
+        <div class="pbar"><i id="pbar"></i></div>
+      </div>
+
+      <div class="coach-row">
+        <div class="avatar" aria-hidden="true">♞</div>
+        <div class="bubble" id="bubble">
+          <div class="timer-row hidden" id="timer-box"><span class="timer" id="timer">3:00</span><span class="tscore" id="timer-score">0</span></div>
+          <div class="note" id="coach-text"></div>
+          <div class="prompt" id="prompt"></div>
+          <div class="bubble-actions" id="actions"></div>
+        </div>
+      </div>
+
+      <div class="mode-list" id="mode-list"></div>
+
+      <nav class="toolbar">
+        <button class="tb icon" id="btn-settings" aria-label="Settings"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg></button>
+        <button class="tb" id="btn-mode" aria-label="Choose mode"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 11h4M8 9v4M15 12h.01M18 10h.01"/><path d="M17.32 5H6.68a4 4 0 0 0-3.98 3.59l-.6 5.52A3 3 0 0 0 5.08 17.5c.83 0 1.6-.4 2.08-1.07L8.5 14.5h7l1.34 1.93A2.53 2.53 0 0 0 18.92 17.5a3 3 0 0 0 2.98-3.39l-.6-5.52A4 4 0 0 0 17.32 5z"/></svg><span class="desk-only">Mode</span></button>
+        <button class="tb" id="btn-hint"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5M9 18h6M10 22h4"/></svg><span>Hint</span></button>
+        <span class="tb-gap"></span>
+        <div class="tb-nav">
+          <button class="tb icon" id="btn-prev" aria-label="Previous move"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg></button>
+          <button class="tb icon" id="btn-next" aria-label="Next move"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button>
+        </div>
+      </nav>
     </section>
   </main>
 
+  <div id="popover-root"></div>
   <div id="modal-root"></div>
+  <label id="haptic-label" aria-hidden="true" style="position:fixed;left:-9999px;top:0"><input type="checkbox" switch id="haptic-switch"></label>
   <script type="module" src="js/app.js"></script>
 </body>
 </html>

@@ -2,39 +2,48 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0a0a0c">
   <title>OpenReps Opening Trainer</title>
   <meta name="description" content="Free chess opening trainer with coach notes: learn, practice with spaced repetition, drill, time trials, puzzles and arena.">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>♞</text></svg>">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <header class="topbar">
-    <a class="brand" href="./"><span class="logo">♞</span>OpenReps</a>
-    <div class="title">Free opening trainer</div>
+  <header class="site-head">
+    <a class="brand" href="./"><span class="logo">♞</span>openreps</a>
+    <span style="flex:1"></span>
+    <a class="pill-btn blue" href="#import">Import a course</a>
   </header>
   <main class="home">
     <section class="hero">
-      <h1>Learn openings move by move</h1>
-      <p>Pick a course, let the coach explain why each move is played, then lock it in with spaced-repetition practice, drills, time trials, puzzles and the arena. Free, no account — progress stays in your browser.</p>
+      <h1>Chess openings,<br>learned move by move</h1>
+      <p>Free courses with a coach note on every move. Learn, practice, drill and play — no account needed.</p>
     </section>
 
-    <div class="section-h"><h2>Masters</h2><span>Full repertoires with coach notes on every move</span></div>
-    <div class="grid" id="masters"></div>
+    <div class="search-row">
+      <label class="search">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9b9ba4" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input type="text" id="q" placeholder="Search openings..." autocomplete="off">
+      </label>
+    </div>
 
-    <div class="section-h"><h2>Your courses</h2><span>Imported from PGN, saved in this browser</span></div>
-    <div class="grid" id="custom"></div>
+    <div class="sec-h"><h2>Masters</h2><span>Full repertoires</span></div>
+    <div class="courses" id="masters"></div>
 
-    <div class="section-h"><h2>Import a course</h2><span>Paste PGN — one game per line, a multi-game file, or a study with variations</span></div>
+    <div class="sec-h"><h2>Your courses</h2><span>Saved in this browser</span></div>
+    <div class="courses" id="custom"></div>
+
+    <div class="sec-h" id="import"><h2>Import a course</h2><span>Paste PGN</span></div>
     <div class="import-box">
       <div class="row" style="margin-bottom:10px">
         <input type="text" id="imp-title" placeholder="Course name (e.g. My London System)" style="flex:2;min-width:200px">
         <select id="imp-color" style="flex:1;min-width:140px"><option value="white">I play White</option><option value="black">I play Black</option></select>
       </div>
-      <textarea id="imp-pgn" rows="7" placeholder="1. d4 d5 2. Bf4 Nf6 3. e3 c5 4. c3&#10;1. d4 d5 2. Bf4 c5 3. e3 Nc6 4. Nf3&#10;&#10;Optional names: Main line|1. d4 d5 2. Bf4 ..."></textarea>
+      <textarea id="imp-pgn" rows="7" placeholder="One line per row, a multi-game PGN, or a study with variations:&#10;1. d4 d5 2. Bf4 Nf6 3. e3 c5 4. c3&#10;Main line|1. d4 d5 2. Bf4 c5 3. e3 Nc6 4. Nf3"></textarea>
       <div class="row" style="margin-top:10px">
         <button class="btn primary" id="imp-go">Create course</button>
-        <span id="imp-msg" style="color:var(--muted);font-size:13px"></span>
+        <span id="imp-msg" style="color:var(--muted);font-size:14px"></span>
       </div>
     </div>
 

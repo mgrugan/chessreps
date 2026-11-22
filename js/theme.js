@@ -1,6 +1,6 @@
 // Board colours and piece sets.
 export const BOARDS = {
-  default: ['#e8dcc8', '#a98b6f', 'Default'],
+  default: ['#ecd8b4', '#c6a174', 'Default'],
   lichess: ['#f0d9b5', '#b58863', 'Lichess'],
   green: ['#eeeed2', '#769656', 'Green'],
   blue: ['#dee3e6', '#8ca2ad', 'Blue'],
@@ -18,7 +18,7 @@ export function applyTheme(settings) {
   const root = document.documentElement.style;
   root.setProperty('--light-sq', light);
   root.setProperty('--dark-sq', dark);
-  root.setProperty('--coach-size', { default: '15px', large: '17.5px', xl: '20px' }[settings.textSize] || '15px');
+  root.setProperty('--coach-size', { default: '16px', large: '18.5px', xl: '21px' }[settings.textSize] || '16px');
   let style = document.getElementById('piece-css');
   if (!style) { style = document.createElement('style'); style.id = 'piece-css'; document.head.appendChild(style); }
   let css = '';
