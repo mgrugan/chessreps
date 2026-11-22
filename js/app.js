@@ -426,7 +426,10 @@ function onUserMove(orig, dest) {
   const expected = moves[S.ply];
   const test = new Chess(S.chess.fen());
   let mv;
-  try { mv = test.move({ from: orig, to: dest, promotion: 'q' }); } catch { syncBoard(); return; }
+  // use the repertoire move's promotion piece (e.g. c8=R#) when the squares match
+  let promo = 'q';
+  try { const em = new Chess(S.chess.fen()).move(expected); if (em.from === orig && em.to === dest && em.promotion) promo = em.promotion; } catch {}
+  try { mv = test.move({ from: orig, to: dest, promotion: promo }); } catch { syncBoard(); return; }
   if (mv.san === expected) {
     S.tries = 0;
     const plyIdx = S.ply;

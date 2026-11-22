@@ -9,6 +9,10 @@ const COURSES = [
     tiers: [['Essentials', 19, 'Most players start here'], ['Full Mastery', 30, 'Every line in the course']] },
   { id: 'alapin', file: 'alapin.txt', title: 'Alapin Sicilian', color: 'white',
     tiers: [['Essentials', 20, 'Most players start here'], ['Full Mastery', 57, 'Every line in the course']] },
+  { id: 'scandinavian', file: 'scandinavian.txt', title: 'Counter the Scandinavian', color: 'white',
+    tiers: [['Essentials', 12, 'Most players start here'], ['Full Mastery', 38, 'Every line in the course']] },
+  { id: 'french', file: 'french.txt', title: 'Counter the French', color: 'white',
+    tiers: [['Essentials', 12, 'Most players start here'], ['Full Mastery', 30, 'Every line in the course']] },
 ];
 
 export function parsePgnMoves(pgn) {

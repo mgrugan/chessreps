@@ -6,6 +6,8 @@ const parts = {
   'alapin-a': ['alapin', l => (l <= 13) || (l >= 25 && l <= 33) || l >= 44],
   'alapin-b': ['alapin', l => (l >= 14 && l <= 24) || (l >= 34 && l <= 43)],
   'caro-kann': ['caro-kann', () => true],
+  'scandinavian': ['scandinavian', () => true],
+  'french': ['french', () => true],
 };
 const assigned = new Set();
 for (const [part, [cid, pred]] of Object.entries(parts)) {

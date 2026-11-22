@@ -18,6 +18,16 @@ export const MASTERS = [
     blurb: '1.e4 c5 2.c3 — skip the open Sicilian jungle, build a full pawn centre and gain space against every Black setup.',
     fallbackIntro: 'Against the Sicilian we play 2.c3, preparing d4 so we can recapture with a pawn and keep a strong centre.',
   },
+  {
+    id: 'scandinavian', title: 'Counter the Scandinavian', color: 'white', noteParts: ['scandinavian'],
+    blurb: '1.e4 d5 2.exd5 — punish the early queen with fast development, and beat 2...Nf6 and the 2...c6 gambit.',
+    fallbackIntro: 'Against the Scandinavian we take on d5 and use the time Black spends with the queen to develop quickly.',
+  },
+  {
+    id: 'french', title: 'Counter the French', color: 'white', noteParts: ['french'],
+    blurb: '1.e4 e6 2.d4 d5 3.Nc3 — the Steinitz with 5.f4, the Winawer with Qg4, and answers to every Rubinstein and sideline.',
+    fallbackIntro: 'Against the French we play 3.Nc3 and grab space, aiming our pieces at Black\'s kingside.',
+  },
 ];
 
 export function listCourses() {
