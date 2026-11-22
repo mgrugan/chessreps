@@ -1,0 +1,490 @@
+# Course: Alapin Sicilian (we play white)
+# LINES
+1	e4 c5 c3 Nc6 d4 cxd4 cxd4 e6 d5 exd5 exd5 Nce7 d6 Nc6 Qe2+
+2	e4 c5 c3 g6 d4 Bg7 Nf3 cxd4 cxd4 d6 h3 Nf6 Nc3 O-O Be3 Nc6 d5 Nb8 Rc1
+3	e4 c5 c3 g6 d4 Bg7 Nf3 cxd4 cxd4 Nc6 Nc3 d6 h3 Nf6 d5 Nb8 Bd3 O-O O-O Nbd7 Be3
+4	e4 c5 c3 g6 d4 Bg7 Nf3 cxd4 cxd4 d5 e5 Bg4 Bb5+ Nc6 Bxc6+ bxc6 O-O e6 Nbd2 Ne7 h3 Bxf3 Nxf3 O-O b3 Qb6 Ba3
+5	e4 c5 c3 g6 d4 cxd4 cxd4 d5 e5 Bg7 Nc3 Nc6 Bb5 Nh6 h3 O-O Nf3 f6 O-O fxe5 dxe5 Nxe5 Nxe5 Bxe5 Bxh6
+6	e4 c5 c3 g6 d4 cxd4 cxd4 d5 e5 Bg7 Nc3 Nc6 Bb5 Nh6 h3 O-O Nf3 f6 O-O fxe5 dxe5 e6 Re1 Nf7 Bxc6 bxc6 Na4
+7	e4 c5 c3 g6 d4 cxd4 cxd4 Bg7 Nc3 Nc6 d5 Nb8 d6 exd6 Nb5
+8	e4 c5 c3 g6 d4 cxd4 cxd4 Bg7 Nc3 Nc6 d5 Ne5 f4
+9	e4 c5 c3 e5 Nf3 d6 d4 cxd4 cxd4 exd4 Nxd4 Nf6 Nc3 Be7 Bb5+ Bd7 Bxd7+ Nbxd7 O-O O-O Nf5
+10	e4 c5 c3 e5 Nf3 d6 d4 cxd4 cxd4 exd4 Nxd4 Nc6 Nc3 Nf6 Bb5 Bd7 O-O Be7 Bf4 O-O Re1 a6 Bf1
+11	e4 c5 c3 e5 Nf3 Nc6 Bc4 d6 O-O Nf6 Ng5 d5 exd5 Nxd5 d4 cxd4 cxd4 Nxd4 Re1 f6 Qxd4 fxg5 Qxd5
+12	e4 c5 c3 e5 Nf3 Nc6 Bc4 Nf6 Ng5 d5 exd5 Na5 Bb5+ Bd7 Qa4 b6 d3 Nxd5 Bxd7+ Qxd7 Qxd7+ Kxd7 Nxf7
+13	e4 c5 c3 e5 Nf3 Nc6 Bc4 Nf6 Ng5 d5 exd5 Nxd5 d3 Be7 Qh5 g6 Qf3 Bxg5 Bxd5 O-O Bxg5 Qxg5 Nd2 Bg4 Qg3 Ne7 Ne4
+25	e4 c5 c3 e6 d4 d5 exd5 exd5 Bb5+ Nc6 Nf3 Nf6 O-O Be7 dxc5 Bxc5 Bg5 Be6 Nd4 O-O Bxc6 bxc6 Nxc6 Qb6 Bxf6 gxf6 b4 Qxc6 bxc5 Qxc5 Qf3
+26	e4 c5 c3 e6 d4 d5 exd5 exd5 Bb5+ Nc6 Nf3 Nf6 O-O Be7 dxc5 Bxc5 Bg5 O-O Bxf6 Qxf6 Qxd5
+27	e4 c5 c3 e6 d4 d5 exd5 exd5 Bb5+ Bd7 Bxd7+ Nxd7 Nf3 Ngf6 O-O Be7 dxc5 Nxc5 Be3 O-O Nbd2
+28	e4 c5 c3 e6 d4 cxd4 cxd4 d5 e5 Nc6 Nc3 Bb4 Bd3 Nge7 Nf3 Nf5 O-O O-O a3 Ba5 Bc2 Bb6 Qd3 Ncxd4 Nxd4 Bxd4 g4 Bxc3 bxc3
+29	e4 c5 c3 e6 d4 cxd4 cxd4 d5 e5 Nc6 Nc3 Bb4 Bd3 Nge7 Nf3 Nf5 O-O O-O a3 Ba5 Bc2 Bb6 Qd3 g6 Bg5 Qc7 Ne2
+30	e4 c5 c3 e6 d4 cxd4 cxd4 d5 e5 Nc6 Nc3 Bb4 Bd3 Nge7 Nf3 Nf5 O-O Nfxd4 Nxd4 Nxd4 Qg4
+31	e4 c5 c3 e6 d4 cxd4 cxd4 d5 e5 Nc6 Nc3 Bb4 Bd3 Nge7 Nf3 O-O Bxh7+ Kxh7 Ng5+ Kg6 h4 Bxc3+ bxc3 Qa5 Qd3+ f5 h5+ Kh6 Nxe6+ Kh7 Nxf8+
+32	e4 c5 c3 e6 d4 cxd4 cxd4 d5 e5 Nc6 Nc3 Bb4 Bd3 Nxd4 Qg4 Bxc3+ bxc3 Nf5 Bxf5 exf5 Qxg7 Qc7 Ne2
+33	e4 c5 c3 e6 d4 cxd4 cxd4 Nf6 Nc3 Bb4 Bd3 Nc6 Nf3 O-O e5 Nd5 Bxh7+ Kxh7 Ng5+ Kg6 h4 Bxc3+ bxc3 Qa5 Qd3+ f5 h5+ Kh6 Nxe6+ Kh7 Nxf8+
+44	e4 c5 c3 Nc6 d4 e6 d5 exd5 exd5 Nce7 d6 Nc6 Qe2+
+45	e4 c5 c3 Nc6 d4 e6 d5 exd5 exd5 Ne5 Nf3 Nxf3+ Qxf3 d6 Bd3 Nf6 O-O Be7 h3 O-O Re1
+46	e4 c5 c3 Nc6 d4 cxd4 cxd4 g6 d5 Nb8 Qd4 Nf6 e5 Nh5 Nc3 Bg7 g4
+47	e4 c5 c3 Nc6 d4 cxd4 cxd4 g6 d5 Ne5 f4
+48	e4 c5 c3 Nc6 d4 cxd4 cxd4 d6 d5 Ne5 f4 Ng6 Nf3 Nf6 Nc3 e6 dxe6 Bxe6 f5
+49	e4 c5 c3 Nc6 d4 cxd4 cxd4 d6 d5 Ne5 f4 Ng6 Nf3 Nf6 Nc3 e6 dxe6 fxe6 Bb5+ Bd7 Nd4 Bxb5 Ncxb5 Qd7 Nxe6 Rc8 Nbd4 Nxe4 f5 Ne5 O-O
+50	e4 c5 c3 Nc6 d4 cxd4 cxd4 d6 d5 Ne5 f4 Nd7 Nc3 g6 Qd4 Ngf6 e5 dxe5 fxe5 Nh5 Nf3 Bg7 g4
+51	e4 c5 c3 Nc6 d4 cxd4 cxd4 e6 d5 exd5 exd5 Ne5 Nc3 d6 Nf3 Nf6 Bb5+ Bd7 O-O Be7 Nxe5 dxe5 d6 Bf8 Re1
+52	e4 c5 c3 Nc6 d4 cxd4 cxd4 e6 d5 Ne5 f4 Ng6 d6 Qb6 e5 f6 Nc3 fxe5 Nb5
+53	e4 c5 c3 Nc6 d4 cxd4 cxd4 d5 exd5
+54	e4 c5 c3 Nc6 d4 cxd4 cxd4 Nf6 d5 Ne5 f4 Ng6 e5 Ne4 Qd4 Qa5+ b4 Qc7 Be3 f5 Nd2 Nxd2 Qxd2
+55	e4 c5 c3 Nc6 d4 d5 exd5
+56	e4 c5 c3 d6 d4 cxd4 cxd4 Nf6 Nc3 g6 h3 Bg7 Nf3 O-O Be3 Nc6 d5 Ne5 Nxe5 dxe5 Bc4 a6 a4 Bd7 O-O Rc8 Qb3 Qc7 Be2
+57	e4 c5 c3 d6 d4 cxd4 cxd4 Nf6 Nc3 e6 Nf3 Be7 Bd3 O-O O-O Nc6 Qe2
+# NODES (tag<TAB>space-separated SAN path from the start; the note explains the LAST move)
+OURS	e4
+THEIRS	e4 c5
+OURS	e4 c5 c3
+THEIR-BRANCH	e4 c5 c3 Nc6
+OURS	e4 c5 c3 Nc6 d4
+THEIR-BRANCH	e4 c5 c3 Nc6 d4 cxd4
+OURS	e4 c5 c3 Nc6 d4 cxd4 cxd4
+THEIR-BRANCH	e4 c5 c3 Nc6 d4 cxd4 cxd4 e6
+OURS	e4 c5 c3 Nc6 d4 cxd4 cxd4 e6 d5
+THEIR-BRANCH	e4 c5 c3 Nc6 d4 cxd4 cxd4 e6 d5 exd5
+OURS	e4 c5 c3 Nc6 d4 cxd4 cxd4 e6 d5 exd5 exd5
+THEIR-BRANCH	e4 c5 c3 Nc6 d4 cxd4 cxd4 e6 d5 exd5 exd5 Nce7
+OURS	e4 c5 c3 Nc6 d4 cxd4 cxd4 e6 d5 exd5 exd5 Nce7 d6
+THEIRS	e4 c5 c3 Nc6 d4 cxd4 cxd4 e6 d5 exd5 exd5 Nce7 d6 Nc6
+OURS	e4 c5 c3 Nc6 d4 cxd4 cxd4 e6 d5 exd5 exd5 Nce7 d6 Nc6 Qe2+
+THEIR-BRANCH	e4 c5 c3 g6
+OURS	e4 c5 c3 g6 d4
+THEIR-BRANCH	e4 c5 c3 g6 d4 Bg7
+OURS	e4 c5 c3 g6 d4 Bg7 Nf3
+THEIRS	e4 c5 c3 g6 d4 Bg7 Nf3 cxd4
+OURS	e4 c5 c3 g6 d4 Bg7 Nf3 cxd4 cxd4
+THEIR-BRANCH	e4 c5 c3 g6 d4 Bg7 Nf3 cxd4 cxd4 d6
+OURS	e4 c5 c3 g6 d4 Bg7 Nf3 cxd4 cxd4 d6 h3
+THEIRS	e4 c5 c3 g6 d4 Bg7 Nf3 cxd4 cxd4 d6 h3 Nf6
+OURS	e4 c5 c3 g6 d4 Bg7 Nf3 cxd4 cxd4 d6 h3 Nf6 Nc3
+THEIRS	e4 c5 c3 g6 d4 Bg7 Nf3 cxd4 cxd4 d6 h3 Nf6 Nc3 O-O
+OURS	e4 c5 c3 g6 d4 Bg7 Nf3 cxd4 cxd4 d6 h3 Nf6 Nc3 O-O Be3
+THEIRS	e4 c5 c3 g6 d4 Bg7 Nf3 cxd4 cxd4 d6 h3 Nf6 Nc3 O-O Be3 Nc6
+OURS	e4 c5 c3 g6 d4 Bg7 Nf3 cxd4 cxd4 d6 h3 Nf6 Nc3 O-O Be3 Nc6 d5
+THEIRS	e4 c5 c3 g6 d4 Bg7 Nf3 cxd4 cxd4 d6 h3 Nf6 Nc3 O-O Be3 Nc6 d5 Nb8
+OURS	e4 c5 c3 g6 d4 Bg7 Nf3 cxd4 cxd4 d6 h3 Nf6 Nc3 O-O Be3 Nc6 d5 Nb8 Rc1
+THEIR-BRANCH	e4 c5 c3 g6 d4 Bg7 Nf3 cxd4 cxd4 Nc6
+OURS	e4 c5 c3 g6 d4 Bg7 Nf3 cxd4 cxd4 Nc6 Nc3
+THEIRS	e4 c5 c3 g6 d4 Bg7 Nf3 cxd4 cxd4 Nc6 Nc3 d6
+OURS	e4 c5 c3 g6 d4 Bg7 Nf3 cxd4 cxd4 Nc6 Nc3 d6 h3
+THEIRS	e4 c5 c3 g6 d4 Bg7 Nf3 cxd4 cxd4 Nc6 Nc3 d6 h3 Nf6
+OURS	e4 c5 c3 g6 d4 Bg7 Nf3 cxd4 cxd4 Nc6 Nc3 d6 h3 Nf6 d5
+THEIRS	e4 c5 c3 g6 d4 Bg7 Nf3 cxd4 cxd4 Nc6 Nc3 d6 h3 Nf6 d5 Nb8
+OURS	e4 c5 c3 g6 d4 Bg7 Nf3 cxd4 cxd4 Nc6 Nc3 d6 h3 Nf6 d5 Nb8 Bd3
+THEIRS	e4 c5 c3 g6 d4 Bg7 Nf3 cxd4 cxd4 Nc6 Nc3 d6 h3 Nf6 d5 Nb8 Bd3 O-O
+OURS	e4 c5 c3 g6 d4 Bg7 Nf3 cxd4 cxd4 Nc6 Nc3 d6 h3 Nf6 d5 Nb8 Bd3 O-O O-O
+THEIRS	e4 c5 c3 g6 d4 Bg7 Nf3 cxd4 cxd4 Nc6 Nc3 d6 h3 Nf6 d5 Nb8 Bd3 O-O O-O Nbd7
+OURS	e4 c5 c3 g6 d4 Bg7 Nf3 cxd4 cxd4 Nc6 Nc3 d6 h3 Nf6 d5 Nb8 Bd3 O-O O-O Nbd7 Be3
+THEIR-BRANCH	e4 c5 c3 g6 d4 Bg7 Nf3 cxd4 cxd4 d5
+OURS	e4 c5 c3 g6 d4 Bg7 Nf3 cxd4 cxd4 d5 e5
+THEIRS	e4 c5 c3 g6 d4 Bg7 Nf3 cxd4 cxd4 d5 e5 Bg4
+OURS	e4 c5 c3 g6 d4 Bg7 Nf3 cxd4 cxd4 d5 e5 Bg4 Bb5+
+THEIRS	e4 c5 c3 g6 d4 Bg7 Nf3 cxd4 cxd4 d5 e5 Bg4 Bb5+ Nc6
+OURS	e4 c5 c3 g6 d4 Bg7 Nf3 cxd4 cxd4 d5 e5 Bg4 Bb5+ Nc6 Bxc6+
+THEIRS	e4 c5 c3 g6 d4 Bg7 Nf3 cxd4 cxd4 d5 e5 Bg4 Bb5+ Nc6 Bxc6+ bxc6
+OURS	e4 c5 c3 g6 d4 Bg7 Nf3 cxd4 cxd4 d5 e5 Bg4 Bb5+ Nc6 Bxc6+ bxc6 O-O
+THEIRS	e4 c5 c3 g6 d4 Bg7 Nf3 cxd4 cxd4 d5 e5 Bg4 Bb5+ Nc6 Bxc6+ bxc6 O-O e6
+OURS	e4 c5 c3 g6 d4 Bg7 Nf3 cxd4 cxd4 d5 e5 Bg4 Bb5+ Nc6 Bxc6+ bxc6 O-O e6 Nbd2
+THEIRS	e4 c5 c3 g6 d4 Bg7 Nf3 cxd4 cxd4 d5 e5 Bg4 Bb5+ Nc6 Bxc6+ bxc6 O-O e6 Nbd2 Ne7
+OURS	e4 c5 c3 g6 d4 Bg7 Nf3 cxd4 cxd4 d5 e5 Bg4 Bb5+ Nc6 Bxc6+ bxc6 O-O e6 Nbd2 Ne7 h3
+THEIRS	e4 c5 c3 g6 d4 Bg7 Nf3 cxd4 cxd4 d5 e5 Bg4 Bb5+ Nc6 Bxc6+ bxc6 O-O e6 Nbd2 Ne7 h3 Bxf3
+OURS	e4 c5 c3 g6 d4 Bg7 Nf3 cxd4 cxd4 d5 e5 Bg4 Bb5+ Nc6 Bxc6+ bxc6 O-O e6 Nbd2 Ne7 h3 Bxf3 Nxf3
+THEIRS	e4 c5 c3 g6 d4 Bg7 Nf3 cxd4 cxd4 d5 e5 Bg4 Bb5+ Nc6 Bxc6+ bxc6 O-O e6 Nbd2 Ne7 h3 Bxf3 Nxf3 O-O
+OURS	e4 c5 c3 g6 d4 Bg7 Nf3 cxd4 cxd4 d5 e5 Bg4 Bb5+ Nc6 Bxc6+ bxc6 O-O e6 Nbd2 Ne7 h3 Bxf3 Nxf3 O-O b3
+THEIRS	e4 c5 c3 g6 d4 Bg7 Nf3 cxd4 cxd4 d5 e5 Bg4 Bb5+ Nc6 Bxc6+ bxc6 O-O e6 Nbd2 Ne7 h3 Bxf3 Nxf3 O-O b3 Qb6
+OURS	e4 c5 c3 g6 d4 Bg7 Nf3 cxd4 cxd4 d5 e5 Bg4 Bb5+ Nc6 Bxc6+ bxc6 O-O e6 Nbd2 Ne7 h3 Bxf3 Nxf3 O-O b3 Qb6 Ba3
+THEIR-BRANCH	e4 c5 c3 g6 d4 cxd4
+OURS	e4 c5 c3 g6 d4 cxd4 cxd4
+THEIR-BRANCH	e4 c5 c3 g6 d4 cxd4 cxd4 d5
+OURS	e4 c5 c3 g6 d4 cxd4 cxd4 d5 e5
+THEIRS	e4 c5 c3 g6 d4 cxd4 cxd4 d5 e5 Bg7
+OURS	e4 c5 c3 g6 d4 cxd4 cxd4 d5 e5 Bg7 Nc3
+THEIRS	e4 c5 c3 g6 d4 cxd4 cxd4 d5 e5 Bg7 Nc3 Nc6
+OURS	e4 c5 c3 g6 d4 cxd4 cxd4 d5 e5 Bg7 Nc3 Nc6 Bb5
+THEIRS	e4 c5 c3 g6 d4 cxd4 cxd4 d5 e5 Bg7 Nc3 Nc6 Bb5 Nh6
+OURS	e4 c5 c3 g6 d4 cxd4 cxd4 d5 e5 Bg7 Nc3 Nc6 Bb5 Nh6 h3
+THEIRS	e4 c5 c3 g6 d4 cxd4 cxd4 d5 e5 Bg7 Nc3 Nc6 Bb5 Nh6 h3 O-O
+OURS	e4 c5 c3 g6 d4 cxd4 cxd4 d5 e5 Bg7 Nc3 Nc6 Bb5 Nh6 h3 O-O Nf3
+THEIRS	e4 c5 c3 g6 d4 cxd4 cxd4 d5 e5 Bg7 Nc3 Nc6 Bb5 Nh6 h3 O-O Nf3 f6
+OURS	e4 c5 c3 g6 d4 cxd4 cxd4 d5 e5 Bg7 Nc3 Nc6 Bb5 Nh6 h3 O-O Nf3 f6 O-O
+THEIRS	e4 c5 c3 g6 d4 cxd4 cxd4 d5 e5 Bg7 Nc3 Nc6 Bb5 Nh6 h3 O-O Nf3 f6 O-O fxe5
+OURS	e4 c5 c3 g6 d4 cxd4 cxd4 d5 e5 Bg7 Nc3 Nc6 Bb5 Nh6 h3 O-O Nf3 f6 O-O fxe5 dxe5
+THEIR-BRANCH	e4 c5 c3 g6 d4 cxd4 cxd4 d5 e5 Bg7 Nc3 Nc6 Bb5 Nh6 h3 O-O Nf3 f6 O-O fxe5 dxe5 Nxe5
+OURS	e4 c5 c3 g6 d4 cxd4 cxd4 d5 e5 Bg7 Nc3 Nc6 Bb5 Nh6 h3 O-O Nf3 f6 O-O fxe5 dxe5 Nxe5 Nxe5
+THEIRS	e4 c5 c3 g6 d4 cxd4 cxd4 d5 e5 Bg7 Nc3 Nc6 Bb5 Nh6 h3 O-O Nf3 f6 O-O fxe5 dxe5 Nxe5 Nxe5 Bxe5
+OURS	e4 c5 c3 g6 d4 cxd4 cxd4 d5 e5 Bg7 Nc3 Nc6 Bb5 Nh6 h3 O-O Nf3 f6 O-O fxe5 dxe5 Nxe5 Nxe5 Bxe5 Bxh6
+THEIR-BRANCH	e4 c5 c3 g6 d4 cxd4 cxd4 d5 e5 Bg7 Nc3 Nc6 Bb5 Nh6 h3 O-O Nf3 f6 O-O fxe5 dxe5 e6
+OURS	e4 c5 c3 g6 d4 cxd4 cxd4 d5 e5 Bg7 Nc3 Nc6 Bb5 Nh6 h3 O-O Nf3 f6 O-O fxe5 dxe5 e6 Re1
+THEIRS	e4 c5 c3 g6 d4 cxd4 cxd4 d5 e5 Bg7 Nc3 Nc6 Bb5 Nh6 h3 O-O Nf3 f6 O-O fxe5 dxe5 e6 Re1 Nf7
+OURS	e4 c5 c3 g6 d4 cxd4 cxd4 d5 e5 Bg7 Nc3 Nc6 Bb5 Nh6 h3 O-O Nf3 f6 O-O fxe5 dxe5 e6 Re1 Nf7 Bxc6
+THEIRS	e4 c5 c3 g6 d4 cxd4 cxd4 d5 e5 Bg7 Nc3 Nc6 Bb5 Nh6 h3 O-O Nf3 f6 O-O fxe5 dxe5 e6 Re1 Nf7 Bxc6 bxc6
+OURS	e4 c5 c3 g6 d4 cxd4 cxd4 d5 e5 Bg7 Nc3 Nc6 Bb5 Nh6 h3 O-O Nf3 f6 O-O fxe5 dxe5 e6 Re1 Nf7 Bxc6 bxc6 Na4
+THEIR-BRANCH	e4 c5 c3 g6 d4 cxd4 cxd4 Bg7
+OURS	e4 c5 c3 g6 d4 cxd4 cxd4 Bg7 Nc3
+THEIRS	e4 c5 c3 g6 d4 cxd4 cxd4 Bg7 Nc3 Nc6
+OURS	e4 c5 c3 g6 d4 cxd4 cxd4 Bg7 Nc3 Nc6 d5
+THEIR-BRANCH	e4 c5 c3 g6 d4 cxd4 cxd4 Bg7 Nc3 Nc6 d5 Nb8
+OURS	e4 c5 c3 g6 d4 cxd4 cxd4 Bg7 Nc3 Nc6 d5 Nb8 d6
+THEIRS	e4 c5 c3 g6 d4 cxd4 cxd4 Bg7 Nc3 Nc6 d5 Nb8 d6 exd6
+OURS	e4 c5 c3 g6 d4 cxd4 cxd4 Bg7 Nc3 Nc6 d5 Nb8 d6 exd6 Nb5
+THEIR-BRANCH	e4 c5 c3 g6 d4 cxd4 cxd4 Bg7 Nc3 Nc6 d5 Ne5
+OURS	e4 c5 c3 g6 d4 cxd4 cxd4 Bg7 Nc3 Nc6 d5 Ne5 f4
+THEIR-BRANCH	e4 c5 c3 e5
+OURS	e4 c5 c3 e5 Nf3
+THEIR-BRANCH	e4 c5 c3 e5 Nf3 d6
+OURS	e4 c5 c3 e5 Nf3 d6 d4
+THEIRS	e4 c5 c3 e5 Nf3 d6 d4 cxd4
+OURS	e4 c5 c3 e5 Nf3 d6 d4 cxd4 cxd4
+THEIRS	e4 c5 c3 e5 Nf3 d6 d4 cxd4 cxd4 exd4
+OURS	e4 c5 c3 e5 Nf3 d6 d4 cxd4 cxd4 exd4 Nxd4
+THEIR-BRANCH	e4 c5 c3 e5 Nf3 d6 d4 cxd4 cxd4 exd4 Nxd4 Nf6
+OURS	e4 c5 c3 e5 Nf3 d6 d4 cxd4 cxd4 exd4 Nxd4 Nf6 Nc3
+THEIRS	e4 c5 c3 e5 Nf3 d6 d4 cxd4 cxd4 exd4 Nxd4 Nf6 Nc3 Be7
+OURS	e4 c5 c3 e5 Nf3 d6 d4 cxd4 cxd4 exd4 Nxd4 Nf6 Nc3 Be7 Bb5+
+THEIRS	e4 c5 c3 e5 Nf3 d6 d4 cxd4 cxd4 exd4 Nxd4 Nf6 Nc3 Be7 Bb5+ Bd7
+OURS	e4 c5 c3 e5 Nf3 d6 d4 cxd4 cxd4 exd4 Nxd4 Nf6 Nc3 Be7 Bb5+ Bd7 Bxd7+
+THEIRS	e4 c5 c3 e5 Nf3 d6 d4 cxd4 cxd4 exd4 Nxd4 Nf6 Nc3 Be7 Bb5+ Bd7 Bxd7+ Nbxd7
+OURS	e4 c5 c3 e5 Nf3 d6 d4 cxd4 cxd4 exd4 Nxd4 Nf6 Nc3 Be7 Bb5+ Bd7 Bxd7+ Nbxd7 O-O
+THEIRS	e4 c5 c3 e5 Nf3 d6 d4 cxd4 cxd4 exd4 Nxd4 Nf6 Nc3 Be7 Bb5+ Bd7 Bxd7+ Nbxd7 O-O O-O
+OURS	e4 c5 c3 e5 Nf3 d6 d4 cxd4 cxd4 exd4 Nxd4 Nf6 Nc3 Be7 Bb5+ Bd7 Bxd7+ Nbxd7 O-O O-O Nf5
+THEIR-BRANCH	e4 c5 c3 e5 Nf3 d6 d4 cxd4 cxd4 exd4 Nxd4 Nc6
+OURS	e4 c5 c3 e5 Nf3 d6 d4 cxd4 cxd4 exd4 Nxd4 Nc6 Nc3
+THEIRS	e4 c5 c3 e5 Nf3 d6 d4 cxd4 cxd4 exd4 Nxd4 Nc6 Nc3 Nf6
+OURS	e4 c5 c3 e5 Nf3 d6 d4 cxd4 cxd4 exd4 Nxd4 Nc6 Nc3 Nf6 Bb5
+THEIRS	e4 c5 c3 e5 Nf3 d6 d4 cxd4 cxd4 exd4 Nxd4 Nc6 Nc3 Nf6 Bb5 Bd7
+OURS	e4 c5 c3 e5 Nf3 d6 d4 cxd4 cxd4 exd4 Nxd4 Nc6 Nc3 Nf6 Bb5 Bd7 O-O
+THEIRS	e4 c5 c3 e5 Nf3 d6 d4 cxd4 cxd4 exd4 Nxd4 Nc6 Nc3 Nf6 Bb5 Bd7 O-O Be7
+OURS	e4 c5 c3 e5 Nf3 d6 d4 cxd4 cxd4 exd4 Nxd4 Nc6 Nc3 Nf6 Bb5 Bd7 O-O Be7 Bf4
+THEIRS	e4 c5 c3 e5 Nf3 d6 d4 cxd4 cxd4 exd4 Nxd4 Nc6 Nc3 Nf6 Bb5 Bd7 O-O Be7 Bf4 O-O
+OURS	e4 c5 c3 e5 Nf3 d6 d4 cxd4 cxd4 exd4 Nxd4 Nc6 Nc3 Nf6 Bb5 Bd7 O-O Be7 Bf4 O-O Re1
+THEIRS	e4 c5 c3 e5 Nf3 d6 d4 cxd4 cxd4 exd4 Nxd4 Nc6 Nc3 Nf6 Bb5 Bd7 O-O Be7 Bf4 O-O Re1 a6
+OURS	e4 c5 c3 e5 Nf3 d6 d4 cxd4 cxd4 exd4 Nxd4 Nc6 Nc3 Nf6 Bb5 Bd7 O-O Be7 Bf4 O-O Re1 a6 Bf1
+THEIR-BRANCH	e4 c5 c3 e5 Nf3 Nc6
+OURS	e4 c5 c3 e5 Nf3 Nc6 Bc4
+THEIR-BRANCH	e4 c5 c3 e5 Nf3 Nc6 Bc4 d6
+OURS	e4 c5 c3 e5 Nf3 Nc6 Bc4 d6 O-O
+THEIRS	e4 c5 c3 e5 Nf3 Nc6 Bc4 d6 O-O Nf6
+OURS	e4 c5 c3 e5 Nf3 Nc6 Bc4 d6 O-O Nf6 Ng5
+THEIRS	e4 c5 c3 e5 Nf3 Nc6 Bc4 d6 O-O Nf6 Ng5 d5
+OURS	e4 c5 c3 e5 Nf3 Nc6 Bc4 d6 O-O Nf6 Ng5 d5 exd5
+THEIRS	e4 c5 c3 e5 Nf3 Nc6 Bc4 d6 O-O Nf6 Ng5 d5 exd5 Nxd5
+OURS	e4 c5 c3 e5 Nf3 Nc6 Bc4 d6 O-O Nf6 Ng5 d5 exd5 Nxd5 d4
+THEIRS	e4 c5 c3 e5 Nf3 Nc6 Bc4 d6 O-O Nf6 Ng5 d5 exd5 Nxd5 d4 cxd4
+OURS	e4 c5 c3 e5 Nf3 Nc6 Bc4 d6 O-O Nf6 Ng5 d5 exd5 Nxd5 d4 cxd4 cxd4
+THEIRS	e4 c5 c3 e5 Nf3 Nc6 Bc4 d6 O-O Nf6 Ng5 d5 exd5 Nxd5 d4 cxd4 cxd4 Nxd4
+OURS	e4 c5 c3 e5 Nf3 Nc6 Bc4 d6 O-O Nf6 Ng5 d5 exd5 Nxd5 d4 cxd4 cxd4 Nxd4 Re1
+THEIRS	e4 c5 c3 e5 Nf3 Nc6 Bc4 d6 O-O Nf6 Ng5 d5 exd5 Nxd5 d4 cxd4 cxd4 Nxd4 Re1 f6
+OURS	e4 c5 c3 e5 Nf3 Nc6 Bc4 d6 O-O Nf6 Ng5 d5 exd5 Nxd5 d4 cxd4 cxd4 Nxd4 Re1 f6 Qxd4
+THEIRS	e4 c5 c3 e5 Nf3 Nc6 Bc4 d6 O-O Nf6 Ng5 d5 exd5 Nxd5 d4 cxd4 cxd4 Nxd4 Re1 f6 Qxd4 fxg5
+OURS	e4 c5 c3 e5 Nf3 Nc6 Bc4 d6 O-O Nf6 Ng5 d5 exd5 Nxd5 d4 cxd4 cxd4 Nxd4 Re1 f6 Qxd4 fxg5 Qxd5
+THEIR-BRANCH	e4 c5 c3 e5 Nf3 Nc6 Bc4 Nf6
+OURS	e4 c5 c3 e5 Nf3 Nc6 Bc4 Nf6 Ng5
+THEIRS	e4 c5 c3 e5 Nf3 Nc6 Bc4 Nf6 Ng5 d5
+OURS	e4 c5 c3 e5 Nf3 Nc6 Bc4 Nf6 Ng5 d5 exd5
+THEIR-BRANCH	e4 c5 c3 e5 Nf3 Nc6 Bc4 Nf6 Ng5 d5 exd5 Na5
+OURS	e4 c5 c3 e5 Nf3 Nc6 Bc4 Nf6 Ng5 d5 exd5 Na5 Bb5+
+THEIRS	e4 c5 c3 e5 Nf3 Nc6 Bc4 Nf6 Ng5 d5 exd5 Na5 Bb5+ Bd7
+OURS	e4 c5 c3 e5 Nf3 Nc6 Bc4 Nf6 Ng5 d5 exd5 Na5 Bb5+ Bd7 Qa4
+THEIRS	e4 c5 c3 e5 Nf3 Nc6 Bc4 Nf6 Ng5 d5 exd5 Na5 Bb5+ Bd7 Qa4 b6
+OURS	e4 c5 c3 e5 Nf3 Nc6 Bc4 Nf6 Ng5 d5 exd5 Na5 Bb5+ Bd7 Qa4 b6 d3
+THEIRS	e4 c5 c3 e5 Nf3 Nc6 Bc4 Nf6 Ng5 d5 exd5 Na5 Bb5+ Bd7 Qa4 b6 d3 Nxd5
+OURS	e4 c5 c3 e5 Nf3 Nc6 Bc4 Nf6 Ng5 d5 exd5 Na5 Bb5+ Bd7 Qa4 b6 d3 Nxd5 Bxd7+
+THEIRS	e4 c5 c3 e5 Nf3 Nc6 Bc4 Nf6 Ng5 d5 exd5 Na5 Bb5+ Bd7 Qa4 b6 d3 Nxd5 Bxd7+ Qxd7
+OURS	e4 c5 c3 e5 Nf3 Nc6 Bc4 Nf6 Ng5 d5 exd5 Na5 Bb5+ Bd7 Qa4 b6 d3 Nxd5 Bxd7+ Qxd7 Qxd7+
+THEIRS	e4 c5 c3 e5 Nf3 Nc6 Bc4 Nf6 Ng5 d5 exd5 Na5 Bb5+ Bd7 Qa4 b6 d3 Nxd5 Bxd7+ Qxd7 Qxd7+ Kxd7
+OURS	e4 c5 c3 e5 Nf3 Nc6 Bc4 Nf6 Ng5 d5 exd5 Na5 Bb5+ Bd7 Qa4 b6 d3 Nxd5 Bxd7+ Qxd7 Qxd7+ Kxd7 Nxf7
+THEIR-BRANCH	e4 c5 c3 e5 Nf3 Nc6 Bc4 Nf6 Ng5 d5 exd5 Nxd5
+OURS	e4 c5 c3 e5 Nf3 Nc6 Bc4 Nf6 Ng5 d5 exd5 Nxd5 d3
+THEIRS	e4 c5 c3 e5 Nf3 Nc6 Bc4 Nf6 Ng5 d5 exd5 Nxd5 d3 Be7
+OURS	e4 c5 c3 e5 Nf3 Nc6 Bc4 Nf6 Ng5 d5 exd5 Nxd5 d3 Be7 Qh5
+THEIRS	e4 c5 c3 e5 Nf3 Nc6 Bc4 Nf6 Ng5 d5 exd5 Nxd5 d3 Be7 Qh5 g6
+OURS	e4 c5 c3 e5 Nf3 Nc6 Bc4 Nf6 Ng5 d5 exd5 Nxd5 d3 Be7 Qh5 g6 Qf3
+THEIRS	e4 c5 c3 e5 Nf3 Nc6 Bc4 Nf6 Ng5 d5 exd5 Nxd5 d3 Be7 Qh5 g6 Qf3 Bxg5
+OURS	e4 c5 c3 e5 Nf3 Nc6 Bc4 Nf6 Ng5 d5 exd5 Nxd5 d3 Be7 Qh5 g6 Qf3 Bxg5 Bxd5
+THEIRS	e4 c5 c3 e5 Nf3 Nc6 Bc4 Nf6 Ng5 d5 exd5 Nxd5 d3 Be7 Qh5 g6 Qf3 Bxg5 Bxd5 O-O
+OURS	e4 c5 c3 e5 Nf3 Nc6 Bc4 Nf6 Ng5 d5 exd5 Nxd5 d3 Be7 Qh5 g6 Qf3 Bxg5 Bxd5 O-O Bxg5
+THEIRS	e4 c5 c3 e5 Nf3 Nc6 Bc4 Nf6 Ng5 d5 exd5 Nxd5 d3 Be7 Qh5 g6 Qf3 Bxg5 Bxd5 O-O Bxg5 Qxg5
+OURS	e4 c5 c3 e5 Nf3 Nc6 Bc4 Nf6 Ng5 d5 exd5 Nxd5 d3 Be7 Qh5 g6 Qf3 Bxg5 Bxd5 O-O Bxg5 Qxg5 Nd2
+THEIRS	e4 c5 c3 e5 Nf3 Nc6 Bc4 Nf6 Ng5 d5 exd5 Nxd5 d3 Be7 Qh5 g6 Qf3 Bxg5 Bxd5 O-O Bxg5 Qxg5 Nd2 Bg4
+OURS	e4 c5 c3 e5 Nf3 Nc6 Bc4 Nf6 Ng5 d5 exd5 Nxd5 d3 Be7 Qh5 g6 Qf3 Bxg5 Bxd5 O-O Bxg5 Qxg5 Nd2 Bg4 Qg3
+THEIRS	e4 c5 c3 e5 Nf3 Nc6 Bc4 Nf6 Ng5 d5 exd5 Nxd5 d3 Be7 Qh5 g6 Qf3 Bxg5 Bxd5 O-O Bxg5 Qxg5 Nd2 Bg4 Qg3 Ne7
+OURS	e4 c5 c3 e5 Nf3 Nc6 Bc4 Nf6 Ng5 d5 exd5 Nxd5 d3 Be7 Qh5 g6 Qf3 Bxg5 Bxd5 O-O Bxg5 Qxg5 Nd2 Bg4 Qg3 Ne7 Ne4
+THEIR-BRANCH	e4 c5 c3 e6
+OURS	e4 c5 c3 e6 d4
+THEIR-BRANCH	e4 c5 c3 e6 d4 d5
+OURS	e4 c5 c3 e6 d4 d5 exd5
+THEIRS	e4 c5 c3 e6 d4 d5 exd5 exd5
+OURS	e4 c5 c3 e6 d4 d5 exd5 exd5 Bb5+
+THEIR-BRANCH	e4 c5 c3 e6 d4 d5 exd5 exd5 Bb5+ Nc6
+OURS	e4 c5 c3 e6 d4 d5 exd5 exd5 Bb5+ Nc6 Nf3
+THEIRS	e4 c5 c3 e6 d4 d5 exd5 exd5 Bb5+ Nc6 Nf3 Nf6
+OURS	e4 c5 c3 e6 d4 d5 exd5 exd5 Bb5+ Nc6 Nf3 Nf6 O-O
+THEIRS	e4 c5 c3 e6 d4 d5 exd5 exd5 Bb5+ Nc6 Nf3 Nf6 O-O Be7
+OURS	e4 c5 c3 e6 d4 d5 exd5 exd5 Bb5+ Nc6 Nf3 Nf6 O-O Be7 dxc5
+THEIRS	e4 c5 c3 e6 d4 d5 exd5 exd5 Bb5+ Nc6 Nf3 Nf6 O-O Be7 dxc5 Bxc5
+OURS	e4 c5 c3 e6 d4 d5 exd5 exd5 Bb5+ Nc6 Nf3 Nf6 O-O Be7 dxc5 Bxc5 Bg5
+THEIR-BRANCH	e4 c5 c3 e6 d4 d5 exd5 exd5 Bb5+ Nc6 Nf3 Nf6 O-O Be7 dxc5 Bxc5 Bg5 Be6
+OURS	e4 c5 c3 e6 d4 d5 exd5 exd5 Bb5+ Nc6 Nf3 Nf6 O-O Be7 dxc5 Bxc5 Bg5 Be6 Nd4
+THEIRS	e4 c5 c3 e6 d4 d5 exd5 exd5 Bb5+ Nc6 Nf3 Nf6 O-O Be7 dxc5 Bxc5 Bg5 Be6 Nd4 O-O
+OURS	e4 c5 c3 e6 d4 d5 exd5 exd5 Bb5+ Nc6 Nf3 Nf6 O-O Be7 dxc5 Bxc5 Bg5 Be6 Nd4 O-O Bxc6
+THEIRS	e4 c5 c3 e6 d4 d5 exd5 exd5 Bb5+ Nc6 Nf3 Nf6 O-O Be7 dxc5 Bxc5 Bg5 Be6 Nd4 O-O Bxc6 bxc6
+OURS	e4 c5 c3 e6 d4 d5 exd5 exd5 Bb5+ Nc6 Nf3 Nf6 O-O Be7 dxc5 Bxc5 Bg5 Be6 Nd4 O-O Bxc6 bxc6 Nxc6
+THEIRS	e4 c5 c3 e6 d4 d5 exd5 exd5 Bb5+ Nc6 Nf3 Nf6 O-O Be7 dxc5 Bxc5 Bg5 Be6 Nd4 O-O Bxc6 bxc6 Nxc6 Qb6
+OURS	e4 c5 c3 e6 d4 d5 exd5 exd5 Bb5+ Nc6 Nf3 Nf6 O-O Be7 dxc5 Bxc5 Bg5 Be6 Nd4 O-O Bxc6 bxc6 Nxc6 Qb6 Bxf6
+THEIRS	e4 c5 c3 e6 d4 d5 exd5 exd5 Bb5+ Nc6 Nf3 Nf6 O-O Be7 dxc5 Bxc5 Bg5 Be6 Nd4 O-O Bxc6 bxc6 Nxc6 Qb6 Bxf6 gxf6
+OURS	e4 c5 c3 e6 d4 d5 exd5 exd5 Bb5+ Nc6 Nf3 Nf6 O-O Be7 dxc5 Bxc5 Bg5 Be6 Nd4 O-O Bxc6 bxc6 Nxc6 Qb6 Bxf6 gxf6 b4
+THEIRS	e4 c5 c3 e6 d4 d5 exd5 exd5 Bb5+ Nc6 Nf3 Nf6 O-O Be7 dxc5 Bxc5 Bg5 Be6 Nd4 O-O Bxc6 bxc6 Nxc6 Qb6 Bxf6 gxf6 b4 Qxc6
+OURS	e4 c5 c3 e6 d4 d5 exd5 exd5 Bb5+ Nc6 Nf3 Nf6 O-O Be7 dxc5 Bxc5 Bg5 Be6 Nd4 O-O Bxc6 bxc6 Nxc6 Qb6 Bxf6 gxf6 b4 Qxc6 bxc5
+THEIRS	e4 c5 c3 e6 d4 d5 exd5 exd5 Bb5+ Nc6 Nf3 Nf6 O-O Be7 dxc5 Bxc5 Bg5 Be6 Nd4 O-O Bxc6 bxc6 Nxc6 Qb6 Bxf6 gxf6 b4 Qxc6 bxc5 Qxc5
+OURS	e4 c5 c3 e6 d4 d5 exd5 exd5 Bb5+ Nc6 Nf3 Nf6 O-O Be7 dxc5 Bxc5 Bg5 Be6 Nd4 O-O Bxc6 bxc6 Nxc6 Qb6 Bxf6 gxf6 b4 Qxc6 bxc5 Qxc5 Qf3
+THEIR-BRANCH	e4 c5 c3 e6 d4 d5 exd5 exd5 Bb5+ Nc6 Nf3 Nf6 O-O Be7 dxc5 Bxc5 Bg5 O-O
+OURS	e4 c5 c3 e6 d4 d5 exd5 exd5 Bb5+ Nc6 Nf3 Nf6 O-O Be7 dxc5 Bxc5 Bg5 O-O Bxf6
+THEIRS	e4 c5 c3 e6 d4 d5 exd5 exd5 Bb5+ Nc6 Nf3 Nf6 O-O Be7 dxc5 Bxc5 Bg5 O-O Bxf6 Qxf6
+OURS	e4 c5 c3 e6 d4 d5 exd5 exd5 Bb5+ Nc6 Nf3 Nf6 O-O Be7 dxc5 Bxc5 Bg5 O-O Bxf6 Qxf6 Qxd5
+THEIR-BRANCH	e4 c5 c3 e6 d4 d5 exd5 exd5 Bb5+ Bd7
+OURS	e4 c5 c3 e6 d4 d5 exd5 exd5 Bb5+ Bd7 Bxd7+
+THEIRS	e4 c5 c3 e6 d4 d5 exd5 exd5 Bb5+ Bd7 Bxd7+ Nxd7
+OURS	e4 c5 c3 e6 d4 d5 exd5 exd5 Bb5+ Bd7 Bxd7+ Nxd7 Nf3
+THEIRS	e4 c5 c3 e6 d4 d5 exd5 exd5 Bb5+ Bd7 Bxd7+ Nxd7 Nf3 Ngf6
+OURS	e4 c5 c3 e6 d4 d5 exd5 exd5 Bb5+ Bd7 Bxd7+ Nxd7 Nf3 Ngf6 O-O
+THEIRS	e4 c5 c3 e6 d4 d5 exd5 exd5 Bb5+ Bd7 Bxd7+ Nxd7 Nf3 Ngf6 O-O Be7
+OURS	e4 c5 c3 e6 d4 d5 exd5 exd5 Bb5+ Bd7 Bxd7+ Nxd7 Nf3 Ngf6 O-O Be7 dxc5
+THEIRS	e4 c5 c3 e6 d4 d5 exd5 exd5 Bb5+ Bd7 Bxd7+ Nxd7 Nf3 Ngf6 O-O Be7 dxc5 Nxc5
+OURS	e4 c5 c3 e6 d4 d5 exd5 exd5 Bb5+ Bd7 Bxd7+ Nxd7 Nf3 Ngf6 O-O Be7 dxc5 Nxc5 Be3
+THEIRS	e4 c5 c3 e6 d4 d5 exd5 exd5 Bb5+ Bd7 Bxd7+ Nxd7 Nf3 Ngf6 O-O Be7 dxc5 Nxc5 Be3 O-O
+OURS	e4 c5 c3 e6 d4 d5 exd5 exd5 Bb5+ Bd7 Bxd7+ Nxd7 Nf3 Ngf6 O-O Be7 dxc5 Nxc5 Be3 O-O Nbd2
+THEIR-BRANCH	e4 c5 c3 e6 d4 cxd4
+OURS	e4 c5 c3 e6 d4 cxd4 cxd4
+THEIR-BRANCH	e4 c5 c3 e6 d4 cxd4 cxd4 d5
+OURS	e4 c5 c3 e6 d4 cxd4 cxd4 d5 e5
+THEIRS	e4 c5 c3 e6 d4 cxd4 cxd4 d5 e5 Nc6
+OURS	e4 c5 c3 e6 d4 cxd4 cxd4 d5 e5 Nc6 Nc3
+THEIRS	e4 c5 c3 e6 d4 cxd4 cxd4 d5 e5 Nc6 Nc3 Bb4
+OURS	e4 c5 c3 e6 d4 cxd4 cxd4 d5 e5 Nc6 Nc3 Bb4 Bd3
+THEIR-BRANCH	e4 c5 c3 e6 d4 cxd4 cxd4 d5 e5 Nc6 Nc3 Bb4 Bd3 Nge7
+OURS	e4 c5 c3 e6 d4 cxd4 cxd4 d5 e5 Nc6 Nc3 Bb4 Bd3 Nge7 Nf3
+THEIR-BRANCH	e4 c5 c3 e6 d4 cxd4 cxd4 d5 e5 Nc6 Nc3 Bb4 Bd3 Nge7 Nf3 Nf5
+OURS	e4 c5 c3 e6 d4 cxd4 cxd4 d5 e5 Nc6 Nc3 Bb4 Bd3 Nge7 Nf3 Nf5 O-O
+THEIR-BRANCH	e4 c5 c3 e6 d4 cxd4 cxd4 d5 e5 Nc6 Nc3 Bb4 Bd3 Nge7 Nf3 Nf5 O-O O-O
+OURS	e4 c5 c3 e6 d4 cxd4 cxd4 d5 e5 Nc6 Nc3 Bb4 Bd3 Nge7 Nf3 Nf5 O-O O-O a3
+THEIRS	e4 c5 c3 e6 d4 cxd4 cxd4 d5 e5 Nc6 Nc3 Bb4 Bd3 Nge7 Nf3 Nf5 O-O O-O a3 Ba5
+OURS	e4 c5 c3 e6 d4 cxd4 cxd4 d5 e5 Nc6 Nc3 Bb4 Bd3 Nge7 Nf3 Nf5 O-O O-O a3 Ba5 Bc2
+THEIRS	e4 c5 c3 e6 d4 cxd4 cxd4 d5 e5 Nc6 Nc3 Bb4 Bd3 Nge7 Nf3 Nf5 O-O O-O a3 Ba5 Bc2 Bb6
+OURS	e4 c5 c3 e6 d4 cxd4 cxd4 d5 e5 Nc6 Nc3 Bb4 Bd3 Nge7 Nf3 Nf5 O-O O-O a3 Ba5 Bc2 Bb6 Qd3
+THEIR-BRANCH	e4 c5 c3 e6 d4 cxd4 cxd4 d5 e5 Nc6 Nc3 Bb4 Bd3 Nge7 Nf3 Nf5 O-O O-O a3 Ba5 Bc2 Bb6 Qd3 Ncxd4
+OURS	e4 c5 c3 e6 d4 cxd4 cxd4 d5 e5 Nc6 Nc3 Bb4 Bd3 Nge7 Nf3 Nf5 O-O O-O a3 Ba5 Bc2 Bb6 Qd3 Ncxd4 Nxd4
+THEIRS	e4 c5 c3 e6 d4 cxd4 cxd4 d5 e5 Nc6 Nc3 Bb4 Bd3 Nge7 Nf3 Nf5 O-O O-O a3 Ba5 Bc2 Bb6 Qd3 Ncxd4 Nxd4 Bxd4
+OURS	e4 c5 c3 e6 d4 cxd4 cxd4 d5 e5 Nc6 Nc3 Bb4 Bd3 Nge7 Nf3 Nf5 O-O O-O a3 Ba5 Bc2 Bb6 Qd3 Ncxd4 Nxd4 Bxd4 g4
+THEIRS	e4 c5 c3 e6 d4 cxd4 cxd4 d5 e5 Nc6 Nc3 Bb4 Bd3 Nge7 Nf3 Nf5 O-O O-O a3 Ba5 Bc2 Bb6 Qd3 Ncxd4 Nxd4 Bxd4 g4 Bxc3
+OURS	e4 c5 c3 e6 d4 cxd4 cxd4 d5 e5 Nc6 Nc3 Bb4 Bd3 Nge7 Nf3 Nf5 O-O O-O a3 Ba5 Bc2 Bb6 Qd3 Ncxd4 Nxd4 Bxd4 g4 Bxc3 bxc3
+THEIR-BRANCH	e4 c5 c3 e6 d4 cxd4 cxd4 d5 e5 Nc6 Nc3 Bb4 Bd3 Nge7 Nf3 Nf5 O-O O-O a3 Ba5 Bc2 Bb6 Qd3 g6
+OURS	e4 c5 c3 e6 d4 cxd4 cxd4 d5 e5 Nc6 Nc3 Bb4 Bd3 Nge7 Nf3 Nf5 O-O O-O a3 Ba5 Bc2 Bb6 Qd3 g6 Bg5
+THEIRS	e4 c5 c3 e6 d4 cxd4 cxd4 d5 e5 Nc6 Nc3 Bb4 Bd3 Nge7 Nf3 Nf5 O-O O-O a3 Ba5 Bc2 Bb6 Qd3 g6 Bg5 Qc7
+OURS	e4 c5 c3 e6 d4 cxd4 cxd4 d5 e5 Nc6 Nc3 Bb4 Bd3 Nge7 Nf3 Nf5 O-O O-O a3 Ba5 Bc2 Bb6 Qd3 g6 Bg5 Qc7 Ne2
+THEIR-BRANCH	e4 c5 c3 e6 d4 cxd4 cxd4 d5 e5 Nc6 Nc3 Bb4 Bd3 Nge7 Nf3 Nf5 O-O Nfxd4
+OURS	e4 c5 c3 e6 d4 cxd4 cxd4 d5 e5 Nc6 Nc3 Bb4 Bd3 Nge7 Nf3 Nf5 O-O Nfxd4 Nxd4
+THEIRS	e4 c5 c3 e6 d4 cxd4 cxd4 d5 e5 Nc6 Nc3 Bb4 Bd3 Nge7 Nf3 Nf5 O-O Nfxd4 Nxd4 Nxd4
+OURS	e4 c5 c3 e6 d4 cxd4 cxd4 d5 e5 Nc6 Nc3 Bb4 Bd3 Nge7 Nf3 Nf5 O-O Nfxd4 Nxd4 Nxd4 Qg4
+THEIR-BRANCH	e4 c5 c3 e6 d4 cxd4 cxd4 d5 e5 Nc6 Nc3 Bb4 Bd3 Nge7 Nf3 O-O
+OURS	e4 c5 c3 e6 d4 cxd4 cxd4 d5 e5 Nc6 Nc3 Bb4 Bd3 Nge7 Nf3 O-O Bxh7+
+THEIRS	e4 c5 c3 e6 d4 cxd4 cxd4 d5 e5 Nc6 Nc3 Bb4 Bd3 Nge7 Nf3 O-O Bxh7+ Kxh7
+OURS	e4 c5 c3 e6 d4 cxd4 cxd4 d5 e5 Nc6 Nc3 Bb4 Bd3 Nge7 Nf3 O-O Bxh7+ Kxh7 Ng5+
+THEIRS	e4 c5 c3 e6 d4 cxd4 cxd4 d5 e5 Nc6 Nc3 Bb4 Bd3 Nge7 Nf3 O-O Bxh7+ Kxh7 Ng5+ Kg6
+OURS	e4 c5 c3 e6 d4 cxd4 cxd4 d5 e5 Nc6 Nc3 Bb4 Bd3 Nge7 Nf3 O-O Bxh7+ Kxh7 Ng5+ Kg6 h4
+THEIRS	e4 c5 c3 e6 d4 cxd4 cxd4 d5 e5 Nc6 Nc3 Bb4 Bd3 Nge7 Nf3 O-O Bxh7+ Kxh7 Ng5+ Kg6 h4 Bxc3+
+OURS	e4 c5 c3 e6 d4 cxd4 cxd4 d5 e5 Nc6 Nc3 Bb4 Bd3 Nge7 Nf3 O-O Bxh7+ Kxh7 Ng5+ Kg6 h4 Bxc3+ bxc3
+THEIRS	e4 c5 c3 e6 d4 cxd4 cxd4 d5 e5 Nc6 Nc3 Bb4 Bd3 Nge7 Nf3 O-O Bxh7+ Kxh7 Ng5+ Kg6 h4 Bxc3+ bxc3 Qa5
+OURS	e4 c5 c3 e6 d4 cxd4 cxd4 d5 e5 Nc6 Nc3 Bb4 Bd3 Nge7 Nf3 O-O Bxh7+ Kxh7 Ng5+ Kg6 h4 Bxc3+ bxc3 Qa5 Qd3+
+THEIRS	e4 c5 c3 e6 d4 cxd4 cxd4 d5 e5 Nc6 Nc3 Bb4 Bd3 Nge7 Nf3 O-O Bxh7+ Kxh7 Ng5+ Kg6 h4 Bxc3+ bxc3 Qa5 Qd3+ f5
+OURS	e4 c5 c3 e6 d4 cxd4 cxd4 d5 e5 Nc6 Nc3 Bb4 Bd3 Nge7 Nf3 O-O Bxh7+ Kxh7 Ng5+ Kg6 h4 Bxc3+ bxc3 Qa5 Qd3+ f5 h5+
+THEIRS	e4 c5 c3 e6 d4 cxd4 cxd4 d5 e5 Nc6 Nc3 Bb4 Bd3 Nge7 Nf3 O-O Bxh7+ Kxh7 Ng5+ Kg6 h4 Bxc3+ bxc3 Qa5 Qd3+ f5 h5+ Kh6
+OURS	e4 c5 c3 e6 d4 cxd4 cxd4 d5 e5 Nc6 Nc3 Bb4 Bd3 Nge7 Nf3 O-O Bxh7+ Kxh7 Ng5+ Kg6 h4 Bxc3+ bxc3 Qa5 Qd3+ f5 h5+ Kh6 Nxe6+
+THEIRS	e4 c5 c3 e6 d4 cxd4 cxd4 d5 e5 Nc6 Nc3 Bb4 Bd3 Nge7 Nf3 O-O Bxh7+ Kxh7 Ng5+ Kg6 h4 Bxc3+ bxc3 Qa5 Qd3+ f5 h5+ Kh6 Nxe6+ Kh7
+OURS	e4 c5 c3 e6 d4 cxd4 cxd4 d5 e5 Nc6 Nc3 Bb4 Bd3 Nge7 Nf3 O-O Bxh7+ Kxh7 Ng5+ Kg6 h4 Bxc3+ bxc3 Qa5 Qd3+ f5 h5+ Kh6 Nxe6+ Kh7 Nxf8+
+THEIR-BRANCH	e4 c5 c3 e6 d4 cxd4 cxd4 d5 e5 Nc6 Nc3 Bb4 Bd3 Nxd4
+OURS	e4 c5 c3 e6 d4 cxd4 cxd4 d5 e5 Nc6 Nc3 Bb4 Bd3 Nxd4 Qg4
+THEIRS	e4 c5 c3 e6 d4 cxd4 cxd4 d5 e5 Nc6 Nc3 Bb4 Bd3 Nxd4 Qg4 Bxc3+
+OURS	e4 c5 c3 e6 d4 cxd4 cxd4 d5 e5 Nc6 Nc3 Bb4 Bd3 Nxd4 Qg4 Bxc3+ bxc3
+THEIRS	e4 c5 c3 e6 d4 cxd4 cxd4 d5 e5 Nc6 Nc3 Bb4 Bd3 Nxd4 Qg4 Bxc3+ bxc3 Nf5
+OURS	e4 c5 c3 e6 d4 cxd4 cxd4 d5 e5 Nc6 Nc3 Bb4 Bd3 Nxd4 Qg4 Bxc3+ bxc3 Nf5 Bxf5
+THEIRS	e4 c5 c3 e6 d4 cxd4 cxd4 d5 e5 Nc6 Nc3 Bb4 Bd3 Nxd4 Qg4 Bxc3+ bxc3 Nf5 Bxf5 exf5
+OURS	e4 c5 c3 e6 d4 cxd4 cxd4 d5 e5 Nc6 Nc3 Bb4 Bd3 Nxd4 Qg4 Bxc3+ bxc3 Nf5 Bxf5 exf5 Qxg7
+THEIRS	e4 c5 c3 e6 d4 cxd4 cxd4 d5 e5 Nc6 Nc3 Bb4 Bd3 Nxd4 Qg4 Bxc3+ bxc3 Nf5 Bxf5 exf5 Qxg7 Qc7
+OURS	e4 c5 c3 e6 d4 cxd4 cxd4 d5 e5 Nc6 Nc3 Bb4 Bd3 Nxd4 Qg4 Bxc3+ bxc3 Nf5 Bxf5 exf5 Qxg7 Qc7 Ne2
+THEIR-BRANCH	e4 c5 c3 e6 d4 cxd4 cxd4 Nf6
+OURS	e4 c5 c3 e6 d4 cxd4 cxd4 Nf6 Nc3
+THEIRS	e4 c5 c3 e6 d4 cxd4 cxd4 Nf6 Nc3 Bb4
+OURS	e4 c5 c3 e6 d4 cxd4 cxd4 Nf6 Nc3 Bb4 Bd3
+THEIRS	e4 c5 c3 e6 d4 cxd4 cxd4 Nf6 Nc3 Bb4 Bd3 Nc6
+OURS	e4 c5 c3 e6 d4 cxd4 cxd4 Nf6 Nc3 Bb4 Bd3 Nc6 Nf3
+THEIRS	e4 c5 c3 e6 d4 cxd4 cxd4 Nf6 Nc3 Bb4 Bd3 Nc6 Nf3 O-O
+OURS	e4 c5 c3 e6 d4 cxd4 cxd4 Nf6 Nc3 Bb4 Bd3 Nc6 Nf3 O-O e5
+THEIRS	e4 c5 c3 e6 d4 cxd4 cxd4 Nf6 Nc3 Bb4 Bd3 Nc6 Nf3 O-O e5 Nd5
+OURS	e4 c5 c3 e6 d4 cxd4 cxd4 Nf6 Nc3 Bb4 Bd3 Nc6 Nf3 O-O e5 Nd5 Bxh7+
+THEIRS	e4 c5 c3 e6 d4 cxd4 cxd4 Nf6 Nc3 Bb4 Bd3 Nc6 Nf3 O-O e5 Nd5 Bxh7+ Kxh7
+OURS	e4 c5 c3 e6 d4 cxd4 cxd4 Nf6 Nc3 Bb4 Bd3 Nc6 Nf3 O-O e5 Nd5 Bxh7+ Kxh7 Ng5+
+THEIRS	e4 c5 c3 e6 d4 cxd4 cxd4 Nf6 Nc3 Bb4 Bd3 Nc6 Nf3 O-O e5 Nd5 Bxh7+ Kxh7 Ng5+ Kg6
+OURS	e4 c5 c3 e6 d4 cxd4 cxd4 Nf6 Nc3 Bb4 Bd3 Nc6 Nf3 O-O e5 Nd5 Bxh7+ Kxh7 Ng5+ Kg6 h4
+THEIRS	e4 c5 c3 e6 d4 cxd4 cxd4 Nf6 Nc3 Bb4 Bd3 Nc6 Nf3 O-O e5 Nd5 Bxh7+ Kxh7 Ng5+ Kg6 h4 Bxc3+
+OURS	e4 c5 c3 e6 d4 cxd4 cxd4 Nf6 Nc3 Bb4 Bd3 Nc6 Nf3 O-O e5 Nd5 Bxh7+ Kxh7 Ng5+ Kg6 h4 Bxc3+ bxc3
+THEIRS	e4 c5 c3 e6 d4 cxd4 cxd4 Nf6 Nc3 Bb4 Bd3 Nc6 Nf3 O-O e5 Nd5 Bxh7+ Kxh7 Ng5+ Kg6 h4 Bxc3+ bxc3 Qa5
+OURS	e4 c5 c3 e6 d4 cxd4 cxd4 Nf6 Nc3 Bb4 Bd3 Nc6 Nf3 O-O e5 Nd5 Bxh7+ Kxh7 Ng5+ Kg6 h4 Bxc3+ bxc3 Qa5 Qd3+
+THEIRS	e4 c5 c3 e6 d4 cxd4 cxd4 Nf6 Nc3 Bb4 Bd3 Nc6 Nf3 O-O e5 Nd5 Bxh7+ Kxh7 Ng5+ Kg6 h4 Bxc3+ bxc3 Qa5 Qd3+ f5
+OURS	e4 c5 c3 e6 d4 cxd4 cxd4 Nf6 Nc3 Bb4 Bd3 Nc6 Nf3 O-O e5 Nd5 Bxh7+ Kxh7 Ng5+ Kg6 h4 Bxc3+ bxc3 Qa5 Qd3+ f5 h5+
+THEIRS	e4 c5 c3 e6 d4 cxd4 cxd4 Nf6 Nc3 Bb4 Bd3 Nc6 Nf3 O-O e5 Nd5 Bxh7+ Kxh7 Ng5+ Kg6 h4 Bxc3+ bxc3 Qa5 Qd3+ f5 h5+ Kh6
+OURS	e4 c5 c3 e6 d4 cxd4 cxd4 Nf6 Nc3 Bb4 Bd3 Nc6 Nf3 O-O e5 Nd5 Bxh7+ Kxh7 Ng5+ Kg6 h4 Bxc3+ bxc3 Qa5 Qd3+ f5 h5+ Kh6 Nxe6+
+THEIRS	e4 c5 c3 e6 d4 cxd4 cxd4 Nf6 Nc3 Bb4 Bd3 Nc6 Nf3 O-O e5 Nd5 Bxh7+ Kxh7 Ng5+ Kg6 h4 Bxc3+ bxc3 Qa5 Qd3+ f5 h5+ Kh6 Nxe6+ Kh7
+OURS	e4 c5 c3 e6 d4 cxd4 cxd4 Nf6 Nc3 Bb4 Bd3 Nc6 Nf3 O-O e5 Nd5 Bxh7+ Kxh7 Ng5+ Kg6 h4 Bxc3+ bxc3 Qa5 Qd3+ f5 h5+ Kh6 Nxe6+ Kh7 Nxf8+
+THEIR-BRANCH	e4 c5 c3 Nc6 d4 e6
+OURS	e4 c5 c3 Nc6 d4 e6 d5
+THEIRS	e4 c5 c3 Nc6 d4 e6 d5 exd5
+OURS	e4 c5 c3 Nc6 d4 e6 d5 exd5 exd5
+THEIR-BRANCH	e4 c5 c3 Nc6 d4 e6 d5 exd5 exd5 Nce7
+OURS	e4 c5 c3 Nc6 d4 e6 d5 exd5 exd5 Nce7 d6
+THEIRS	e4 c5 c3 Nc6 d4 e6 d5 exd5 exd5 Nce7 d6 Nc6
+OURS	e4 c5 c3 Nc6 d4 e6 d5 exd5 exd5 Nce7 d6 Nc6 Qe2+
+THEIR-BRANCH	e4 c5 c3 Nc6 d4 e6 d5 exd5 exd5 Ne5
+OURS	e4 c5 c3 Nc6 d4 e6 d5 exd5 exd5 Ne5 Nf3
+THEIRS	e4 c5 c3 Nc6 d4 e6 d5 exd5 exd5 Ne5 Nf3 Nxf3+
+OURS	e4 c5 c3 Nc6 d4 e6 d5 exd5 exd5 Ne5 Nf3 Nxf3+ Qxf3
+THEIRS	e4 c5 c3 Nc6 d4 e6 d5 exd5 exd5 Ne5 Nf3 Nxf3+ Qxf3 d6
+OURS	e4 c5 c3 Nc6 d4 e6 d5 exd5 exd5 Ne5 Nf3 Nxf3+ Qxf3 d6 Bd3
+THEIRS	e4 c5 c3 Nc6 d4 e6 d5 exd5 exd5 Ne5 Nf3 Nxf3+ Qxf3 d6 Bd3 Nf6
+OURS	e4 c5 c3 Nc6 d4 e6 d5 exd5 exd5 Ne5 Nf3 Nxf3+ Qxf3 d6 Bd3 Nf6 O-O
+THEIRS	e4 c5 c3 Nc6 d4 e6 d5 exd5 exd5 Ne5 Nf3 Nxf3+ Qxf3 d6 Bd3 Nf6 O-O Be7
+OURS	e4 c5 c3 Nc6 d4 e6 d5 exd5 exd5 Ne5 Nf3 Nxf3+ Qxf3 d6 Bd3 Nf6 O-O Be7 h3
+THEIRS	e4 c5 c3 Nc6 d4 e6 d5 exd5 exd5 Ne5 Nf3 Nxf3+ Qxf3 d6 Bd3 Nf6 O-O Be7 h3 O-O
+OURS	e4 c5 c3 Nc6 d4 e6 d5 exd5 exd5 Ne5 Nf3 Nxf3+ Qxf3 d6 Bd3 Nf6 O-O Be7 h3 O-O Re1
+THEIR-BRANCH	e4 c5 c3 Nc6 d4 cxd4 cxd4 g6
+OURS	e4 c5 c3 Nc6 d4 cxd4 cxd4 g6 d5
+THEIR-BRANCH	e4 c5 c3 Nc6 d4 cxd4 cxd4 g6 d5 Nb8
+OURS	e4 c5 c3 Nc6 d4 cxd4 cxd4 g6 d5 Nb8 Qd4
+THEIRS	e4 c5 c3 Nc6 d4 cxd4 cxd4 g6 d5 Nb8 Qd4 Nf6
+OURS	e4 c5 c3 Nc6 d4 cxd4 cxd4 g6 d5 Nb8 Qd4 Nf6 e5
+THEIRS	e4 c5 c3 Nc6 d4 cxd4 cxd4 g6 d5 Nb8 Qd4 Nf6 e5 Nh5
+OURS	e4 c5 c3 Nc6 d4 cxd4 cxd4 g6 d5 Nb8 Qd4 Nf6 e5 Nh5 Nc3
+THEIRS	e4 c5 c3 Nc6 d4 cxd4 cxd4 g6 d5 Nb8 Qd4 Nf6 e5 Nh5 Nc3 Bg7
+OURS	e4 c5 c3 Nc6 d4 cxd4 cxd4 g6 d5 Nb8 Qd4 Nf6 e5 Nh5 Nc3 Bg7 g4
+THEIR-BRANCH	e4 c5 c3 Nc6 d4 cxd4 cxd4 g6 d5 Ne5
+OURS	e4 c5 c3 Nc6 d4 cxd4 cxd4 g6 d5 Ne5 f4
+THEIR-BRANCH	e4 c5 c3 Nc6 d4 cxd4 cxd4 d6
+OURS	e4 c5 c3 Nc6 d4 cxd4 cxd4 d6 d5
+THEIRS	e4 c5 c3 Nc6 d4 cxd4 cxd4 d6 d5 Ne5
+OURS	e4 c5 c3 Nc6 d4 cxd4 cxd4 d6 d5 Ne5 f4
+THEIR-BRANCH	e4 c5 c3 Nc6 d4 cxd4 cxd4 d6 d5 Ne5 f4 Ng6
+OURS	e4 c5 c3 Nc6 d4 cxd4 cxd4 d6 d5 Ne5 f4 Ng6 Nf3
+THEIRS	e4 c5 c3 Nc6 d4 cxd4 cxd4 d6 d5 Ne5 f4 Ng6 Nf3 Nf6
+OURS	e4 c5 c3 Nc6 d4 cxd4 cxd4 d6 d5 Ne5 f4 Ng6 Nf3 Nf6 Nc3
+THEIRS	e4 c5 c3 Nc6 d4 cxd4 cxd4 d6 d5 Ne5 f4 Ng6 Nf3 Nf6 Nc3 e6
+OURS	e4 c5 c3 Nc6 d4 cxd4 cxd4 d6 d5 Ne5 f4 Ng6 Nf3 Nf6 Nc3 e6 dxe6
+THEIR-BRANCH	e4 c5 c3 Nc6 d4 cxd4 cxd4 d6 d5 Ne5 f4 Ng6 Nf3 Nf6 Nc3 e6 dxe6 Bxe6
+OURS	e4 c5 c3 Nc6 d4 cxd4 cxd4 d6 d5 Ne5 f4 Ng6 Nf3 Nf6 Nc3 e6 dxe6 Bxe6 f5
+THEIR-BRANCH	e4 c5 c3 Nc6 d4 cxd4 cxd4 d6 d5 Ne5 f4 Ng6 Nf3 Nf6 Nc3 e6 dxe6 fxe6
+OURS	e4 c5 c3 Nc6 d4 cxd4 cxd4 d6 d5 Ne5 f4 Ng6 Nf3 Nf6 Nc3 e6 dxe6 fxe6 Bb5+
+THEIRS	e4 c5 c3 Nc6 d4 cxd4 cxd4 d6 d5 Ne5 f4 Ng6 Nf3 Nf6 Nc3 e6 dxe6 fxe6 Bb5+ Bd7
+OURS	e4 c5 c3 Nc6 d4 cxd4 cxd4 d6 d5 Ne5 f4 Ng6 Nf3 Nf6 Nc3 e6 dxe6 fxe6 Bb5+ Bd7 Nd4
+THEIRS	e4 c5 c3 Nc6 d4 cxd4 cxd4 d6 d5 Ne5 f4 Ng6 Nf3 Nf6 Nc3 e6 dxe6 fxe6 Bb5+ Bd7 Nd4 Bxb5
+OURS	e4 c5 c3 Nc6 d4 cxd4 cxd4 d6 d5 Ne5 f4 Ng6 Nf3 Nf6 Nc3 e6 dxe6 fxe6 Bb5+ Bd7 Nd4 Bxb5 Ncxb5
+THEIRS	e4 c5 c3 Nc6 d4 cxd4 cxd4 d6 d5 Ne5 f4 Ng6 Nf3 Nf6 Nc3 e6 dxe6 fxe6 Bb5+ Bd7 Nd4 Bxb5 Ncxb5 Qd7
+OURS	e4 c5 c3 Nc6 d4 cxd4 cxd4 d6 d5 Ne5 f4 Ng6 Nf3 Nf6 Nc3 e6 dxe6 fxe6 Bb5+ Bd7 Nd4 Bxb5 Ncxb5 Qd7 Nxe6
+THEIRS	e4 c5 c3 Nc6 d4 cxd4 cxd4 d6 d5 Ne5 f4 Ng6 Nf3 Nf6 Nc3 e6 dxe6 fxe6 Bb5+ Bd7 Nd4 Bxb5 Ncxb5 Qd7 Nxe6 Rc8
+OURS	e4 c5 c3 Nc6 d4 cxd4 cxd4 d6 d5 Ne5 f4 Ng6 Nf3 Nf6 Nc3 e6 dxe6 fxe6 Bb5+ Bd7 Nd4 Bxb5 Ncxb5 Qd7 Nxe6 Rc8 Nbd4
+THEIRS	e4 c5 c3 Nc6 d4 cxd4 cxd4 d6 d5 Ne5 f4 Ng6 Nf3 Nf6 Nc3 e6 dxe6 fxe6 Bb5+ Bd7 Nd4 Bxb5 Ncxb5 Qd7 Nxe6 Rc8 Nbd4 Nxe4
+OURS	e4 c5 c3 Nc6 d4 cxd4 cxd4 d6 d5 Ne5 f4 Ng6 Nf3 Nf6 Nc3 e6 dxe6 fxe6 Bb5+ Bd7 Nd4 Bxb5 Ncxb5 Qd7 Nxe6 Rc8 Nbd4 Nxe4 f5
+THEIRS	e4 c5 c3 Nc6 d4 cxd4 cxd4 d6 d5 Ne5 f4 Ng6 Nf3 Nf6 Nc3 e6 dxe6 fxe6 Bb5+ Bd7 Nd4 Bxb5 Ncxb5 Qd7 Nxe6 Rc8 Nbd4 Nxe4 f5 Ne5
+OURS	e4 c5 c3 Nc6 d4 cxd4 cxd4 d6 d5 Ne5 f4 Ng6 Nf3 Nf6 Nc3 e6 dxe6 fxe6 Bb5+ Bd7 Nd4 Bxb5 Ncxb5 Qd7 Nxe6 Rc8 Nbd4 Nxe4 f5 Ne5 O-O
+THEIR-BRANCH	e4 c5 c3 Nc6 d4 cxd4 cxd4 d6 d5 Ne5 f4 Nd7
+OURS	e4 c5 c3 Nc6 d4 cxd4 cxd4 d6 d5 Ne5 f4 Nd7 Nc3
+THEIRS	e4 c5 c3 Nc6 d4 cxd4 cxd4 d6 d5 Ne5 f4 Nd7 Nc3 g6
+OURS	e4 c5 c3 Nc6 d4 cxd4 cxd4 d6 d5 Ne5 f4 Nd7 Nc3 g6 Qd4
+THEIRS	e4 c5 c3 Nc6 d4 cxd4 cxd4 d6 d5 Ne5 f4 Nd7 Nc3 g6 Qd4 Ngf6
+OURS	e4 c5 c3 Nc6 d4 cxd4 cxd4 d6 d5 Ne5 f4 Nd7 Nc3 g6 Qd4 Ngf6 e5
+THEIRS	e4 c5 c3 Nc6 d4 cxd4 cxd4 d6 d5 Ne5 f4 Nd7 Nc3 g6 Qd4 Ngf6 e5 dxe5
+OURS	e4 c5 c3 Nc6 d4 cxd4 cxd4 d6 d5 Ne5 f4 Nd7 Nc3 g6 Qd4 Ngf6 e5 dxe5 fxe5
+THEIRS	e4 c5 c3 Nc6 d4 cxd4 cxd4 d6 d5 Ne5 f4 Nd7 Nc3 g6 Qd4 Ngf6 e5 dxe5 fxe5 Nh5
+OURS	e4 c5 c3 Nc6 d4 cxd4 cxd4 d6 d5 Ne5 f4 Nd7 Nc3 g6 Qd4 Ngf6 e5 dxe5 fxe5 Nh5 Nf3
+THEIRS	e4 c5 c3 Nc6 d4 cxd4 cxd4 d6 d5 Ne5 f4 Nd7 Nc3 g6 Qd4 Ngf6 e5 dxe5 fxe5 Nh5 Nf3 Bg7
+OURS	e4 c5 c3 Nc6 d4 cxd4 cxd4 d6 d5 Ne5 f4 Nd7 Nc3 g6 Qd4 Ngf6 e5 dxe5 fxe5 Nh5 Nf3 Bg7 g4
+THEIR-BRANCH	e4 c5 c3 Nc6 d4 cxd4 cxd4 e6 d5 exd5 exd5 Ne5
+OURS	e4 c5 c3 Nc6 d4 cxd4 cxd4 e6 d5 exd5 exd5 Ne5 Nc3
+THEIRS	e4 c5 c3 Nc6 d4 cxd4 cxd4 e6 d5 exd5 exd5 Ne5 Nc3 d6
+OURS	e4 c5 c3 Nc6 d4 cxd4 cxd4 e6 d5 exd5 exd5 Ne5 Nc3 d6 Nf3
+THEIRS	e4 c5 c3 Nc6 d4 cxd4 cxd4 e6 d5 exd5 exd5 Ne5 Nc3 d6 Nf3 Nf6
+OURS	e4 c5 c3 Nc6 d4 cxd4 cxd4 e6 d5 exd5 exd5 Ne5 Nc3 d6 Nf3 Nf6 Bb5+
+THEIRS	e4 c5 c3 Nc6 d4 cxd4 cxd4 e6 d5 exd5 exd5 Ne5 Nc3 d6 Nf3 Nf6 Bb5+ Bd7
+OURS	e4 c5 c3 Nc6 d4 cxd4 cxd4 e6 d5 exd5 exd5 Ne5 Nc3 d6 Nf3 Nf6 Bb5+ Bd7 O-O
+THEIRS	e4 c5 c3 Nc6 d4 cxd4 cxd4 e6 d5 exd5 exd5 Ne5 Nc3 d6 Nf3 Nf6 Bb5+ Bd7 O-O Be7
+OURS	e4 c5 c3 Nc6 d4 cxd4 cxd4 e6 d5 exd5 exd5 Ne5 Nc3 d6 Nf3 Nf6 Bb5+ Bd7 O-O Be7 Nxe5
+THEIRS	e4 c5 c3 Nc6 d4 cxd4 cxd4 e6 d5 exd5 exd5 Ne5 Nc3 d6 Nf3 Nf6 Bb5+ Bd7 O-O Be7 Nxe5 dxe5
+OURS	e4 c5 c3 Nc6 d4 cxd4 cxd4 e6 d5 exd5 exd5 Ne5 Nc3 d6 Nf3 Nf6 Bb5+ Bd7 O-O Be7 Nxe5 dxe5 d6
+THEIRS	e4 c5 c3 Nc6 d4 cxd4 cxd4 e6 d5 exd5 exd5 Ne5 Nc3 d6 Nf3 Nf6 Bb5+ Bd7 O-O Be7 Nxe5 dxe5 d6 Bf8
+OURS	e4 c5 c3 Nc6 d4 cxd4 cxd4 e6 d5 exd5 exd5 Ne5 Nc3 d6 Nf3 Nf6 Bb5+ Bd7 O-O Be7 Nxe5 dxe5 d6 Bf8 Re1
+THEIR-BRANCH	e4 c5 c3 Nc6 d4 cxd4 cxd4 e6 d5 Ne5
+OURS	e4 c5 c3 Nc6 d4 cxd4 cxd4 e6 d5 Ne5 f4
+THEIRS	e4 c5 c3 Nc6 d4 cxd4 cxd4 e6 d5 Ne5 f4 Ng6
+OURS	e4 c5 c3 Nc6 d4 cxd4 cxd4 e6 d5 Ne5 f4 Ng6 d6
+THEIRS	e4 c5 c3 Nc6 d4 cxd4 cxd4 e6 d5 Ne5 f4 Ng6 d6 Qb6
+OURS	e4 c5 c3 Nc6 d4 cxd4 cxd4 e6 d5 Ne5 f4 Ng6 d6 Qb6 e5
+THEIRS	e4 c5 c3 Nc6 d4 cxd4 cxd4 e6 d5 Ne5 f4 Ng6 d6 Qb6 e5 f6
+OURS	e4 c5 c3 Nc6 d4 cxd4 cxd4 e6 d5 Ne5 f4 Ng6 d6 Qb6 e5 f6 Nc3
+THEIRS	e4 c5 c3 Nc6 d4 cxd4 cxd4 e6 d5 Ne5 f4 Ng6 d6 Qb6 e5 f6 Nc3 fxe5
+OURS	e4 c5 c3 Nc6 d4 cxd4 cxd4 e6 d5 Ne5 f4 Ng6 d6 Qb6 e5 f6 Nc3 fxe5 Nb5
+THEIR-BRANCH	e4 c5 c3 Nc6 d4 cxd4 cxd4 d5
+OURS	e4 c5 c3 Nc6 d4 cxd4 cxd4 d5 exd5
+THEIR-BRANCH	e4 c5 c3 Nc6 d4 cxd4 cxd4 Nf6
+OURS	e4 c5 c3 Nc6 d4 cxd4 cxd4 Nf6 d5
+THEIRS	e4 c5 c3 Nc6 d4 cxd4 cxd4 Nf6 d5 Ne5
+OURS	e4 c5 c3 Nc6 d4 cxd4 cxd4 Nf6 d5 Ne5 f4
+THEIRS	e4 c5 c3 Nc6 d4 cxd4 cxd4 Nf6 d5 Ne5 f4 Ng6
+OURS	e4 c5 c3 Nc6 d4 cxd4 cxd4 Nf6 d5 Ne5 f4 Ng6 e5
+THEIRS	e4 c5 c3 Nc6 d4 cxd4 cxd4 Nf6 d5 Ne5 f4 Ng6 e5 Ne4
+OURS	e4 c5 c3 Nc6 d4 cxd4 cxd4 Nf6 d5 Ne5 f4 Ng6 e5 Ne4 Qd4
+THEIRS	e4 c5 c3 Nc6 d4 cxd4 cxd4 Nf6 d5 Ne5 f4 Ng6 e5 Ne4 Qd4 Qa5+
+OURS	e4 c5 c3 Nc6 d4 cxd4 cxd4 Nf6 d5 Ne5 f4 Ng6 e5 Ne4 Qd4 Qa5+ b4
+THEIRS	e4 c5 c3 Nc6 d4 cxd4 cxd4 Nf6 d5 Ne5 f4 Ng6 e5 Ne4 Qd4 Qa5+ b4 Qc7
+OURS	e4 c5 c3 Nc6 d4 cxd4 cxd4 Nf6 d5 Ne5 f4 Ng6 e5 Ne4 Qd4 Qa5+ b4 Qc7 Be3
+THEIRS	e4 c5 c3 Nc6 d4 cxd4 cxd4 Nf6 d5 Ne5 f4 Ng6 e5 Ne4 Qd4 Qa5+ b4 Qc7 Be3 f5
+OURS	e4 c5 c3 Nc6 d4 cxd4 cxd4 Nf6 d5 Ne5 f4 Ng6 e5 Ne4 Qd4 Qa5+ b4 Qc7 Be3 f5 Nd2
+THEIRS	e4 c5 c3 Nc6 d4 cxd4 cxd4 Nf6 d5 Ne5 f4 Ng6 e5 Ne4 Qd4 Qa5+ b4 Qc7 Be3 f5 Nd2 Nxd2
+OURS	e4 c5 c3 Nc6 d4 cxd4 cxd4 Nf6 d5 Ne5 f4 Ng6 e5 Ne4 Qd4 Qa5+ b4 Qc7 Be3 f5 Nd2 Nxd2 Qxd2
+THEIR-BRANCH	e4 c5 c3 Nc6 d4 d5
+OURS	e4 c5 c3 Nc6 d4 d5 exd5
+THEIR-BRANCH	e4 c5 c3 d6
+OURS	e4 c5 c3 d6 d4
+THEIRS	e4 c5 c3 d6 d4 cxd4
+OURS	e4 c5 c3 d6 d4 cxd4 cxd4
+THEIRS	e4 c5 c3 d6 d4 cxd4 cxd4 Nf6
+OURS	e4 c5 c3 d6 d4 cxd4 cxd4 Nf6 Nc3
+THEIR-BRANCH	e4 c5 c3 d6 d4 cxd4 cxd4 Nf6 Nc3 g6
+OURS	e4 c5 c3 d6 d4 cxd4 cxd4 Nf6 Nc3 g6 h3
+THEIRS	e4 c5 c3 d6 d4 cxd4 cxd4 Nf6 Nc3 g6 h3 Bg7
+OURS	e4 c5 c3 d6 d4 cxd4 cxd4 Nf6 Nc3 g6 h3 Bg7 Nf3
+THEIRS	e4 c5 c3 d6 d4 cxd4 cxd4 Nf6 Nc3 g6 h3 Bg7 Nf3 O-O
+OURS	e4 c5 c3 d6 d4 cxd4 cxd4 Nf6 Nc3 g6 h3 Bg7 Nf3 O-O Be3
+THEIRS	e4 c5 c3 d6 d4 cxd4 cxd4 Nf6 Nc3 g6 h3 Bg7 Nf3 O-O Be3 Nc6
+OURS	e4 c5 c3 d6 d4 cxd4 cxd4 Nf6 Nc3 g6 h3 Bg7 Nf3 O-O Be3 Nc6 d5
+THEIRS	e4 c5 c3 d6 d4 cxd4 cxd4 Nf6 Nc3 g6 h3 Bg7 Nf3 O-O Be3 Nc6 d5 Ne5
+OURS	e4 c5 c3 d6 d4 cxd4 cxd4 Nf6 Nc3 g6 h3 Bg7 Nf3 O-O Be3 Nc6 d5 Ne5 Nxe5
+THEIRS	e4 c5 c3 d6 d4 cxd4 cxd4 Nf6 Nc3 g6 h3 Bg7 Nf3 O-O Be3 Nc6 d5 Ne5 Nxe5 dxe5
+OURS	e4 c5 c3 d6 d4 cxd4 cxd4 Nf6 Nc3 g6 h3 Bg7 Nf3 O-O Be3 Nc6 d5 Ne5 Nxe5 dxe5 Bc4
+THEIRS	e4 c5 c3 d6 d4 cxd4 cxd4 Nf6 Nc3 g6 h3 Bg7 Nf3 O-O Be3 Nc6 d5 Ne5 Nxe5 dxe5 Bc4 a6
+OURS	e4 c5 c3 d6 d4 cxd4 cxd4 Nf6 Nc3 g6 h3 Bg7 Nf3 O-O Be3 Nc6 d5 Ne5 Nxe5 dxe5 Bc4 a6 a4
+THEIRS	e4 c5 c3 d6 d4 cxd4 cxd4 Nf6 Nc3 g6 h3 Bg7 Nf3 O-O Be3 Nc6 d5 Ne5 Nxe5 dxe5 Bc4 a6 a4 Bd7
+OURS	e4 c5 c3 d6 d4 cxd4 cxd4 Nf6 Nc3 g6 h3 Bg7 Nf3 O-O Be3 Nc6 d5 Ne5 Nxe5 dxe5 Bc4 a6 a4 Bd7 O-O
+THEIRS	e4 c5 c3 d6 d4 cxd4 cxd4 Nf6 Nc3 g6 h3 Bg7 Nf3 O-O Be3 Nc6 d5 Ne5 Nxe5 dxe5 Bc4 a6 a4 Bd7 O-O Rc8
+OURS	e4 c5 c3 d6 d4 cxd4 cxd4 Nf6 Nc3 g6 h3 Bg7 Nf3 O-O Be3 Nc6 d5 Ne5 Nxe5 dxe5 Bc4 a6 a4 Bd7 O-O Rc8 Qb3
+THEIRS	e4 c5 c3 d6 d4 cxd4 cxd4 Nf6 Nc3 g6 h3 Bg7 Nf3 O-O Be3 Nc6 d5 Ne5 Nxe5 dxe5 Bc4 a6 a4 Bd7 O-O Rc8 Qb3 Qc7
+OURS	e4 c5 c3 d6 d4 cxd4 cxd4 Nf6 Nc3 g6 h3 Bg7 Nf3 O-O Be3 Nc6 d5 Ne5 Nxe5 dxe5 Bc4 a6 a4 Bd7 O-O Rc8 Qb3 Qc7 Be2
+THEIR-BRANCH	e4 c5 c3 d6 d4 cxd4 cxd4 Nf6 Nc3 e6
+OURS	e4 c5 c3 d6 d4 cxd4 cxd4 Nf6 Nc3 e6 Nf3
+THEIRS	e4 c5 c3 d6 d4 cxd4 cxd4 Nf6 Nc3 e6 Nf3 Be7
+OURS	e4 c5 c3 d6 d4 cxd4 cxd4 Nf6 Nc3 e6 Nf3 Be7 Bd3
+THEIRS	e4 c5 c3 d6 d4 cxd4 cxd4 Nf6 Nc3 e6 Nf3 Be7 Bd3 O-O
+OURS	e4 c5 c3 d6 d4 cxd4 cxd4 Nf6 Nc3 e6 Nf3 Be7 Bd3 O-O O-O
+THEIRS	e4 c5 c3 d6 d4 cxd4 cxd4 Nf6 Nc3 e6 Nf3 Be7 Bd3 O-O O-O Nc6
+OURS	e4 c5 c3 d6 d4 cxd4 cxd4 Nf6 Nc3 e6 Nf3 Be7 Bd3 O-O O-O Nc6 Qe2

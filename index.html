@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OpenReps Opening Trainer</title>
+  <meta name="description" content="Free chess opening trainer with coach notes: learn, practice with spaced repetition, drill, time trials, puzzles and arena.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>♞</text></svg>">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="./"><span class="logo">♞</span>OpenReps</a>
+    <div class="title">Free opening trainer</div>
+  </header>
+  <main class="home">
+    <section class="hero">
+      <h1>Learn openings move by move</h1>
+      <p>Pick a course, let the coach explain why each move is played, then lock it in with spaced-repetition practice, drills, time trials, puzzles and the arena. Free, no account — progress stays in your browser.</p>
+    </section>
+
+    <div class="section-h"><h2>Masters</h2><span>Full repertoires with coach notes on every move</span></div>
+    <div class="grid" id="masters"></div>
+
+    <div class="section-h"><h2>Your courses</h2><span>Imported from PGN, saved in this browser</span></div>
+    <div class="grid" id="custom"></div>
+
+    <div class="section-h"><h2>Import a course</h2><span>Paste PGN — one game per line, a multi-game file, or a study with variations</span></div>
+    <div class="import-box">
+      <div class="row" style="margin-bottom:10px">
+        <input type="text" id="imp-title" placeholder="Course name (e.g. My London System)" style="flex:2;min-width:200px">
+        <select id="imp-color" style="flex:1;min-width:140px"><option value="white">I play White</option><option value="black">I play Black</option></select>
+      </div>
+      <textarea id="imp-pgn" rows="7" placeholder="1. d4 d5 2. Bf4 Nf6 3. e3 c5 4. c3&#10;1. d4 d5 2. Bf4 c5 3. e3 Nc6 4. Nf3&#10;&#10;Optional names: Main line|1. d4 d5 2. Bf4 ..."></textarea>
+      <div class="row" style="margin-top:10px">
+        <button class="btn primary" id="imp-go">Create course</button>
+        <span id="imp-msg" style="color:var(--muted);font-size:13px"></span>
+      </div>
+    </div>
+
+    <div class="footer">
+      OpenReps is a free, open-source opening trainer. Board: <a href="https://github.com/lichess-org/chessground">chessground</a> (GPL-3.0) · Rules: <a href="https://github.com/jhlywa/chess.js">chess.js</a> · Engine: <a href="https://github.com/nmrugg/stockfish.js">Stockfish.js</a> (GPL-3.0) · Pieces: cburnett (GPL-2+) and Staunty by sadsnake1 (CC BY-NC-SA 4.0) via Lichess.
+    </div>
+  </main>
+  <script type="module" src="js/home.js"></script>
+</body>
+</html>

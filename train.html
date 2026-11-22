@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OpenReps Trainer</title>
+  <meta name="description" content="Free opening trainer: learn, practice and drill chess opening repertoires with coach notes.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>♞</text></svg>">
+  <link rel="stylesheet" href="vendor/chessground.base.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="./"><span class="logo">♞</span>OpenReps</a>
+    <div class="title" id="page-title"></div>
+    <div class="actions">
+      <a class="btn small" href="./">← <span>Courses</span></a>
+    </div>
+  </header>
+
+  <main class="trainer">
+    <div class="board-col">
+      <div class="evalbar hidden" id="evalbar"><div class="white"></div><div class="num"></div></div>
+      <div class="board-wrap" id="board-wrap"><div id="board"></div></div>
+    </div>
+
+    <section class="panel">
+      <nav class="modes" id="modes"></nav>
+      <div class="panel-body">
+        <div class="course-h">
+          <div>
+            <h2 id="course-title"></h2>
+            <div class="line-name" id="line-name"></div>
+          </div>
+          <span class="chip" id="mode-chip"></span>
+        </div>
+        <div id="timer-box" class="status-line hidden"><span class="timer" id="timer">3:00</span><span class="chip blue" id="timer-score">0 moves</span></div>
+        <div class="coach" id="coach">
+          <div class="who"><span class="dot"></span><span id="coach-who">Coach</span></div>
+          <div class="text" id="coach-text"></div>
+        </div>
+        <div class="prompt" id="prompt"></div>
+        <div class="toolbar" id="actions"></div>
+        <div class="moves" id="moves"></div>
+      </div>
+      <footer class="panel-foot">
+        <button id="btn-settings">⚙ Settings</button>
+        <button id="btn-lines">☰ Select Line</button>
+        <button id="btn-help">? Help</button>
+      </footer>
+    </section>
+  </main>
+
+  <div id="modal-root"></div>
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
