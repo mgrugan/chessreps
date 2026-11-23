@@ -626,16 +626,15 @@ function drawLines(key, n, exclude = new Set()) {
   return out;
 }
 function newDrillRound() {
-  const prev = prog.lastDrillRound || { lines: [], missed: [] };
-  // up to 2 lines missed last round come back; everything else is fresh from the cycle
-  const carry = prev.missed.filter(i => isDiscovered(i)).slice(0, 2);
-  const exclude = new Set([...prev.lines, ...carry]);
-  let fresh = drawLines('drill', ROUND_SIZE - carry.length, exclude);
-  if (fresh.length + carry.length < Math.min(ROUND_SIZE, discoveredList().length)) {
+  // A mastered round is done: the next round is dealt fresh from the shuffled cycle.
+  // (Lines you missed get extra review through Practice's schedule, not by repeating here.)
+  const prev = prog.lastDrillRound || { lines: [] };
+  let fresh = drawLines('drill', ROUND_SIZE, new Set(prev.lines));
+  if (fresh.length < Math.min(ROUND_SIZE, discoveredList().length)) {
     // small course: allow last round's lines rather than a short round
-    fresh = [...fresh, ...drawLines('drill', ROUND_SIZE - carry.length - fresh.length, new Set([...carry, ...fresh]))];
+    fresh = [...fresh, ...drawLines('drill', ROUND_SIZE - fresh.length, new Set(fresh))];
   }
-  const picked = shuffled([...carry, ...fresh]);
+  const picked = shuffled(fresh);
   prog.drillRound = { queue: picked, need: Object.fromEntries(picked.map(i => [i, 1])), done: {}, missed: {}, size: picked.length };
   save();
 }
