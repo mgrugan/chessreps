@@ -591,10 +591,8 @@ function startPractice() {
   if (ready.length) idx = ready[0].idx;
   else if (due.length) { due.sort((a, b) => (prog.srs[a]?.due ?? 0) - (prog.srs[b]?.due ?? 0)); idx = due[0]; }
   else {
-    const pool = disc.filter(i => !waiting.has(i) && !recent.has(i));
-    const pick = pool.length ? pool : disc;
-    idx = pick.map(i => [i, lineWeakness(i)]).sort((a, b) => b[1] - a[1])[0][0];
-    if (!retry.length) toast('All caught up! Extra review of your weakest lines.');
+    idx = drawLines('practice', 1, new Set([...waiting, ...recent]))[0] ?? drawLines('practice', 1)[0];
+    if (!retry.length) toast('All caught up! Extra review — every line comes up once before repeats.');
   }
   setCoach('Practice', `<p>Play the whole line from memory. Perfect lines come back later; mistakes bring them back sooner.</p>`);
   S.lastNote = 'intro';
@@ -605,19 +603,39 @@ function startPractice() {
 // A round holds ~8 of your weakest discovered lines. A clean line is mastered; a missed
 // line comes back two lines later and must then be played clean twice in a row.
 const ROUND_SIZE = 8;
-function lineWeakness(i) {
-  const r = prog.srs[i] || {};
-  const moves = lines[i].moves;
-  let mis = 0;
-  for (let k = 1; k <= moves.length; k++) mis += prog.mistakes[moves.slice(0, k).join(' ')] || 0;
-  const stale = r.last ? Math.min(3, (Date.now() - r.last) / DAY / 3) : 3;
-  const due = (r.due ?? 0) <= Date.now() ? 2 : 0;
-  return (r.lapses || 0) * 3 + Math.min(mis, 8) + stale + due + (r.drillMiss || 0) * 2 + Math.random() * 1.5;
+// Shuffle-bag: deal every discovered line once, in random order, before any repeats.
+// `key` names the cycle (drill / practice); `exclude` lines are skipped this draw.
+function shuffled(arr) { const a = [...arr]; for (let k = a.length - 1; k > 0; k--) { const j = (Math.random() * (k + 1)) | 0; [a[k], a[j]] = [a[j], a[k]]; } return a; }
+function drawLines(key, n, exclude = new Set()) {
+  const disc = discoveredList();
+  const usedKey = key + 'Used';
+  let used = new Set((prog[usedKey] || []).filter(i => i < lines.length));
+  const out = [];
+  while (out.length < n) {
+    let bag = disc.filter(i => !used.has(i) && !exclude.has(i) && !out.includes(i));
+    if (!bag.length) {
+      // cycle finished: start a new one (lines just dealt still can't repeat in this draw)
+      if (!disc.some(i => !exclude.has(i) && !out.includes(i))) break;
+      used = new Set(); bag = disc.filter(i => !exclude.has(i) && !out.includes(i));
+    }
+    const i = bag[(Math.random() * bag.length) | 0];
+    out.push(i); used.add(i);
+  }
+  prog[usedKey] = [...used];
+  save();
+  return out;
 }
 function newDrillRound() {
-  const disc = discoveredList();
-  const picked = disc.map(i => [i, lineWeakness(i)]).sort((a, b) => b[1] - a[1]).slice(0, ROUND_SIZE).map(x => x[0]);
-  for (let k = picked.length - 1; k > 0; k--) { const j = (Math.random() * (k + 1)) | 0; [picked[k], picked[j]] = [picked[j], picked[k]]; }
+  const prev = prog.lastDrillRound || { lines: [], missed: [] };
+  // up to 2 lines missed last round come back; everything else is fresh from the cycle
+  const carry = prev.missed.filter(i => isDiscovered(i)).slice(0, 2);
+  const exclude = new Set([...prev.lines, ...carry]);
+  let fresh = drawLines('drill', ROUND_SIZE - carry.length, exclude);
+  if (fresh.length + carry.length < Math.min(ROUND_SIZE, discoveredList().length)) {
+    // small course: allow last round's lines rather than a short round
+    fresh = [...fresh, ...drawLines('drill', ROUND_SIZE - carry.length - fresh.length, new Set([...carry, ...fresh]))];
+  }
+  const picked = shuffled([...carry, ...fresh]);
   prog.drillRound = { queue: picked, need: Object.fromEntries(picked.map(i => [i, 1])), done: {}, missed: {}, size: picked.length };
   save();
 }
@@ -668,6 +686,7 @@ function finishDrillLine(idx, lastNote) {
       ? `<p>Tricky ones this round:</p><p>${missed.map(i => `• ${esc(lines[i].name || 'Line ' + (i + 1))}${r.missed[i] > 1 ? ` (×${r.missed[i]})` : ''}`).join('<br>')}</p>`
       : '<p>Not a single miss — perfect round.</p>'));
     setPrompt(`✓ Round done · streak ×${prog.drillStreak}`, 'good');
+    prog.lastDrillRound = { lines: Object.keys(r.need).map(Number), missed };
     prog.drillRound = null; save();
     setActions([{ label: 'Next round →', cls: 'primary', onClick: () => { newDrillRound(); startDrill(); } }]);
     return;
